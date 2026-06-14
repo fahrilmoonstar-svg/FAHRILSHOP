@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahril Shop | Toko Asli & Terpercaya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gelap: '#050505',
+                        biru: '#0099FF',
+                        birutua: '#001122',
+                        abu: '#1A1A1A',
+                        hijau: '#00C853',
+                        emas: '#FF9500',
+                        merah: '#FF3B30',
+                        ungu: '#9C27B0',
+                        toska: '#74ebd5',
+                    },
+                    fontFamily: {
+                        utama: ['Orbitron', 'sans-serif'],
+                        teks: ['Poppins', 'sans-serif'],
+                        arab: ['Amiri', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow { text-shadow: 0 0 10px rgba(0, 153, 255, 0.7); }
+            .text-shadow-hijau { text-shadow: 0 0 10px rgba(0, 200, 83, 0.7); }
+            .text-shadow-ungu { text-shadow: 0 0 10px rgba(156, 39, 176, 0.7); }
+            .border-glow { border: 1px solid rgba(0, 153, 255, 0.5); box-shadow: 0 0 15px rgba(0, 153, 255, 0.2); }
+            .border-glow-hijau { border: 1px solid rgba(0, 200, 83, 0.5); box-shadow: 0 0 15px rgba(0, 200, 83, 0.2); }
+            .border-glow-ungu { border: 1px solid rgba(156, 39, 176, 0.5); box-shadow: 0 0 15px rgba(156, 39, 176, 0.2); }
+            .anim-muncul { animation: muncul 1s ease-out; }
+            @keyframes muncul { 0% { opacity:0; transform: translateY(20px); } 100% { opacity:1; transform: translateY(0); } }
+            .latar-kode {
+                background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('https://grainy-gradients.vercel.app/noise.svg');
+                background-size: auto;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gelap text-white font-teks latar-kode">
+
+    <!-- Login -->
+    <div id="bagianLogin" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-[9999] flex items-center justify-center">
+        <div class="bg-abu/80 p-10 rounded-2xl border border-biru/50 shadow-2xl w-full max-w-md text-center anim-muncul">
+            <i class="fa fa-lock text-biru text-5xl mb-4 text-shadow"></i>
+            <h2 class="text-2xl font-utama font-bold text-biru mb-6 text-shadow">LOGIN AKSES TOKO</h2>
+            <input id="kataSandi" type="text" placeholder="Masukkan kata sandi :" class="w-full px-4 py-3 rounded-lg bg-black/60 border border-gray-600 focus:border-biru outline-none mb-4 text-center">
+            <button onclick="cekLogin()" class="w-full bg-biru hover:bg-biru/80 py-3 rounded-lg font-bold transition border-glow">MASUK</button>
+            <p id="pesanSalah" class="text-merah mt-3 text-sm hidden">Kata sandi salah!</p>
+        </div>
+    </div>
+
+    <script>
+        const daftarSandi = ["Naira cantik12", "fahril ganteng12"];
+        function cekLogin() {
+            let sandi = document.getElementById("kataSandi").value;
+            if (daftarSandi.includes(sandi)) {
+                document.getElementById("bagianLogin").style.display = "none";
+                document.body.style.overflow = "auto";
+            } else {
+                document.getElementById("pesanSalah").classList.remove("hidden");
+            }
+        }
+        document.getElementById("kataSandi").addEventListener("keypress", e => { if (e.key === "Enter") cekLogin(); });
+        document.body.style.overflow = "hidden";
+    </script>
+
+    <!-- Navigasi -->
+    <nav class="fixed w-full bg-black/70 backdrop-blur-md z-50 py-4 px-5 border-b border-biru/20 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-biru/20 flex items-center justify-center border border-biru/50">
+                    <i class="fa fa-shield text-biru text-lg"></i>
+                </div>
+                <h1 class="text-[clamp(1.1rem,3vw,1.6rem)] font-utama font-black text-biru text-shadow">FAHRIL SHOP</h1>
+            </div>
+            <div class="hidden md:flex gap-6">
+                <a href="#beranda" class="text-gray-300 hover:text-biru transition">Beranda</a>
+                <a href="#produk" class="text-gray-300 hover:text-biru transition">Produk</a>
+                <a href="#fitur-diskon" class="text-gray-300 hover:text-ungu transition">Hitung Diskon</a>
+                <a href="#fitur-sapa" class="text-gray-300 hover:text-ungu transition">Sapaan</a>
+                <a href="#cara-beli" class="text-gray-300 hover:text-biru transition">Cara Beli</a>
+            </div>
+            <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20tanya%20atau%20pesan%20produk%20di%20Fahril%20Shop" target="_blank" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition flex items-center gap-2 text-sm font-semibold">
+                <i class="fa fa-whatsapp"></i> <span class="hidden sm:inline">Pesan Sekarang</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ✅ BAGIAN PERINGATAN + AYAT + SAMBUTAN SESUAI KEINGINANMU -->
+    <section id="beranda" class="pt-28 pb-16 px-5 bg-gradient-to-b from-black to-birutua/40">
+        <div class="container mx-auto max-w-4xl text-center anim-muncul">
+
+            <!-- Peringatan -->
+            <div class="bg-merah/10 border border-merah/30 text-merah px-5 py-4 rounded-lg mb-8">
+                ⚠️ HATI-HATI TERHADAP CLONE ATAU RIPER ⚠️<br>
+                Mereka yang selalu menipu dan berkeliaran di mana-mana.<br>
+                <strong class="text-lg">Web yang ASLI hanya yang memuat Ayat Al-Qur'an ini</strong>
+            </div>
+
+            <!-- Keterangan Ayat -->
+            <h3 class="text-2xl md:text-3xl font-utama font-bold text-biru text-shadow mb-5">
+                Surah An-Nur Ayat 4
+            </h3>
+
+            <!-- Tulisan Arab + Arti -->
+            <div class="bg-abu/70 backdrop-blur-sm border border-biru/30 rounded-xl p-6 shadow-lg mb-8">
+                <p class="text-3xl md:text-4xl leading-relaxed text-hijau mb-6 font-arab">
+                    وَالَّذِينَ يَرْمُونَ الْمُحْصَنَاتِ ثُمَّ لَمْ يَأْتُوا بِأَرْبَعَةِ شُهَدَاءَ فَاجْلِدُوهُمْ ثَمَانِينَ جَلْدَةً وَلَا تَقْبَلُوا لَهُمْ شَهَادَةً أَبَدًا ۚ وَأُولَٰئِكَ هُمُ الْفَاسِقُونَ
+                </p>
+                <p class="text-gray-200 italic text-base md:text-lg leading-relaxed">
+                    "Dan orang-orang yang menuduh wanita-wanita yang baik-baik lalu tidak mendatangkan empat orang saksi, maka deralah mereka yang menuduh itu delapan puluh kali dera, dan janganlah kamu terima kesaksian mereka buat selama-lamanya. Dan mereka itulah orang-orang yang fasik."
+                </p>
+            </div>
+
+            <!-- Makna Singkat -->
+            <p class="text-gray-300 max-w-2xl mx-auto mb-10">
+                Ayat ini mengingatkan kami untuk selalu berpegang pada kebenaran, tidak menyebarkan tuduhan tanpa bukti, dan menjaga kepercayaan serta kehormatan. Prinsip inilah yang kami pegang teguh dalam melayani setiap pelanggan.
+            </p>
+
+            <!-- Sambutan Toko -->
+            <h2 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-4">
+                SELAMAT DATANG DI FAHRIL SHOP
+            </h2>
+            <p class="text-gray-200 text-lg max-w-xl mx-auto">
+                Tempat belanja aman, jujur, terpercaya, dan bebas dari penipuan.
+            </p>
+        </div>
+    </section>
+
+    <!-- ✅ DAFTAR PRODUK LENGKAP + PESAN WA LENGKAP -->
+    <section id="produk" class="py-16 px-5 bg-birutua/20">
+        <div class="container mx-auto">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-2">📦 DAFTAR PRODUK KAMI</h3>
+                <p class="text-gray-400 max-w-lg mx-auto">Harga terjangkau, kualitas terjamin, proses cepat dan aman</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Kuota Smartfren 4GB -->
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-hijau rounded-2xl p-8 relative border-glow-hijau anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-hijau text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">🔥 HEMAT</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-signal text-hijau text-5xl mb-3 text-shadow-hijau"></i>
+                        <h4 class="text-2xl font-bold text-hijau">KUOTA SMARTFREN 4GB</h4>
+                        <div class="text-gray-400 text-sm">Masa Aktif 14 Hari</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 22.000</div>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20pesan%20KUOTA%20SMARTFREN%204GB%20dengan%20harga%20Rp22.000%20di%20Fahril%20Shop%20ya%20🙏" target="_blank" class="block w-full text-center bg-hijau hover:bg-hijau/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+
+                <!-- Kuota Smartfren 10GB -->
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-hijau rounded-2xl p-8 relative border-glow-hijau anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-hijau text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">🔥 POPULER</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-signal text-hijau text-5xl mb-3 text-shadow-hijau"></i>
+                        <h4 class="text-2xl font-bold text-hijau">KUOTA SMARTFREN 10GB</h4>
+                        <div class="text-gray-400 text-sm">Masa Aktif 7 Hari</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 22.000</div>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20pesan%20KUOTA%20SMARTFREN%2010GB%20dengan%20harga%20Rp22.000%20di%20Fahril%20Shop%20ya%20🙏" target="_blank" class="block w-full text-center bg-hijau hover:bg-hijau/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+
+                <!-- Kuota Smartfren 20GB -->
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-hijau rounded-2xl p-8 relative border-glow-hijau anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-hijau text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">🔥 BESAR</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-signal text-hijau text-5xl mb-3 text-shadow-hijau"></i>
+                        <h4 class="text-2xl font-bold text-hijau">KUOTA SMARTFREN 20GB</h4>
+                        <div class="text-gray-400 text-sm">Masa Aktif 3 Hari</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 23.000</div>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20pesan%20KUOTA%20SMARTFREN%2020GB%20dengan%20harga%20Rp23.000%20di%20Fahril%20Shop%20ya%20🙏" target="_blank" class="block w-full text-center bg-hijau hover:bg-hijau/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+
+                <!-- Alight Motion Premium -->
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-ungu rounded-2xl p-8 relative border-glow-ungu anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-ungu text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">✨ PREMIUM</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-film text-ungu text-5xl mb-3 text-shadow-ungu"></i>
+                        <h4 class="text-2xl font-bold text-ungu">ALIGHT MOTION PREMIUM</h4>
+                        <div class="text-gray-400 text-sm">Masa Aktif 1 Tahun</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 7.000</div>
+                        <p class="text-gray-300 text-sm mt-2">Tanpa watermark & semua fitur terbuka</p>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20pesan%20ALIGHT%20MOTION%20PREMIUM%201%20TAHUN%20dengan%20harga%20Rp7.000%20di%20Fahril%20Shop%20ya%20🙏" target="_blank" class="block w-full text-center bg-ungu hover:bg-ungu/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FITUR HITUNG DISKON -->
+    <section id="fitur-diskon" class="py-16 px-5 bg-gradient-to-b from-black to-birutua/30">
+        <div class="container mx-auto max-w-2xl">
+            <div class="text-center mb-10 anim-muncul">
+                <h3 class="text-3xl font-utama font-bold text-ungu text-shadow-ungu mb-2">🧮 HITUNG DISKON KENDARAAN</h3>
+                <p class="text-gray-300">Masukkan kode kendaraan untuk melihat potongan harga yang didapat</p>
+            </div>
+
+            <div class="bg-abu/70 border border-ungu/30 rounded-xl p-6 shadow-lg anim-muncul">
+                <div class="mb-4 p-4 bg-black/40 rounded-lg border border-ungu/20">
+                    <p class="text-gray-200 mb-2 font-semibold">📋 Daftar Kendaraan & Diskon:</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>🚚 <b>Truk</b> → Kode: <span class="text-ungu font-bold">tr</span> | Harga: Rp10.000 | Diskon: <span class="text-hijau">30%</span></li>
+                        <li>🚗 <b>Mobil</b> → Kode: <span class="text-ungu font-bold">mb</span> | Harga: Rp8.000 | Diskon: <span class="text-hijau">40%</span></li>
+                        <li>🚢 <b>Kapal</b> → Kode: <span class="text-ungu font-bold">kp</span> | Harga: Rp12.000 | Diskon: <span class="text-hijau">20%</span></li>
+                    </ul>
+                </div>
+                <input id="kodeInput" type="text" placeholder="Masukkan kode (contoh: tr)" class="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-600 focus:border-ungu outline-none mb-4">
+                <button onclick="hitungDiskon()" class="w-full bg-ungu hover:bg-ungu/90 py-3 rounded-lg font-bold transition mb-4 border-glow-ungu">HITUNG DISKON SEKARANG</button>
+                <div id="hasilDiskon" class="bg-black/60 border border-ungu/20 rounded-lg p-4 min-h-[80px] text-gray-100 whitespace-pre-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FITUR SAPAAN -->
+    <section id="fitur-sapa" class="py-16 px-5 bg-birutua/10">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-ungu text-shadow-ungu mb-2">🤖 FITUR SAPAAN CERIA</h3>
+                <p class="text-gray-300">Coba fitur interaktif baru kami</p>
+            </div>
+
+            <div class="bg-abu/70 backdrop-blur-md border border-ungu/30 rounded-2xl p-8 shadow-xl anim-muncul">
+                <div class="mb-6">
+                    <label class="block text-gray-200 mb-2">Masukkan Nama Kamu:</label>
+                    <input id="namaInput" type="text" placeholder="Contoh: Fahril" class="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-600 focus:border-ungu outline-none">
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4 mb-6">
+                    <button onclick="jalankanSapaDasar()" class="bg-ungu/80 hover:bg-ungu px-4 py-2 rounded-lg font-medium transition">Sapa Biasa</button>
+                    <button onclick="jalankanSapaWaktu()" class="bg-ungu/80 hover:bg-ungu px-4 py-2 rounded-lg font-medium transition">Sapa Sesuai Waktu</button>
+                    <button onclick="jalankanSapaUlang()" class="bg-ungu/80 hover:bg-ungu px-4 py-2 rounded-lg font-medium transition">Sapa Berulang</button>
+                    <button onclick="jalankanSapaBanyak()" class="bg-ungu/80 hover:bg-ungu px-4 py-2 rounded-lg font-medium transition">Sapa Banyak Nama</button>
+                </div>
+
+                <div id="hasilSapa" class="bg-black/60 border border-ungu/20 rounded-lg p-4 min-h-[120px] text-gray-100 whitespace-pre-line">
+                    Hasil sapaan akan muncul di sini...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARA BELI -->
+    <section id="cara-beli" class="py-16 px-5">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-3">📝 CARA PEMESANAN</h3>
+                <p class="text-gray-300">Mudah, cepat, dan aman</p>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">1</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">Pilih Produk</h5>
+                        <p class="text-gray-300">Tentukan barang atau layanan yang ingin kamu beli dari daftar produk kami.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">2</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">Hubungi Admin</h5>
+                        <p class="text-gray-300">Klik tombol pesan sekarang, kamu akan langsung terhubung ke WhatsApp resmi kami.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">3</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">Lakukan Pembayaran</h5>
+                        <p class="text-gray-300">Ikuti instruksi pembayaran yang diberikan admin, tersedia banyak metode pembayaran yang aman.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">4</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">Barang Dikirim</h5>
+                        <p class="text-gray-300">Setelah pembayaran dikonfirmasi, produk akan segera dikirimkan ke kamu dalam waktu singkat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-8 border-t border-biru/10 text-center text-gray-400">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <i class="fa fa-shield text-biru text-xl"></i>
+                <span class="text-biru font-utama font-bold text-lg">FAHRIL SHOP - TOKO ASLI & TERPERCAYA</span>
+            </div>
+            <p class="text-sm">© 2026 Hak Cipta Dilindungi | Web asli memuat Surah An-Nur Ayat 4</p>
+        </div>
+    </footer>
+
+    <!-- Tombol Kembali ke Atas -->
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-biru/80 text-white flex items-center justify-center shadow-lg hover:bg-biru transition z-40">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- SCRIPT -->
+    <script>
+        // ----------------------
+        // FUNGSI HITUNG DISKON
+        // ----------------------
+        const Truk = ["10000", "tr"];
+        const mobil = ["8000", "mb"];
+        const kapal = ["12000", "kp"];
+
+        function kasihDiskon(Kendaraan) {
+            switch(Kendaraan.toLowerCase()) {
+                case "tr":
+                    return parseFloat(Truk[0]) * 0.3;
+                case "mb":
+                    return parseFloat(mobil[0]) * 0.4;
+                case "kp":
+                    return parseFloat(kapal[0]) * 0.2;
+                default:
+                    return null;
+            }
+        }
+
+        function hitungDiskon() {
+            const kode = document.getElementById("kodeInput").value.trim();
+            const potongan = kasihDiskon(kode);
+            const tampilan = document.getElementById("hasilDiskon");
+            
+            if (potongan === null) {
+                tampilan.textContent = "❌ Kode tidak dikenali!\nGunakan kode: tr / mb / kp";
+                tampilan.className = "bg-black/60 border border-merah/30 rounded-lg p-4 min-h-[80px] text-merah whitespace-pre-line";
+            } else {
+                let jenis = kode === "tr" ? "Truk" : kode === "mb" ? "Mobil" : "Kapal";
+                let hargaAsli = parseFloat(jenis==="Truk"?Truk[0]:jenis==="Mobil"?mobil[0]:kapal[0]);
+                let hargaAkhir = hargaAsli - potongan;
+                let persen = kode === "tr" ? "30%" : kode === "mb" ? "40%" : "20%";
+
+                tampilan.textContent = `✅ Kendaraan: ${jenis}
+💵 Harga Asli: Rp${hargaAsli.toLocaleString("id-ID")}
+🎁 Diskon: ${persen} → Potongan Rp${potongan.toLocaleString("id-ID")}
+💰 Harga Bayar: Rp${hargaAkhir.toLocaleString("id-ID")}`;
+                tampilan.className = "bg-black/60 border border-hijau/30 rounded-lg p-4 min-h-[80px] text-hijau whitespace-pre-line";
+            }
+        }
+
+        // ----------------------
+        // FUNGSI SAPAAN
+        // ----------------------
+        function sapaDasar(nama = "", pesan = "Semoga harimu menyenangkan dan berkah!") {
+            if (nama) return `Halo ${nama}! ${pesan}`;
+            return "Halo! Selamat datang di Fahril Shop 🤝";
+        }
+
+        function sapaSesuaiWaktu(nama) {
+            const jam = new Date().getHours();
+            const waktu = jam < 12 ? "Pagi" : jam < 18 ? "Siang/Sore" : "Malam";
+            return `Selamat ${waktu}, ${nama}! Semoga hari ini lancar dan rezeki dimudahkan 🤲✨`;
+        }
+
+        function sapaBerulang(nama, jumlah = 3) {
+            let hasil = "";
+            for (let i = 1; i <= jumlah; i++) hasil += `Ke-${i}: Halo ${nama}! Selamat datang di Fahril Shop\n`;
+            return hasil;
+        }
+
+        function sapaBanyakNama(daftarNama) {
+            let hasil = "--- Sapaan untuk Semua ---\n";
+            daftarNama.forEach(nama => hasil += `Halo ${nama}! Salam kenal dan selamat berbelanja 🤗\n`);
+            return hasil;
+        }
+
+        function jalankanSapaDasar() {
+            const nama = document.getElementById("namaInput").value.trim() || "Teman";
+            document.getElementById("hasilSapa").textContent = sapaDasar(nama);
+        }
+
+        function jalankanSapaWaktu() {
+            const nama = document.getElementById("namaInput").value.trim();
+            if (!nama) return alert("Masukkan nama terlebih dahulu ya!");
+            document.getElementById("hasilSapa").textContent = sapaSesuaiWaktu(nama);
+        }
+
+        function jalankanSapaUlang() {
+            const nama = document.getElementById("namaInput").value.trim();
+            if (!nama) return alert("Masukkan nama terlebih dahulu ya!");
+            const jumlah = prompt("Ingin diulang berapa kali?", "3");
+            if (!jumlah || isNaN(jumlah)) return;
+            document.getElementById("hasilSapa").textContent = sapaBerulang(nama, parseInt(jumlah));
+        }
+
+        function jalankanSapaBanyak() {
+            const input = prompt("Masukkan nama-nama dipisah koma:\nContoh: Fahril, Naira, Budi", "");
+            if (!input) return;
+            const daftar = input.split(",").map(n => n.trim()).filter(n => n);
+            document.getElementById("hasilSapa").textContent = sapaBanyakNama(daftar);
+        }
+    </script>
+
+</body>
+</html>
