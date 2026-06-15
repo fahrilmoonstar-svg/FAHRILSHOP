@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahril Shop | Toko Asli & Terpercaya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gelap: '#050505',
+                        biru: '#0099FF',
+                        birutua: '#001122',
+                        abu: '#1A1A1A',
+                        hijau: '#00C853',
+                        emas: '#FF9500',
+                        merah: '#FF3B30',
+                        ungu: '#9C27B0',
+                        toska: '#74ebd5',
+                    },
+                    fontFamily: {
+                        utama: ['Orbitron', 'sans-serif'],
+                        teks: ['Poppins', 'sans-serif'],
+                        arab: ['Amiri', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow { text-shadow: 0 0 10px rgba(0, 153, 255, 0.7); }
+            .text-shadow-hijau { text-shadow: 0 0 10px rgba(0, 200, 83, 0.7); }
+            .text-shadow-ungu { text-shadow: 0 0 10px rgba(156, 39, 176, 0.7); }
+            .border-glow { border: 1px solid rgba(0, 153, 255, 0.5); box-shadow: 0 0 15px rgba(0, 153, 255, 0.2); }
+            .border-glow-hijau { border: 1px solid rgba(0, 200, 83, 0.5); box-shadow: 0 0 15px rgba(0, 200, 83, 0.2); }
+            .border-glow-ungu { border: 1px solid rgba(156, 39, 176, 0.5); box-shadow: 0 0 15px rgba(156, 39, 176, 0.2); }
+            .anim-muncul { animation: muncul 1s ease-out; }
+            @keyframes muncul { 0% { opacity:0; transform: translateY(20px); } 100% { opacity:1; transform: translateY(0); } }
+            .latar-kode {
+                background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('https://grainy-gradients.vercel.app/noise.svg');
+                background-size: auto;
+            }
+        }
+
+        /* Gaya Khusus Game Agar Sesuai Tema */
+        #wadah-game {
+            position: relative;
+            width: 100%;
+            height: 550px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            border: 2px solid rgba(0, 200, 83, 0.4);
+            box-shadow: 0 0 20px rgba(0, 200, 83, 0.15);
+        }
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gelap text-white font-teks latar-kode">
+
+    <!-- Login -->
+    <div id="bagianLogin" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-[9999] flex items-center justify-center">
+        <div class="bg-abu/80 p-10 rounded-2xl border border-biru/50 shadow-2xl w-full max-w-md text-center anim-muncul">
+            <i class="fa fa-lock text-biru text-5xl mb-4 text-shadow"></i>
+            <h2 class="text-2xl font-utama font-bold text-biru mb-6 text-shadow">LOGIN AKSES TOKO</h2>
+            <input id="kataSandi" type="text" placeholder="Masukkan kata sandi :" class="w-full px-4 py-3 rounded-lg bg-black/60 border border-gray-600 focus:border-biru outline-none mb-4 text-center">
+            <button onclick="cekLogin()" class="w-full bg-biru hover:bg-biru/80 py-3 rounded-lg font-bold transition border-glow">MASUK</button>
+            <p id="pesanSalah" class="text-merah mt-3 text-sm hidden">Kata sandi salah!</p>
+        </div>
+    </div>
+
+    <script>
+        // ✅ KATA SANDI SUDAH DIGANTI SESUAI PERMINTAAN
+        const daftarSandi = ["Nairamonchery", "fahril moonstar"];
+        function cekLogin() {
+            let sandi = document.getElementById("kataSandi").value;
+            if (daftarSandi.includes(sandi)) {
+                document.getElementById("bagianLogin").style.display = "none";
+                document.body.style.overflow = "auto";
+            } else {
+                document.getElementById("pesanSalah").classList.remove("hidden");
+            }
+        }
+        document.getElementById("kataSandi").addEventListener("keypress", e => { if (e.key === "Enter") cekLogin(); });
+        document.body.style.overflow = "hidden";
+    </script>
+
+    <!-- Navigasi -->
+    <nav class="fixed w-full bg-black/70 backdrop-blur-md z-50 py-4 px-5 border-b border-biru/20 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-biru/20 flex items-center justify-center border border-biru/50">
+                    <i class="fa fa-shield text-biru text-lg"></i>
+                </div>
+                <h1 class="text-[clamp(1.1rem,3vw,1.6rem)] font-utama font-black text-biru text-shadow">FAHRIL SHOP</h1>
+            </div>
+            <div class="hidden md:flex gap-6">
+                <a href="#beranda" class="text-gray-300 hover:text-biru transition">Beranda</a>
+                <a href="#produk" class="text-gray-300 hover:text-biru transition">Produk</a>
+                <a href="#fitur-diskon" class="text-gray-300 hover:text-ungu transition">Hitung Diskon</a>
+                <a href="#fitur-sapa" class="text-gray-300 hover:text-ungu transition">Sapaan</a>
+                <a href="#fitur-game" class="text-gray-300 hover:text-hijau transition">Hiburan</a>
+                <a href="#cara-beli" class="text-gray-300 hover:text-biru transition">Cara Beli</a>
+            </div>
+            <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20tanya%20atau%20pesan%20produk%20di%20Fahril%20Shop" target="_blank" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition flex items-center gap-2 text-sm font-semibold">
+                <i class="fa fa-whatsapp"></i> <span class="hidden sm:inline">Pesan Sekarang</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ✅ BAGIAN PERINGATAN + AYAT + SAMBUTAN -->
+    <section id="beranda" class="pt-28 pb-16 px-5 bg-gradient-to-b from-black to-birutua/40">
+        <div class="container mx-auto max-w-4xl text-center anim-muncul">
+
+            <!-- Peringatan -->
+            <div class="bg-merah/10 border border-merah/30 text-merah px-5 py-4 rounded-lg mb-8">
+                ⚠️ HATI-HATI TERHADAP CLONE ATAU RIPER ⚠️<br>
+                Mereka yang selalu menipu dan berkeliaran di mana-mana.<br>
+                <strong class="text-lg">Web yang ASLI hanya yang memuat Ayat Al-Qur'an ini</strong>
+            </div>
+
+            <!-- Keterangan Ayat -->
+            <h3 class="text-2xl md:text-3xl font-utama font-bold text-biru text-shadow mb-5">
+                Surah An-Nur Ayat 4
+            </h3>
+
+            <!-- Tulisan Arab + Arti -->
+            <div class="bg-abu/70 backdrop-blur-sm border border-biru/30 rounded-xl p-6 shadow-lg mb-8">
+                <p class="text-3xl md:text-4xl leading-relaxed text-hijau mb-6 font-arab">
+                    وَالَّذِينَ يَرْمُونَ الْمُحْصَنَاتِ ثُمَّ لَمْ يَأْتُوا بِأَرْبَعَةِ شُهَدَاءَ فَاجْلِدُوهُمْ ثَمَانِينَ جَلْدَةً وَلَا تَقْبَلُوا لَهُمْ شَهَادَةً أَبَدًا ۚ وَأُولَٰئِكَ هُمُ الْفَاسِقُونَ
+                </p>
+                <p class="text-gray-200 italic text-base md:text-lg leading-relaxed">
+                    "Dan orang-orang yang menuduh wanita-wanita yang baik-baik lalu tidak mendatangkan empat orang saksi, maka deralah mereka yang menuduh itu delapan puluh kali dera, dan janganlah kamu terima kesaksian mereka buat selama-lamanya. Dan mereka itulah orang-orang yang fasik."
+                </p>
+            </div>
+
+            <!-- Makna Singkat -->
+            <p class="text-gray-300 max-w-2xl mx-auto mb-10">
+                Ayat ini mengingatkan kami untuk selalu berpegang pada kebenaran, tidak menyebarkan tuduhan tanpa bukti, dan menjaga kepercayaan serta kehormatan. Prinsip inilah yang kami pegang teguh dalam melayani setiap pelanggan.
+            </p>
+
+            <!-- Sambutan Toko -->
+            <h2 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-4">
+                SELAMAT DATANG DI FAHRIL SHOP
+            </h2>
+            <p class="text-gray-200 text-lg max-w-xl mx-auto">
+                Tempat belanja aman, jujur, terpercaya, dan bebas dari penipuan.
+            </p>
+        </div>
+    </section>
+
+    <!-- ✅ DAFTAR PRODUK -->
+    <section id="produk" class="py-16 px-5 bg-birutua/20">
+        <div class="container mx-auto">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-2">📦 DAFTAR PRODUK KAMI</h3>
+                <p class="text-gray-400 max-w-lg mx-auto">Harga terjangkau, kualitas terjamin, proses cepat dan aman</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Kuota Smartfren 4GB -->
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-hijau rounded-2xl p-8 relative border-glow-hijau anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-hijau text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">🔥 HEMAT</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-signal text-hijau text-5xl mb-3 text-shadow-hijau"></i>
+                        <h4 class="text-2xl font-bold text-hijau">KUOTA SMARTFREN 4GB</h4>
+                        <div class="text-gray-400 text-sm">Masa Aktif 14 Hari</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 22.000</div>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20pesan%20KUOTA%20SMARTFREN%204GB%20dengan%20harga%20Rp22.000%20di%20Fahril%20Shop%20ya%20🙏" target="_blank" class="block w-full text-center bg-hijau hover:bg-hijau/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+
+                <!-- Kuota Smartfren 10GB -->
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-hijau rounded-2xl p-8 relative border-glow-hijau anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-hijau text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">🔥 POPULER</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-signal text-hijau text-5xl mb-3 text-shadow-hijau"></i>
+                        <h4 class="text-2xl font-bold text-hijau">KUOTA SMARTFREN 10GB</h4>
+                        <div class="text-gray-400 text-sm">Masa Aktif 7 Hari</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 22.000</div>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20pesan%20KUOTA%20SMARTFREN%2010GB%20dengan%20harga%20Rp22.000%20di%20Fahril%20Shop%20ya%20🙏" target="_blank" class="block w-full text-center bg-hijau hover:bg-hijau/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+
+                <!-- Kuota Smartfren 20GB -->
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-hijau rounded-2xl p-8 relative border-glow-hijau anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-hijau text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">🔥 BESAR</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-signal text-hijau text-5xl mb-3 text-shadow-hijau"></i>
+                        <h4 class="text-2xl font-bold text-hijau">KUOTA SMARTFREN 20GB</h4>
+                        <div class="text-gray-400 text-sm">Masa Aktif 3 Hari</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 23.000</div>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20pesan%20KUOTA%20SMARTFREN%2020GB%20dengan%20harga%20Rp23.000%20di%20Fahril%20Shop%20ya%20🙏" target="_blank" class="block w-full text-center bg-hijau hover:bg-hijau/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+
+                <!-- Alight Motion Premium -->
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-ungu rounded-2xl p-8 relative border-glow-ungu anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-ungu text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">✨ PREMIUM</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-film text-ungu text-5xl mb-3 text-shadow-ungu"></i>
+                        <h4 class="text-2xl font-bold text-ungu">ALIGHT MOTION PREMIUM</h4>
+                        <div class="text-gray-400 text-sm">Masa Aktif 1 Tahun</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 7.000</div>
+                        <p class="text-gray-300 text-sm mt-2">Tanpa watermark & semua fitur terbuka</p>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20pesan%20ALIGHT%20MOTION%20PREMIUM%201%20TAHUN%20dengan%20harga%20Rp7.000%20di%20Fahril%20Shop%20ya%20🙏" target="_blank" class="block w-full text-center bg-ungu hover:bg-ungu/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ✅ BAGIAN PERMAINAN -->
+    <section id="fitur-game" class="py-16 px-5 bg-gradient-to-b from-black to-birutua/30">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-hijau text-shadow-hijau mb-2">🎮 HIBURAN SEDIKIT</h3>
+                <p class="text-gray-300">Mainkan game FPS klasik sambil menunggu pesanan diproses</p>
+            </div>
+
+            <div class="bg-abu/70 border border-hijau/30 rounded-xl p-6 shadow-lg anim-muncul">
+                <div id="wadah-game">
+                    <canvas id="gameCanvas" width="900" height="550"></canvas>
+
+                    <!-- Layar Menu Awal -->
+                    <div id="startScreen" style="position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); color:#00C853; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:99; font-family:monospace;">
+                        <h2 style="font-size: 32px; margin-bottom: 20px; text-shadow: 0 0 8px #00C853;">FPS KLASIK DOS</h2>
+                        <p style="font-size: 18px; margin: 6px 0;">• Joystick Kiri = Gerak Maju/Mundur/Geser</p>
+                        <p style="font-size: 18px; margin: 6px 0;">• Joystick Kanan = Putar Arah Pandangan</p>
+                        <p style="font-size: 18px; margin: 6px 0;">• Sentuh Layar = Tembak</p>
+                        <p style="font-size: 18px; margin: 12px 0;">🟩 Ambil Nyawa &nbsp;&nbsp; 🟨 Ambil Peluru</p>
+                        <button onclick="mulaiPermainan()" style="margin-top: 20px; padding: 12px 30px; font-size: 20px; border: 2px solid #00C853; background: #000; color: #00C853; border-radius: 4px; cursor: pointer; transition: 0.2s;">MULAI PERMAINAN</button>
+                    </div>
+
+                    <!-- Layar Game Over -->
+                    <div id="gameOverScreen" style="position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); color:#00C853; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:99; font-family:monospace; display:none;">
+                        <h2 style="font-size: 36px; margin-bottom: 15px; text-shadow: 0 0 8px #00C853;">GAME OVER</h2>
+                        <p style="font-size: 20px;">Skor Akhir: <span id="finalScore">0</span></p>
+                        <button onclick="mulaiPermainan()" style="margin-top: 25px; padding: 12px 30px; font-size: 20px; border: 2px solid #00C853; background: #000; color: #00C853; border-radius: 4px; cursor: pointer;">MAIN LAGI</button>
+                    </div>
+
+                    <!-- Kontrol Joystick -->
+                    <div id="joystick-move" style="position:absolute; bottom:20px; left:20px; width:120px; height:120px; background:rgba(255,255,255,0.15); border:2px solid rgba(0,200,83,0.4); border-radius:50%; touch-action:none; z-index:20;">
+                        <div style="position:absolute; top:50%; left:50%; width:50px; height:50px; background:rgba(0,200,83,0.7); border-radius:50%; transform:translate(-50%, -50%);"></div>
+                    </div>
+
+                    <div id="joystick-look" style="position:absolute; bottom:20px; right:20px; width:120px; height:120px; background:rgba(255,255,255,0.15); border:2px solid rgba(0,200,83,0.4); border-radius:50%; touch-action:none; z-index:20;">
+                        <div style="position:absolute; top:50%; left:50%; width:50px; height:50px; background:rgba(0,200,83,0.7); border-radius:50%; transform:translate(-50%, -50%);"></div>
+                    </div>
+
+                    <!-- HUD -->
+                    <div id="hud" style="position:absolute; top:10px; left:10px; color:#00C853; font-family:monospace; font-size:18px; line-height:1.7; z-index:10; text-shadow:0 0 5px #00C853;">
+                        NYAWA: <span id="hp">100</span> ❤️<br>
+                        SKOR: <span id="score">0</span><br>
+                        PELURU: <span id="ammo">50</span>
+                    </div>
+
+                    <!-- Gambar Senjata -->
+                    <div id="weapon" style="position:absolute; bottom:0; right:15px; color:#aaa; font-family:monospace; font-size:12px; line-height:1; text-align:right; z-index:15; transition:transform 0.1s ease;">
+                        <pre>
+            .
+           / \
+          /___\
+         |=   =|
+         |     |
+         |_____|
+        /_______\
+       /_________\
+                        </pre>
+                    </div>
+
+                    <!-- Efek Tembakan -->
+                    <div id="flash" style="position:absolute; top:0; left:0; width:100%; height:100%; background:#fff; opacity:0; pointer-events:none; z-index:25;"></div>
+                </div>
+                <p class="text-center text-gray-400 text-sm mt-4">* Permainan ini hanya untuk hiburan tambahan bagi pengunjung toko</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FITUR HITUNG DISKON -->
+    <section id="fitur-diskon" class="py-16 px-5 bg-gradient-to-b from-black to-birutua/30">
+        <div class="container mx-auto max-w-2xl">
+            <div class="text-center mb-10 anim-muncul">
+                <h3 class="text-3xl font-utama font-bold text-ungu text-shadow-ungu mb-2">🧮 HITUNG DISKON KENDARAAN</h3>
+                <p class="text-gray-300">Masukkan kode kendaraan untuk melihat potongan harga yang didapat</p>
+            </div>
+
+            <div class="bg-abu/70 border border-ungu/30 rounded-xl p-6 shadow-lg anim-muncul">
+                <div class="mb-4 p-4 bg-black/40 rounded-lg border border-ungu/20">
+                    <p class="text-gray-200 mb-2 font-semibold">📋 Daftar Kendaraan & Diskon:</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>🚚 <b>Truk</b> → Kode: <span class="text-ungu font-bold">tr</span> | Harga: Rp10.000 | Diskon: <span class="text-hijau">30%</span></li>
+                        <li>🚗 <b>Mobil</b> → Kode: <span class="text-ungu font-bold">mb</span> | Harga: Rp8.000 | Diskon: <span class="text-hijau">40%</span></li>
+                        <li>🚢 <b>Kapal</b> → Kode: <span class="text-ungu font-bold">kp</span> | Harga: Rp12.000 | Diskon: <span class="text-hijau">20%</span></li>
+                    </ul>
+                </div>
+                <input id="kodeInput" type="text" placeholder="Masukkan kode (contoh: tr)" class="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-600 focus:border-ungu outline-none mb-4">
+                <button onclick="hitungDiskon()" class="w-full bg-ungu hover:bg-ungu/90 py-3 rounded-lg font-bold transition mb-4 border-glow-ungu">HITUNG DISKON SEKARANG</button>
+                <div id="hasilDiskon" class="bg-black/60 border border-ungu/20 rounded-lg p-4 min-h-[80px] text-gray-100 whitespace-pre-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FITUR SAPAAN -->
+    <section id="fitur-sapa" class="py-16 px-5 bg-birutua/10">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-ungu text-shadow-ungu mb-2">🤖 FITUR SAPAAN CERIA</h3>
+                <p class="text-gray-300">Coba fitur interaktif baru kami</p>
+            </div>
+
+            <div class="bg-abu/70 backdrop-blur-md border border-ungu/30 rounded-2xl p-8 shadow-xl anim-muncul">
+                <div class="mb-6">
+                    <label class="block text-gray-200 mb-2">Masukkan Nama Kamu:</label>
+                    <input id="namaInput" type="text" placeholder="Contoh: Fahril" class="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-600 focus:border-ungu outline-none">
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4 mb-6">
+                    <button onclick="jalankanSapaDasar()" class="bg-ungu/80 hover:bg-ungu px-4 py-2 rounded-lg font-medium transition">Sapa Biasa</button>
+                    <button onclick="jalankanSapaWaktu()" class="bg-ungu/80 hover:bg-ungu px-4 py-2 rounded-lg font-medium transition">Sapa Sesuai Waktu</button>
+                    <button onclick="jalankanSapaUlang()" class="bg-ungu/80 hover:bg-ungu px-4 py-2 rounded-lg font-medium transition">Sapa Berulang</button>
+                    <button onclick="jalankanSapaBanyak()" class="bg-ungu/80 hover:bg-ungu px-4 py-2 rounded-lg font-medium transition">Sapa Banyak Nama</button>
+                </div>
+
+                <div id="hasilSapa" class="bg-black/60 border border-ungu/20 rounded-lg p-4 min-h-[120px] text-gray-100 whitespace-pre-line">
+                    Hasil sapaan akan muncul di sini...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARA BELI -->
+    <section id="cara-beli" class="py-16 px-5">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-3">📝 CARA PEMESANAN</h3>
+                <p class="text-gray-300">Mudah, cepat, dan aman</p>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">1</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">Pilih Produk</h5>
+                        <p class="text-gray-300">Tentukan barang atau layanan yang ingin kamu beli dari daftar produk kami.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">2</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">Hubungi Admin</h5>
+                        <p class="text-gray-300">Klik tombol pesan sekarang, kamu akan langsung terhubung ke WhatsApp resmi kami.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">3</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">Lakukan Pembayaran</h5>
+                        <p class="text-gray-300">Ikuti instruksi pembayaran yang diberikan admin, tersedia banyak metode pembayaran yang aman.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">4</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">Barang Dikirim</h5>
+                        <p class="text-gray-300">Setelah pembayaran dikonfirmasi, produk akan segera dikirimkan ke kamu dalam waktu singkat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-8 border-t border-biru/10 text-center text-gray-400">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <i class="fa fa-shield text-biru text-xl"></i>
+                <span class="text-biru font-utama font-bold text-lg">FAHRIL SHOP - TOKO ASLI & TERPERCAYA</span>
+            </div>
+            <p class="text-sm">© 2026 Hak Cipta Dilindungi | Web asli memuat Surah An-Nur Ayat 4</p>
+        </div>
+    </footer>
+
+    <!-- Tombol Kembali ke Atas -->
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-biru/80 text-white flex items-center justify-center shadow-lg hover:bg-biru transition z-40">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- SCRIPT UTAMA -->
+    <script>
+        // ----------------------
+        // FUNGSI HITUNG DISKON
+        // ----------------------
+        const Truk = ["10000", "tr"];
+        const mobil = ["8000", "mb"];
+        const kapal = ["12000", "kp"];
+
+        function kasihDiskon(Kendaraan) {
+            switch(Kendaraan.toLowerCase()) {
+                case "tr":
+                    return parseFloat(Truk[0]) * 0.3;
+                case "mb":
+                    return parseFloat(mobil[0]) * 0.4;
+                case "kp":
+                    return parseFloat(kapal[0]) * 0.2;
+                default:
+                    return null;
+            }
+        }
+
+        function hitungDiskon() {
+            const kode = document.getElementById("kodeInput").value.trim();
+            const potongan = kasihDiskon(kode);
+            const tampilan = document.getElementById("hasilDiskon");
+            
+            if (potongan === null) {
+                tampilan.textContent = "❌ Kode tidak dikenali!\nGunakan kode: tr / mb / kp";
+                tampilan.className = "bg-black/60 border border-merah/30 rounded-lg p-4 min-h-[80px] text-merah whitespace-pre-line";
+            } else {
+                let jenis = kode === "tr" ? "Truk" : kode === "mb" ? "Mobil" : "Kapal";
+                let hargaAsli = parseFloat(jenis==="Truk"?Truk[0]:jenis==="Mobil"?mobil[0]:kapal[0]);
+                let hargaAkhir = hargaAsli - potongan;
+                let persen = kode === "tr" ? "30%" : kode === "mb" ? "40%" : "20%";
+
+                tampilan.textContent = `✅ Kendaraan: ${jenis}
+💵 Harga Asli: Rp${hargaAsli.toLocaleString("id-ID")}
+🎁 Diskon: ${persen} → Potongan Rp${potongan.toLocaleString("id-ID")}
+💰 Harga Bayar: Rp${hargaAkhir.toLocaleString("id-ID")}`;
+                tampilan.className = "bg-black/60 border border-hijau/30 rounded-lg p-4 min-h-[80px] text-hijau whitespace-pre-line";
+            }
+        }
+
+        // ----------------------
+        // FUNGSI SAPAAN
+        // ----------------------
+        function sapaDasar(nama = "", pesan = "Semoga harimu menyenangkan dan berkah!") {
+            if (nama) return `Halo ${nama}! ${pesan}`;
+            return "Halo! Selamat datang di Fahril Shop 🤝";
+        }
+
+        function sapaSesuaiWaktu(nama) {
+            const jam = new Date().getHours();
+            const waktu = jam < 12 ? "Pagi" : jam < 18 ? "Siang/Sore" : "Malam";
+            return `Selamat ${waktu}, ${nama}! Semoga hari ini lancar dan rezeki dimudahkan 🤲✨`;
+        }
+
+        function sapaBerulang(nama, jumlah = 3) {
+            let hasil = "";
+            for (let i = 1; i <= jumlah; i++) hasil += `Ke-${i}: Halo ${nama}! Selamat datang di Fahril Shop\n`;
+            return hasil;
+        }
+
+        function sapaBanyakNama(daftarNama) {
+            let hasil = "--- Sapaan untuk Semua ---\n";
+            daftarNama.forEach(nama => hasil += `Halo ${nama}! Salam kenal dan selamat berbelanja 🤗\n`);
+            return hasil;
+        }
+
+        function jalankanSapaDasar() {
+            const nama = document.getElementById("namaInput").value.trim() || "Teman";
+            document.getElementById("hasilSapa").textContent = sapaDasar(nama);
+        }
+
+        function jalankanSapaWaktu() {
+            const nama = document.getElementById("namaInput").value.trim();
+            if (!nama) return alert("Masukkan nama terlebih dahulu ya!");
+            document.getElementById("hasilSapa").textContent = sapaSesuaiWaktu(nama);
+        }
+
+        function jalankanSapaUlang() {
+            const nama = document.getElementById("namaInput").value.trim();
+            if (!nama) return alert("Masukkan nama terlebih dahulu ya!");
+            const jumlah = prompt("Ingin diulang berapa kali?", "3");
+            if (!jumlah || isNaN(jumlah)) return;
+            document.getElementById("hasilSapa").textContent = sapaBerulang(nama, parseInt(jumlah));
+        }
+
+        function jalankanSapaBanyak() {
+            const input = prompt("Masukkan nama-nama dipisah koma:\nContoh: Fahril, Naira, Budi", "");
+            if (!input) return;
+            const daftar = input.split(",").map(n => n.trim()).filter(n => n);
+            document.getElementById("hasilSapa").textContent = sapaBanyakNama(daftar);
+        }
+
+        // ----------------------
+        // KODE PERMAINAN FPS
+        // ----------------------
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width;
+        let height = canvas.height;
+        let gameRunning = false;
+
+        // Peta 24x24
+        const MAP = [
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,2,2,0,3,3,3,0,0,0,1,1,0,4,4,0,2,2,2,0,0,0,1],
+            [1,0,2,0,0,0,0,3,0,1,1,1,1,0,0,4,0,0,0,2,0,1,0,1],
+            [1,0,2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1],
+            [1,0,0,0,0,1,0,3,3,3,1,1,1,1,1,0,0,1,0,5,5,5,0,1],
+            [1,1,1,1,0,1,0,3,0,0,0,0,0,0,1,0,0,1,0,5,0,0,0,1],
+            [1,0,0,1,0,0,0,3,0,4,4,4,4,0,1,0,0,0,0,5,0,1,1,1],
+            [1,0,0,1,0,1,1,1,0,4,0,0,4,0,1,1,1,1,1,5,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,4,0,0,4,0,0,0,0,0,0,0,0,1,0,1],
+            [1,1,1,1,1,1,0,1,1,4,0,0,4,1,1,1,0,2,2,2,0,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,1],
+            [1,0,5,5,5,5,1,1,1,1,1,0,1,1,1,1,0,2,0,1,1,1,0,1],
+            [1,0,5,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+            [1,0,5,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1],
+            [1,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,1,1,0,3,3,3,3,3,0,1,1,1,1,1,0,2,2,2,0,1],
+            [1,1,1,0,1,0,0,3,0,0,0,3,0,0,0,0,0,1,0,2,0,0,0,1],
+            [1,0,0,0,0,0,0,3,0,4,4,3,0,2,2,2,0,1,0,0,0,1,0,1],
+            [1,0,1,1,1,1,1,1,0,4,0,0,0,2,0,0,0,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,0,0,0,4,0,1,0,0,0,0,0,0,0,0,0,1,0,1],
+            [1,0,3,3,3,3,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ];
+        const WALL_COLORS = {1:[160,160,160],2:[190,60,60],3:[60,190,60],4:[60,60,190],5:[200,180,40]};
+        let player = {}, enemies = [], items = [];
+
+        function resetGame() {
+            player = {x:2.5,y:2.5,angle:0,speed:0.09,rotSpeed:0.042,hp:100,ammo:50,score:0,lastStep:0};
+            enemies = [
+                {x:10.5,y:3.5,hp:40,active:true,lastShot:0},{x:18.5,y:5.5,hp:40,active:true,lastShot:0},
+                {x:5.5,y:12.5,hp:40,active:true,lastShot:0},{x:20.5,y:15.5,hp:40,active:true,lastShot:0},
+                {x:8.5,y:20.5,hp:40,active:true,lastShot:0},{x:15.5,y:18.5,hp:40,active:true,lastShot:0},
+                {x:12.5,y:8.5,hp:40,active:true,lastShot:0},{x:3.5,y:18.5,hp:40,active:true,lastShot:0}
+            ];
+            items = [
+                {x:3.5,y:4.5,type:'ammo',amount:20,active:true},{x:12.5,y:2.5,type:'ammo',amount:30,active:true},
+                {x:18.5,y:7.5,type:'ammo',amount:25,active:true},{x:6.5,y:10.5,type:'hp',amount:25,active:true},
+                {x:15.5,y:14.5,type:'hp',amount:35,active:true},{x:4.5,y:20.5,type:'hp',amount:50,active:true},
+                {x:20.5,y:18.5,type:'ammo',amount:40,active:true}
+            ];
+        }
+
+        function mulaiPermainan() {
+            resetGame(); gameRunning = true;
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('gameOverScreen').style.display = 'none';
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            document.getElementById('finalScore').textContent = player.score;
+            document.getElementById('gameOverScreen').style.display = 'flex';
+            playSound(120,             playSound(120, 300, 0.1);
+        }
+
+        function playSound(freq, dur, vol = 0.1) {
+            try {
+                const a = new (window.AudioContext || window.webkitAudioContext)();
+                const o = a.createOscillator(), g = a.createGain();
+                o.connect(g); g.connect(a.destination);
+                o.type = 'square'; o.frequency.value = freq;
+                g.gain.setValueAtTime(vol, a.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + dur / 1000);
+                o.start(a.currentTime); o.stop(a.currentTime + dur / 1000);
+            } catch (e) {}
+        }
+
+        function setupJoystick(id, cb) {
+            const s = document.getElementById(id), t = s.querySelector('div');
+            let aktif = false;
+            function gerak(e) {
+                if (!aktif || !gameRunning) return;
+                const r = s.getBoundingClientRect();
+                const te = e.touches ? e.touches[0] : e;
+                let dx = te.clientX - r.left - r.width / 2;
+                let dy = te.clientY - r.top - r.height / 2;
+                const max = r.width / 2 - t.offsetWidth / 2;
+                const jarak = Math.hypot(dx, dy);
+                if (jarak > max) { dx *= max / jarak; dy *= max / jarak; }
+                t.style.transform = `translate(${dx}px, ${dy}px)`;
+                cb(dx / max, dy / max);
+            }
+            function lepas() {
+                aktif = false;
+                t.style.transform = 'translate(-50%, -50%)';
+                cb(0, 0);
+            }
+            s.addEventListener('mousedown', () => aktif = true);
+            s.addEventListener('touchstart', () => aktif = true);
+            window.addEventListener('mousemove', gerak);
+            window.addEventListener('touchmove', gerak);
+            window.addEventListener('mouseup', lepas);
+            window.addEventListener('touchend', lepas);
+        }
+
+        setupJoystick('joystick-move', (dx, dy) => {
+            const maju = Math.cos(player.angle) * dy * player.speed;
+            const geser = -Math.sin(player.angle) * dx * player.speed;
+            const xBaru = player.x + maju + geser;
+            const yBaru = player.y + Math.sin(player.angle) * dy * player.speed + Math.cos(player.angle) * dx * player.speed;
+            
+            if (MAP[Math.floor(yBaru)] && MAP[Math.floor(yBaru)][Math.floor(xBaru)] === 0) {
+                player.x = xBaru;
+                player.y = yBaru;
+                if (Date.now() - player.lastStep > 350) {
+                    playSound(220, 70, 0.05);
+                    player.lastStep = Date.now();
+                }
+            }
+
+            items.forEach(barang => {
+                if (!barang.active) return;
+                const jarak = Math.hypot(barang.x - player.x, barang.y - player.y);
+                if (jarak < 0.7) {
+                    barang.active = false;
+                    if (barang.type === 'ammo') {
+                        player.ammo = Math.min(200, player.ammo + barang.amount);
+                        playSound(350, 120, 0.1);
+                    } else {
+                        player.hp = Math.min(100, player.hp + barang.amount);
+                        playSound(280, 150, 0.1);
+                    }
+                    player.score += 50;
+                }
+            });
+        });
+
+        setupJoystick('joystick-look', (dx) => {
+            if (gameRunning) player.angle += dx * player.rotSpeed;
+        });
+
+        function tembak() {
+            if (!gameRunning || player.ammo <= 0) {
+                playSound(150, 100, 0.08);
+                return;
+            }
+            player.ammo--;
+            playSound(450, 120, 0.12);
+            document.getElementById('flash').style.opacity = 0.7;
+            document.getElementById('weapon').style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                document.getElementById('flash').style.opacity = 0;
+                document.getElementById('weapon').style.transform = 'translateY(0)';
+            }, 90);
+
+            const jangkauan = 12;
+            const arahX = Math.cos(player.angle);
+            const arahY = Math.sin(player.angle);
+
+            enemies.forEach(musuh => {
+                if (!musuh.active) return;
+                const jarak = Math.hypot(musuh.x - player.x, musuh.y - player.y);
+                if (jarak < jangkauan) {
+                    const sudut = Math.atan2(musuh.y - player.y, musuh.x - player.x);
+                    if (Math.abs(sudut - player.angle) < 0.3) {
+                        musuh.hp -= 40;
+                        playSound(200, 90, 0.1);
+                        if (musuh.hp <= 0) {
+                            musuh.active = false;
+                            player.score += 150;
+                            playSound(320, 150, 0.1);
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('mousedown', tembak);
+        document.addEventListener('touchstart', (e) => { e.preventDefault(); tembak(); });
+
+        function updateMusuh() {
+            if (!gameRunning) return;
+            const sekarang = Date.now();
+            enemies.forEach(musuh => {
+                if (!musuh.active) return;
+                const dx = player.x - musuh.x;
+                const dy = player.y - musuh.y;
+                const jarak = Math.hypot(dx, dy);
+                if (jarak < 6) {
+                    const arah = Math.atan2(dy, dx);
+                    const xBaru = musuh.x + Math.cos(arah) * 0.035;
+                    const yBaru = musuh.y + Math.sin(arah) * 0.035;
+                    if (MAP[Math.floor(yBaru)] && MAP[Math.floor(yBaru)][Math.floor(xBaru)] === 0) {
+                        musuh.x = xBaru;
+                        musuh.y = yBaru;
+                    }
+                    if (jarak < 3 && sekarang - musuh.lastShot > 1200) {
+                        player.hp -= 6;
+                        musuh.lastShot = sekarang;
+                        playSound(170, 70, 0.08);
+                        if (player.hp <= 0) {
+                            player.hp = 0;
+                            gameOver();
+                        }
+                    }
+                }
+            });
+        }
+
+        function gambarLayar() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+            if (!gameRunning) return;
+
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, width, height / 2);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, height / 2, width, height / 2);
+
+            const fov = Math.PI / 3;
+            const jumlahKolom = width;
+            const sudutLangkah = fov / jumlahKolom;
+            let sudutAwal = player.angle - fov / 2;
+
+            for (let i = 0; i < jumlahKolom; i++) {
+                let jarak = 0;
+                let tipeDinding = 0;
+                let x = player.x, y = player.y;
+                const arahX = Math.cos(sudutAwal);
+                const arahY = Math.sin(sudutAwal);
+
+                while (jarak < 20) {
+                    jarak += 0.05;
+                    x = player.x + arahX * jarak;
+                    y = player.y + arahY * jarak;
+                    if (MAP[Math.floor(y)] && MAP[Math.floor(y)][Math.floor(x)] !== undefined) {
+                        tipeDinding = MAP[Math.floor(y)][Math.floor(x)];
+                        if (tipeDinding > 0) break;
+                    } else {
+                        break;
+                    }
+                }
+
+                jarak *= Math.cos(player.angle - sudutAwal);
+                const tinggi = height / (jarak + 0.0001);
+                const warnaDasar = WALL_COLORS[tipeDinding] || [100, 100, 100];
+                const reduksi = Math.max(40, 255 - jarak * 20);
+                ctx.fillStyle = `rgb(${warnaDasar[0] * reduksi / 255}, ${warnaDasar[1] * reduksi / 255}, ${warnaDasar[2] * reduksi / 255})`;
+                ctx.fillRect(i, height / 2 - tinggi / 2, 1, tinggi);
+
+                sudutAwal += sudutLangkah;
+            }
+
+            items.forEach(barang => {
+                if (!barang.active) return;
+                const dx = barang.x - player.x;
+                const dy = barang.y - player.y;
+                const jarak = Math.hypot(dx, dy);
+                if (jarak < 0.5 || jarak > 12) return;
+                const sudut = Math.atan2(dy, dx) - player.angle;
+                if (Math.abs(sudut) > fov / 2) return;
+                const posX = (sudut / fov + 0.5) * width;
+                const ukuran = height / jarak * 0.35;
+                const terang = Math.max(60, 255 - jarak * 18);
+                ctx.fillStyle = barang.type === 'ammo' ? `rgb(${terang}, ${terang}, 30)` : `rgb(30, ${terang}, 30)`;
+                ctx.fillRect(posX - ukuran / 4, height / 2 - ukuran / 2, ukuran / 2, ukuran);
+            });
+
+            enemies.forEach(musuh => {
+                if (!musuh.active) return;
+                const dx = musuh.x - player.x;
+                const dy = musuh.y - player.y;
+                const jarak = Math.hypot(dx, dy);
+                if (jarak < 0.6 || jarak > 15) return;
+                const sudut = Math.atan2(dy, dx) - player.angle;
+                if (Math.abs(sudut) > fov / 2) return;
+                const posX = (sudut / fov + 0.5) * width;
+                const ukuran = height / jarak * 0.8;
+                const terang = Math.max(50, 255 - jarak * 16);
+                ctx.fillStyle = `rgb(${terang}, 30, 30)`;
+                ctx.fillRect(posX - ukuran / 4, height / 2 - ukuran / 2, ukuran / 2, ukuran);
+            });
+
+            document.getElementById('hp').textContent = player.hp;
+            document.getElementById('score').textContent = player.score;
+            document.getElementById('ammo').textContent = player.ammo;
+        }
+
+        function loopUtama() {
+            updateMusuh();
+            gambarLayar();
+            requestAnimationFrame(loopUtama);
+        }
+        loopUtama();
+    </script>
+
+</body>
+</html>
+
