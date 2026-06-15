@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fahril Shop | Toko Asli & Terpercaya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gelap: '#050505',
+                        biru: '#0099FF',
+                        birutua: '#001122',
+                        abu: '#1A1A1A',
+                        hijau: '#00C853',
+                        emas: '#FF9500',
+                        merah: '#FF3B30',
+                        ungu: '#9C27B0',
+                        toska: '#74ebd5',
+                        hijauUlar: '#10B981',
+                        hijauMuda: '#34D399',
+                        merahMakanan: '#EF4444',
+                        abuLatar: '#1E293B',
+                        biruTema: '#3B82F6',
+                        unguTema: '#8B5CF6',
+                        oranyeTema: '#F97316'
+                    },
+                    fontFamily: {
+                        utama: ['Orbitron', 'sans-serif'],
+                        teks: ['Poppins', 'sans-serif'],
+                        arab: ['Amiri', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow { text-shadow: 0 0 10px rgba(0, 153, 255, 0.7); }
+            .text-shadow-hijau { text-shadow: 0 0 10px rgba(0, 200, 83, 0.7); }
+            .text-shadow-ungu { text-shadow: 0 0 10px rgba(156, 39, 176, 0.7); }
+            .border-glow { border: 1px solid rgba(0, 153, 255, 0.5); box-shadow: 0 0 15px rgba(0, 153, 255, 0.2); }
+            .border-glow-hijau { border: 1px solid rgba(0, 200, 83, 0.5); box-shadow: 0 0 15px rgba(0, 200, 83, 0.2); }
+            .border-glow-ungu { border: 1px solid rgba(156, 39, 176, 0.5); box-shadow: 0 0 15px rgba(156, 39, 176, 0.2); }
+            .anim-muncul { animation: muncul 1s ease-out; }
+            @keyframes muncul { 0% { opacity:0; transform: translateY(20px); } 100% { opacity:1; transform: translateY(0); } }
+            .latar-kode {
+                background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('https://grainy-gradients.vercel.app/noise.svg');
+                background-size: auto;
+            }
+        }
+
+        /* Gaya Khusus Game FPS */
+        #wadah-game {
+            position: relative;
+            width: 100%;
+            height: 550px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            border: 2px solid rgba(0, 200, 83, 0.4);
+            box-shadow: 0 0 20px rgba(0, 200, 83, 0.15);
+        }
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Gaya Khusus Game Ular */
+        .tema-hijau { --warna-ular: #10B981; --warna-ular-muda: #34D399; --warna-makanan: #EF4444; }
+        .tema-biru { --warna-ular: #3B82F6; --warna-ular-muda: #60A5FA; --warna-makanan: #F59E0B; }
+        .tema-ungu { --warna-ular: #8B5CF6; --warna-ular-muda: #A78BFA; --warna-makanan: #EC4899; }
+        .tema-oranye { --warna-ular: #F97316; --warna-ular-muda: #FB923C; --warna-makanan: #22C55E; }
+        .anim-makan { animation: makan 0.2s ease; }
+        @keyframes makan { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .tombol-arah {
+            width: 70px;
+            height: 70px;
+            font-size: 28px;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .tombol-arah:active {
+            transform: scale(0.9);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-gelap text-white font-teks latar-kode tema-hijau">
+
+    <!-- Login -->
+    <div id="bagianLogin" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-[9999] flex items-center justify-center">
+        <div class="bg-abu/80 p-10 rounded-2xl border border-biru/50 shadow-2xl w-full max-w-md text-center anim-muncul">
+            <i class="fa fa-lock text-biru text-5xl mb-4 text-shadow"></i>
+            <h2 class="text-2xl font-utama font-bold text-biru mb-6 text-shadow">LOGIN AKSES TOKO</h2>
+            <input id="kataSandi" type="text" placeholder="Masukkan kata sandi :" class="w-full px-4 py-3 rounded-lg bg-black/60 border border-gray-600 focus:border-biru outline-none mb-4 text-center">
+            <button onclick="cekLogin()" class="w-full bg-biru hover:bg-biru/80 py-3 rounded-lg font-bold transition border-glow">MASUK</button>
+            <p id="pesanSalah" class="text-merah mt-3 text-sm hidden">Kata sandi salah!</p>
+        </div>
+    </div>
+
+    <script>
+        const daftarSandi = ["Nairamonchery", "fahril moonstar"];
+        function cekLogin() {
+            let sandi = document.getElementById("kataSandi").value;
+            if (daftarSandi.includes(sandi)) {
+                document.getElementById("bagianLogin").style.display = "none";
+                document.body.style.overflow = "auto";
+            } else {
+                document.getElementById("pesanSalah").classList.remove("hidden");
+            }
+        }
+        document.getElementById("kataSandi").addEventListener("keypress", e => { if (e.key === "Enter") cekLogin(); });
+        document.body.style.overflow = "hidden";
+    </script>
+
+    <!-- Navigasi -->
+    <nav class="fixed w-full bg-black/70 backdrop-blur-md z-50 py-4 px-5 border-b border-biru/20 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-biru/20 flex items-center justify-center border border-biru/50">
+                    <i class="fa fa-shield text-biru text-lg"></i>
+                </div>
+                <h1 class="text-[clamp(1.1rem,3vw,1.6rem)] font-utama font-black text-biru text-shadow">FAHRIL SHOP</h1>
+            </div>
+            <div class="hidden md:flex gap-6">
+                <a href="#beranda" class="text-gray-300 hover:text-biru transition">Beranda</a>
+                <a href="#produk" class="text-gray-300 hover:text-biru transition">Produk</a>
+                <a href="#fitur-diskon" class="text-gray-300 hover:text-ungu transition">Hitung Diskon</a>
+                <a href="#fitur-sapa" class="text-gray-300 hover:text-ungu transition">Sapaan</a>
+                <a href="#fitur-game" class="text-gray-300 hover:text-hijau transition">Hiburan</a>
+                <a href="#cara-beli" class="text-gray-300 hover:text-biru transition">Cara Beli</a>
+            </div>
+            <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%20Saya%20mau%20tanya%20atau%20pesan%20produk%20di%20Fahril%20Shop" target="_blank" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition flex items-center gap-2 text-sm font-semibold">
+                <i class="fa fa-whatsapp"></i> <span class="hidden sm:inline">Kirim Langsung ke Admin</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Bagian Beranda & Ayat Al-Qur'an -->
+    <section id="beranda" class="pt-28 pb-16 px-5 bg-gradient-to-b from-black to-birutua/40">
+        <div class="container mx-auto max-w-4xl text-center anim-muncul">
+            <div class="bg-merah/10 border border-merah/30 text-merah px-5 py-4 rounded-lg mb-8">
+                ⚠️ HATI-HATI TERHADAP CLONE ATAU RIPER ⚠️<br>
+                Mereka yang selalu menipu dan berkeliaran di mana-mana.<br>
+                <strong class="text-lg">🌐 Web yang ASLI hanya yang memuat Ayat Al-Qur'an ini</strong>
+            </div>
+
+            <h3 class="text-2xl md:text-3xl font-utama font-bold text-biru text-shadow mb-5">📖 Surah An-Nur Ayat 4</h3>
+            <div class="bg-abu/70 backdrop-blur-sm border border-biru/30 rounded-xl p-6 shadow-lg mb-8">
+                <p class="text-3xl md:text-4xl leading-relaxed text-hijau mb-6 font-arab">
+                    وَالَّذِينَ يَرْمُونَ الْمُحْصَنَاتِ ثُمَّ لَمْ يَأْتُوا بِأَرْبَعَةِ شُهَدَاءَ فَاجْلِدُوهُمْ ثَمَانِينَ جَلْدَةً وَلَا تَقْبَلُوا لَهُمْ شَهَادَةً أَبَدًا ۚ وَأُولَٰئِكَ هُمُ الْفَاسِقُونَ
+                </p>
+                <p class="text-gray-200 italic text-base md:text-lg leading-relaxed">
+                    "Dan orang-orang yang menuduh wanita-wanita yang baik-baik lalu tidak mendatangkan empat orang saksi, maka deralah mereka yang menuduh itu delapan puluh kali dera, dan janganlah kamu terima kesaksian mereka buat selama-lamanya. Dan mereka itulah orang-orang yang fasik."
+                </p>
+            </div>
+
+            <p class="text-gray-300 max-w-2xl mx-auto mb-10">
+                🤲 Ayat ini mengingatkan kami untuk selalu berpegang pada kebenaran, tidak menyebarkan tuduhan tanpa bukti, dan menjaga kepercayaan serta kehormatan. Prinsip inilah yang kami pegang teguh dalam melayani setiap pelanggan.
+            </p>
+
+            <h2 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-4">✨ SELAMAT DATANG DI FAHRIL SHOP ✨</h2>
+            <p class="text-gray-200 text-lg max-w-xl mx-auto">🛒 Tempat belanja aman, jujur, terpercaya, dan bebas dari penipuan.</p>
+        </div>
+    </section>
+
+    <!-- Daftar Produk -->
+    <section id="produk" class="py-16 px-5 bg-birutua/20">
+        <div class="container mx-auto">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-2">📦 DAFTAR PRODUK KAMI</h3>
+                <p class="text-gray-400 max-w-lg mx-auto">✅ Harga terjangkau, kualitas terjamin, proses cepat dan aman</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-hijau rounded-2xl p-8 relative border-glow-hijau anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-hijau text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">🔥 HEMAT</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-signal text-hijau text-5xl mb-3 text-shadow-hijau"></i>
+                        <h4 class="text-2xl font-bold text-hijau">KUOTA SMARTFREN 4GB</h4>
+                        <div class="text-gray-400 text-sm">📅 Masa Aktif 14 Hari</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 22.000</div>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%0ASaya%20mau%20pesan%3A%0A%0A📶%20KUOTA%20SMARTFREN%204GB%0A📅%20Masa%20Aktif%3A%2014%20Hari%0A💰%20Harga%3A%20Rp%2022.000%0A%0AMohon%20diproses%20ya%20🙏" target="_blank" class="block w-full text-center bg-hijau hover:bg-hijau/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-hijau rounded-2xl p-8 relative border-glow-hijau anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-hijau text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">🔥 POPULER</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-signal text-hijau text-5xl mb-3 text-shadow-hijau"></i>
+                        <h4 class="text-2xl font-bold text-hijau">KUOTA SMARTFREN 10GB</h4>
+                        <div class="text-gray-400 text-sm">📅 Masa Aktif 7 Hari</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 22.000</div>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%0ASaya%20mau%20pesan%3A%0A%0A📶%20KUOTA%20SMARTFREN%2010GB%0A📅%20Masa%20Aktif%3A%207%20Hari%0A💰%20Harga%3A%20Rp%2022.000%0A%0AMohon%20diproses%20ya%20🙏" target="_blank" class="block w-full text-center bg-hijau hover:bg-hijau/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+
+                <div class="bg-abu/60 backdrop-blur-sm border-2 border-ungu rounded-2xl p-8 relative border-glow-ungu anim-muncul hover:scale-[1.02] transition-all shadow-xl">
+                    <div class="absolute -top-3 -right-3 bg-ungu text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">✨ PREMIUM</div>
+                    <div class="text-center mb-6">
+                        <i class="fa fa-film text-ungu text-5xl mb-3 text-shadow-ungu"></i>
+                        <h4 class="text-2xl font-bold text-ungu">ALIGHT MOTION PREMIUM</h4>
+                        <div class="text-gray-400 text-sm">📅 Masa Aktif 1 Tahun</div>
+                        <div class="text-4xl font-extrabold text-white mt-2">Rp 7.000</div>
+                        <p class="text-gray-300 text-sm mt-2">✅ Tanpa watermark & semua fitur terbuka</p>
+                    </div>
+                    <a href="https://wa.me/62882020654074?text=Halo%20Admin%20👋%0ASaya%20mau%20pesan%3A%0A%0A🎬%20ALIGHT%20MOTION%20PREMIUM%0A📅%20Masa%20Aktif%3A%201%20Tahun%0A💰%20Harga%3A%20Rp%207.000%0A✅%20Keterangan%3A%20Tanpa%20Watermark%20&%20Fitur%20Lengkap%0A%0AMohon%20diproses%20ya%20🙏" target="_blank" class="block w-full text-center bg-ungu hover:bg-ungu/90 py-3 rounded-xl font-bold transition shadow-lg mb-2">PESAN SEKARANG</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bagian Hiburan: Game FPS + Game Ular -->
+    <section id="fitur-game" class="py-16 px-5 bg-gradient-to-b from-black to-birutua/30">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-hijau text-shadow-hijau mb-2">🎮 HIBURAN SEDIKIT</h3>
+                <p class="text-gray-300">🕹️ Mainkan game sambil menunggu pesanan diproses</p>
+            </div>
+
+            <!-- Game FPS -->
+            <div class="bg-abu/70 border border-hijau/30 rounded-xl p-6 shadow-lg anim-muncul mb-12">
+                <h4 class="text-xl font-bold text-hijau mb-4 text-center">🔫 GAME FPS KLASIK</h4>
+                <div id="wadah-game">
+                    <canvas id="gameCanvas" width="900" height="550"></canvas>
+
+                    <div id="startScreen" style="position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); color:#00C853; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:99; font-family:monospace;">
+                        <h2 style="font-size: 32px; margin-bottom: 20px; text-shadow: 0 0 8px #00C853;">FPS KLASIK DOS</h2>
+                        <p style="font-size: 18px; margin: 6px 0;">🕹️ Joystick Kiri = Gerak</p>
+                        <p style="font-size: 18px; margin: 6px 0;">🎯 Joystick Kanan = Putar Arah</p>
+                        <p style="font-size: 18px; margin: 6px 0;">👆 Sentuh Layar = Tembak</p>
+                        <button onclick="mulaiPermainanFPS()" style="margin-top: 20px; padding: 12px 30px; font-size: 20px; border: 2px solid #00C853; background: #000; color: #00C853; border-radius: 4px; cursor: pointer;">MULAI</button>
+                    </div>
+
+                    <div id="gameOverScreen" style="position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); color:#00C853; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:99; font-family:monospace; display:none;">
+                        <h2 style="font-size: 36px; margin-bottom: 15px;">💀 GAME OVER</h2>
+                        <p>📊 Skor Akhir: <span id="finalScore">0</span></p>
+                        <button onclick="mulaiPermainanFPS()" style="margin-top: 20px; padding: 10px 25px; border: 2px solid #00C853; background: #000; color: #00C853; border-radius: 4px;">MAIN LAGI</button>
+                    </div>
+
+                    <div id="joystick-move" style="position:absolute; bottom:20px; left:20px; width:120px; height:120px; background:rgba(255,255,255,0.15); border:2px solid rgba(0,200,83,0.4); border-radius:50%; touch-action:none; z-index:20;">
+                        <div style="position:absolute; top:50%; left:50%; width:50px; height:50px; background:rgba(0,200,83,0.7); border-radius:50%; transform:translate(-50%, -50%);"></div>
+                    </div>
+
+                    <div id="joystick-look" style="position:absolute; bottom:20px; right:20px; width:120px; height:120px; background:rgba(255,255,255,0.15); border:2px solid rgba(0,200,83,0.4); border-radius:50%; touch-action:none; z-index:20;">
+                        <div style="position:absolute; top:50%; left:50%; width:50px; height:50px; background:rgba(0,200,83,0.7); border-radius:50%; transform:translate(-50%, -50%);"></div>
+                    </div>
+
+                    <div id="hud" style="position:absolute; top:10px; left:10px; color:#00C853; font-family:monospace; font-size:18px; line-height:1.7; z-index:10;">
+                        ❤️ NYAWA: <span id="hp">100</span><br>
+                        📈 SKOR: <span id="score">0</span><br>
+                        🔫 PELURU: <span id="ammo">50</span>
+                    </div>
+
+                    <div id="weapon" style="position:absolute; bottom:0; right:15px; color:#aaa; font-family:monospace; font-size:12px; line-height:1; text-align:right; z-index:15; transition:transform 0.1s ease;">
+<pre>
+            .
+           / \
+          /___\
+         |=   =|
+         |     |
+         |_____|
+        /_______\
+       /_________\
+</pre>
+                    </div>
+
+                    <div id="flash" style="position:absolute; top:0; left:0; width:100%; height:100%; background:#fff; opacity:0; pointer-events:none; z-index:25;"></div>
+                </div>
+            </div>
+
+            <!-- Game Ular -->
+            <div class="bg-abu/70 border border-hijau/30 rounded-xl p-6 shadow-lg anim-muncul">
+                <h4 class="text-xl font-bold text-hijau mb-4 text-center">🐍 GAME ULAR MODERN</h4>
+
+                <div class="w-full max-w-md mx-auto text-center mb-4">
+                    <div class="bg-abuLatar rounded-xl p-3 shadow-lg mb-3 grid grid-cols-2 gap-2">
+                        <div>
+                            <p class="text-xs text-gray-300 mb-1">⚙️ KESULITAN</p>
+                            <select id="pilihKesulitan" class="w-full bg-gelap border border-gray-600 rounded px-2 py-1 text-sm outline-none">
+                                <option value="mudah">Mudah</option>
+                                <option value="sedang" selected>Sedang</option>
+                                <option value="sulit">Sulit</option>
+                                <option value="ekstrim">Ekstrim</option>
+                            </select>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-300 mb-1">🎨 TEMA WARNA</p>
+                            <select id="pilihTema" class="w-full bg-gelap border border-gray-600 rounded px-2 py-1 text-sm outline-none">
+                                <option value="tema-hijau">Hijau</option>
+                                <option value="tema-biru">Biru</option>
+                                <option value="tema-ungu">Ungu</option>
+                                <option value="tema-oranye">Oranye</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center bg-abuLatar rounded-xl p-3 shadow-lg">
+                        <div>
+                            <p class="text-sm text-gray-300">📊 SKOR</p>
+                            <p id="skorUlar" class="text-2xl font-bold text-emasSkor">0</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-300">🏆 TERTINGGI</p>
+                            <p id="skorTertinggiUlar" class="text-xl font-bold" style="color: var(--warna-ular-muda);">0</p>
+                        </div>
+                        <button id="tombolMulaiUlar" class="px-5 py-2 rounded-lg font-semibold transition" style="background: var(--warna-ular);">MULAI</button>
+                    </div>
+                </div>
+
+                <div id="papanUlar" class="w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] bg-abuLatar rounded-xl border-2 shadow-xl relative overflow-hidden mx-auto" style="border-color: var(--warna-ular);">
+                    <canvas id="layarUlar" width="400" height="400" class="w-full h-full"></canvas>
+                    <div id="layarPesanUlar" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center z-10 hidden">
+                        <h2 id="teksPesanUlar" class="text-2xl font-bold mb-4">Siap Bermain?</h2>
+                        <button onclick="mulaiPermainanUlar()" class="px-6 py-2 rounded-lg font-semibold" style="background: var(--warna-ular);">Mulai Sekarang</button>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-3 gap-2 max-w-[220px] mx-auto">
+                    <div></div>
+                    <button class="tombol-arah rounded-full flex items-center justify-center" style="background: var(--warna-ular);" onclick="ubahArahUlar('atas')">
+                        <i class="fa fa-arrow-up"></i>
+                    </button>
+                    <div></div>
+                    <button class="tombol-arah rounded-full flex items-center justify-center" style="background: var(--warna-ular);" onclick="ubahArahUlar('kiri')">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                    <div></div>
+                    <button class="tombol-arah rounded-full flex items-center justify-center" style="background: var(--warna-ular);" onclick="ubahArahUlar('kanan')">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                    <div></div>
+                    <button class="tombol-arah rounded-full flex items-center justify-center" style="background: var(--warna-ular);" onclick="ubahArahUlar('bawah')">
+                        <i class="fa fa-arrow-down"></i>
+                    </button>
+                    <div></div>
+                </div>
+
+                <p class="text-center text-gray-400 text-sm mt-4">👆 Bisa juga dimainkan dengan cara menggeser layar</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fitur Lainnya -->
+    <section id="fitur-diskon" class="py-16 px-5 bg-gradient-to-b from-black to-birutua/30">
+        <div class="container mx-auto max-w-2xl">
+            <div class="text-center mb-10 anim-muncul">
+                <h3 class="text-3xl font-utama font-bold text-ungu text-shadow-ungu mb-2">🧮 HITUNG DISKON KENDARAAN</h3>
+            </div>
+            <div class="bg-abu/70 border border-ungu/30 rounded-xl p-6 shadow-lg anim-muncul">
+                <div class="mb-4 p-4 bg-black/40 rounded-lg border border-ungu/20">
+                    <p class="text-gray-200 mb-2 font-semibold">📋 Daftar & Diskon:</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>🚚 Truk → Kode: tr | Rp10.000 | Diskon 30%</li>
+                        <li>🚗 Mobil → Kode: mb | Rp8.000 | Diskon 40%</li>
+                        <li>🚢 Kapal → Kode: kp | Rp12.000 | Diskon 20%</li>
+                    </ul>
+                </div>
+                <input id="kodeInput" type="text" placeholder="Masukkan kode" class="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-600 focus:border-ungu outline-none mb-4">
+                <button onclick="hitungDiskon()" class="w-full bg-ungu hover:bg-ungu/90 py-3 rounded-lg font-bold transition mb-4 border-glow-ungu">HITUNG</button>
+                <div id="hasilDiskon" class="bg-black/60 border border-ungu/20 rounded-lg p-4 min-h-[80px] text-gray-100 whitespace-pre-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cara-beli" class="py-16 px-5">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-12 anim-muncul">
+                <h3 class="text-3xl md:text-4xl font-utama font-bold text-biru text-shadow mb-3">📝 CARA PEMESANAN</h3>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">1</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">🛒 Pilih Produk</h5>
+                        <p class="text-gray-300">Tentukan barang yang ingin dibeli dari daftar produk di atas.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">2</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">📞 Hubungi Admin</h5>
+                        <p class="text-gray-300">Klik tombol "Pesan Sekarang", nanti teks sudah otomatis terisi lengkap.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">3</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">💳 Lakukan Pembayaran</h5>
+                        <p class="text-gray-300">Ikuti instruksi pembayaran yang aman dari admin.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-abu/50 p-5 rounded-2xl border border-gray-800 hover:border-biru/30 transition-all shadow-lg anim-muncul">
+                    <div class="w-12 h-12 rounded-full bg-biru/20 flex items-center justify-center text-biru font-bold text-xl shrink-0">4</div>
+                    <div>
+                        <h5 class="font-bold text-lg mb-1">📦 Barang Dikirim</h5>
+                        <p class="text-gray-300">Setelah dikonfirmasi, produk segera dikirimkan ke nomor kamu.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-8 border-t border-biru/10 text-center text-gray-400">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <i class="fa fa-shield text-biru text-xl"></i>
+                <span class="text-biru font-utama font-bold text-lg">FAHRIL SHOP - TOKO ASLI & TERPERCAYA</span>
+            </div>
+            <p class="text-sm">© 2026 Hak Cipta Dilindungi | 🌐 Web asli memuat Surah An-Nur Ayat 4</p>
+        </div>
+    </footer>
+
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-biru/80 text-white flex items-center justify-center shadow-lg hover:bg-biru transition z-40">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- SCRIPT SEMUA FITUR LENGKAP -->
+    <script>
+        // ----------------------
+        // FUNGSI HITUNG DISKON
+        // ----------------------
+        const Truk = ["10000", "tr"];
+        const mobil = ["8000", "mb"];
+        const kapal = ["12000", "kp"];
+
+        function kasihDiskon(Kendaraan) {
+            switch(Kendaraan.toLowerCase()) {
+                case "tr": return parseFloat(Truk[0]) * 0.3;
+                case "mb": return parseFloat(mobil[0]) * 0.4;
+                case "kp": return parseFloat(kapal[0]) * 0.2;
+                default: return null;
+            }
+        }
+
+        function hitungDiskon() {
+            const kode = document.getElementById("kodeInput").value.trim();
+            const potongan = kasihDiskon(kode);
+            const tampilan = document.getElementById("hasilDiskon");
+            
+            if (potongan === null) {
+                tampilan.textContent = "❌ Kode tidak valid! Gunakan: tr / mb / kp";
+                tampilan.className = "bg-black/60 border border-merah/30 rounded-lg p-4 min-h-[80px] text-merah whitespace-pre-line";
+            } else {
+                let jenis = kode === "tr" ? "Truk" : kode === "mb" ? "Mobil" : "Kapal";
+                let hargaAsli = parseFloat(jenis==="Truk"?Truk[0]:jenis==="Mobil"?mobil[0]:kapal[0]);
+                let hargaAkhir = hargaAsli - potongan;
+                let persen = kode === "tr" ? "30%" : kode === "mb" ? "40%" : "20%";
+                tampilan.textContent = `✅ ${jenis}\nHarga Asli: Rp${hargaAsli.toLocaleString()}\nDiskon: ${persen} = Rp${potongan.toLocaleString()}\nBayar: Rp${hargaAkhir.toLocaleString()}`;
+                tampilan.className = "bg-black/60 border border-hijau/30 rounded-lg p-4 min-h-[80px] text-hijau whitespace-pre-line";
+            }
+        }
+
+        // ----------------------
+        // KODE GAME FPS
+        // ----------------------
+        const canvasFPS = document.getElementById('gameCanvas');
+        const ctxFPS = canvasFPS.getContext('2d');
+        let widthFPS = canvasFPS.width;
+        let heightFPS = canvasFPS.height;
+        let gameRunningFPS = false;
+
+        const MAP = [
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,2,2,0,3,3,3,0,0,0,1,1,0,4,4,0,2,2,2,0,0,0,1],
+            [1,0,2,0,0,0,0,3,0,1,1,1,1,0,0,4,0,0,0,2,0,1,0,1],
+            [1,0,2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1],
+            [1,0,0,0,0,1,0,3,3,3,1,1,1,1,1,0,0,1,0,5,5,5,0,1],
+            [1,1,1,1,0,1,0,3,0,0,0,0,0,0,1,0,0,1,0,5,0,0,0,1],
+            [1,0,0,1,0,0,0,3,0,4,4,4,4,0,1,0,0,0,0,5,0,1,1,1],
+            [1,0,0,1,0,1,1,1,0,4,0,0,4,0,1,1,1,1,1,5,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,4,0,0,4,0,0,0,0,0,0,0,0,1,0,1],
+            [1,1,1,1,1,1,0,1,1,4,0,0,4,1,1,1,0,2,2,2,0,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,1],
+            [1,0,5,5,5,5,1,1,1,1,1,0,1,1,1,1,0,2,0,1,1,1,0,1],
+            [1,0,5,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+            [1,0,5,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1],
+            [1,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,1,1,0,3,3,3,3,3,0,1,1,1,1,1,0,2,2,2,0,1],
+            [1,1,1,0,1,0,0,3,0,0,0,3,0,0,0,0,0,1,0,2,0,0,0,1],
+            [1,0,0,0,0,0,0,3,0,4,4,3,0,2,2,2,0,1,0,0,0,1,0,1],
+            [1,0,1,1,1,1,1,1,0,4,0,0,0,2,0,0,0,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,0,0,0,4,0,1,0,0,0,0,0,0,0,0,0,1,0,1],
+            [1,0,3,3,3,3,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ];
+        const WALL_COLORS = {1:[160,160,160],2:[190,60,60],3:[60,190,60],4:[60,60,190],5:[200,180,40]};
+        let playerFPS = {}, enemiesFPS = [], itemsFPS = [];
+
+        function resetGameFPS() {
+            playerFPS = {x:2.5,y:2.5,angle:0,speed:0.09,rotSpeed:0.042,hp:100,ammo:50,score:0,lastStep:0};
+            enemiesFPS = [
+                {x:10.5,y:3.5,hp:40,active:true,lastShot:0},{x:18.5,y:5.5,hp:40,active:true,lastShot:0},
+                {x:5.5,y:12.5,hp:40,active:true,lastShot:0},{x:20.5,y:15.5,hp:40,active:true,lastShot:0},
+                {x:8.5,y:20.5,hp:40,active:true,lastShot:0},{x:15.5,y:18.5,hp:40,active:true,lastShot:0},
+                {x:12.5,y:8.5,hp:40,active:true,lastShot:0},{x:3.5,y:18.5,hp:40,active:true,lastShot:0}
+            ];
+            itemsFPS = [
+                {x:3.5,y:4.5,type:'ammo',amount:20,active:true},{x:12.5,y:2.5,type:'ammo',amount:30,active:true},
+                {x:18.5,y:7.5,type:'ammo',amount:25,active:true},{x:6.5,y:10.5,type:'hp',amount:25,active:true},
+                {x:15.5,y:14.5,type:'hp',amount:35,active:true},{x:4.5,y:20.5,type:'hp',amount:50,active:true},
+                {x:20.5,y:18.5,type:'ammo',amount:40,active:true}
+            ];
+        }
+
+        function mulaiPermainanFPS() {
+            resetGameFPS(); gameRunningFPS = true;
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('gameOverScreen').style.display = 'none';
+        }
+
+        function gameOverFPS() {
+            gameRunningFPS = false;
+            document.getElementById('finalScore').textContent = playerFPS.score;
+            document.getElementById('gameOverScreen').style.display = 'flex';
+            playSoundFPS(120, 300, 0.1);
+        }
+
+        function playSoundFPS(freq, dur, vol = 0.1) {
+            try {
+                const a = new (window.AudioContext || window.webkitAudioContext)();
+                const o = a.createOscillator(), g = a.createGain();
+                o.connect(g); g.connect(a.destination);
+                o.type = 'square'; o.frequency.value = freq;
+                g.gain.setValueAtTime(vol, a.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + dur / 1000);
+                o.start(a.currentTime                o.stop(a.currentTime + dur / 1000);
+            } catch (e) {}
+        }
+
+        function setupJoystickFPS(id, cb) {
+            const t = document.querySelector(`#${id} > div`);
+            const s = document.getElementById(id);
+            let aktif = false, dx = 0, dy = 0, max = 50;
+
+            function gerak(e) {
+                if (!aktif) return;
+                const rect = s.getBoundingClientRect();
+                const x = e.touches[0].clientX - rect.left - rect.width / 2;
+                const y = e.touches[0].clientY - rect.top - rect.height / 2;
+                const jarak = Math.sqrt(x * x + y * y);
+                if (jarak > max) {
+                    dx = x / jarak * max;
+                    dy = y / jarak * max;
+                } else {
+                    dx = x;
+                    dy = y;
+                }
+                t.style.transform = `translate(${dx}px, ${dy}px)`;
+                cb(dx / max, dy / max);
+            }
+
+            function mulai(e) { aktif = true; gerak(e); }
+            function akhir() { aktif = false; t.style.transform = 'translate(-50%, -50%)'; }
+
+            s.addEventListener('touchstart', mulai, { passive: false });
+            s.addEventListener('touchmove', gerak, { passive: false });
+            s.addEventListener('touchend', akhir);
+            s.addEventListener('touchcancel', akhir);
+        }
+
+        setupJoystickFPS('joystick-move', (dx, dy) => {
+            if (!gameRunningFPS) return;
+            const maju = -dy * Math.cos(playerFPS.angle) * playerFPS.speed;
+            const geser = -dx * Math.sin(playerFPS.angle) * playerFPS.speed;
+            const xBaru = playerFPS.x + maju + geser;
+            const yBaru = playerFPS.y + Math.sin(playerFPS.angle) * dy * playerFPS.speed + Math.cos(playerFPS.angle) * dx * playerFPS.speed;
+            
+            if (MAP[Math.floor(yBaru)] && MAP[Math.floor(yBaru)][Math.floor(xBaru)] === 0) {
+                playerFPS.x = xBaru;
+                playerFPS.y = yBaru;
+                if (Date.now() - playerFPS.lastStep > 350) {
+                    playSoundFPS(220, 70, 0.05);
+                    playerFPS.lastStep = Date.now();
+                }
+            }
+        });
+
+        setupJoystickFPS('joystick-look', (dx) => {
+            if (gameRunningFPS) playerFPS.angle += dx * playerFPS.rotSpeed;
+        });
+
+        function tembakFPS() {
+            if (!gameRunningFPS || playerFPS.ammo <= 0) {
+                playSoundFPS(150, 100, 0.08);
+                return;
+            }
+            playerFPS.ammo--;
+            playSoundFPS(450, 120, 0.12);
+            document.getElementById('flash').style.opacity = 0.7;
+            document.getElementById('weapon').style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                document.getElementById('flash').style.opacity = 0;
+                document.getElementById('weapon').style.transform = 'translateY(0)';
+            }, 90);
+
+            const jangkauan = 12;
+            const arahX = Math.cos(playerFPS.angle);
+            const arahY = Math.sin(playerFPS.angle);
+
+            enemiesFPS.forEach(musuh => {
+                if (!musuh.active) return;
+                const jarak = Math.hypot(musuh.x - playerFPS.x, musuh.y - playerFPS.y);
+                if (jarak < jangkauan) {
+                    const sudut = Math.atan2(musuh.y - playerFPS.y, musuh.x - playerFPS.x);
+                    if (Math.abs(sudut - playerFPS.angle) < 0.3) {
+                        musuh.hp -= 40;
+                        playSoundFPS(200, 90, 0.1);
+                        if (musuh.hp <= 0) {
+                            musuh.active = false;
+                            playerFPS.score += 150;
+                            playSoundFPS(320, 150, 0.1);
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('mousedown', tembakFPS);
+        document.addEventListener('touchstart', (e) => { e.preventDefault(); tembakFPS(); });
+
+        function updateMusuhFPS() {
+            if (!gameRunningFPS) return;
+            const sekarang = Date.now();
+            enemiesFPS.forEach(musuh => {
+                if (!musuh.active) return;
+                const dx = playerFPS.x - musuh.x;
+                const dy = playerFPS.y - musuh.y;
+                const jarak = Math.hypot(dx, dy);
+                if (jarak < 6) {
+                    const arah = Math.atan2(dy, dx);
+                    const xBaru = musuh.x + Math.cos(arah) * 0.035;
+                    const yBaru = musuh.y + Math.sin(arah) * 0.035;
+                    if (MAP[Math.floor(yBaru)] && MAP[Math.floor(yBaru)][Math.floor(xBaru)] === 0) {
+                        musuh.x = xBaru;
+                        musuh.y = yBaru;
+                    }
+                    if (jarak < 3 && sekarang - musuh.lastShot > 1200) {
+                        playerFPS.hp -= 6;
+                        musuh.lastShot = sekarang;
+                        playSoundFPS(170, 70, 0.08);
+                        if (playerFPS.hp <= 0) {
+                            playerFPS.hp = 0;
+                            gameOverFPS();
+                        }
+                    }
+                }
+            });
+        }
+
+        function gambarLayarFPS() {
+            ctxFPS.fillStyle = '#000';
+            ctxFPS.fillRect(0, 0, widthFPS, heightFPS);
+            if (!gameRunningFPS) return;
+
+            ctxFPS.fillStyle = '#0a0a1a';
+            ctxFPS.fillRect(0, 0, widthFPS, heightFPS / 2);
+            ctxFPS.fillStyle = '#1a1a1a';
+            ctxFPS.fillRect(0, heightFPS / 2, widthFPS, heightFPS / 2);
+
+            const fov = Math.PI / 3;
+            const jumlahKolom = widthFPS;
+            const sudutLangkah = fov / jumlahKolom;
+            let sudutAwal = playerFPS.angle - fov / 2;
+
+            for (let i = 0; i < jumlahKolom; i++) {
+                let jarak = 0;
+                let tipeDinding = 0;
+                let x = playerFPS.x, y = playerFPS.y;
+                const arahX = Math.cos(sudutAwal);
+                const arahY = Math.sin(sudutAwal);
+
+                while (jarak < 20) {
+                    jarak += 0.05;
+                    x = playerFPS.x + arahX * jarak;
+                    y = playerFPS.y + arahY * jarak;
+                    if (MAP[Math.floor(y)] && MAP[Math.floor(y)][Math.floor(x)] !== undefined) {
+                        tipeDinding = MAP[Math.floor(y)][Math.floor(x)];
+                        if (tipeDinding > 0) break;
+                    } else {
+                        break;
+                    }
+                }
+
+                jarak *= Math.cos(playerFPS.angle - sudutAwal);
+                const tinggi = heightFPS / (jarak + 0.0001);
+                const warnaDasar = WALL_COLORS[tipeDinding] || [100, 100, 100];
+                const reduksi = Math.max(40, 255 - jarak * 20);
+                ctxFPS.fillStyle = `rgb(${warnaDasar[0] * reduksi / 255}, ${warnaDasar[1] * reduksi / 255}, ${warnaDasar[2] * reduksi / 255})`;
+                ctxFPS.fillRect(i, heightFPS / 2 - tinggi / 2, 1, tinggi);
+
+                sudutAwal += sudutLangkah;
+            }
+
+            itemsFPS.forEach(barang => {
+                if (!barang.active) return;
+                const dx = barang.x - playerFPS.x;
+                const dy = barang.y - playerFPS.y;
+                const jarak = Math.hypot(dx, dy);
+                if (jarak < 0.5 || jarak > 12) return;
+                const sudut = Math.atan2(dy, dx) - playerFPS.angle;
+                if (Math.abs(sudut) > fov / 2) return;
+                const posX = (sudut / fov + 0.5) * widthFPS;
+                const ukuran = heightFPS / jarak * 0.35;
+                const terang = Math.max(60, 255 - jarak * 18);
+                ctxFPS.fillStyle = barang.type === 'ammo' ? `rgb(${terang}, ${terang}, 30)` : `rgb(30, ${terang}, 30)`;
+                ctxFPS.fillRect(posX - ukuran / 4, heightFPS / 2 - ukuran / 2, ukuran / 2, ukuran);
+
+                if (jarak < 0.8) {
+                    barang.active = false;
+                    if (barang.type === 'ammo') playerFPS.ammo += barang.amount;
+                    else playerFPS.hp = Math.min(100, playerFPS.hp + barang.amount);
+                    playSoundFPS(300, 80, 0.1);
+                }
+            });
+
+            enemiesFPS.forEach(musuh => {
+                if (!musuh.active) return;
+                const dx = musuh.x - playerFPS.x;
+                const dy = musuh.y - playerFPS.y;
+                const jarak = Math.hypot(dx, dy);
+                if (jarak < 0.6 || jarak > 15) return;
+                const sudut = Math.atan2(dy, dx) - playerFPS.angle;
+                if (Math.abs(sudut) > fov / 2) return;
+                const posX = (sudut / fov + 0.5) * widthFPS;
+                const ukuran = heightFPS / jarak * 0.8;
+                const terang = Math.max(50, 255 - jarak * 16);
+                ctxFPS.fillStyle = `rgb(${terang}, 30, 30)`;
+                ctxFPS.fillRect(posX - ukuran / 4, heightFPS / 2 - ukuran / 2, ukuran / 2, ukuran);
+            });
+
+            document.getElementById('hp').textContent = playerFPS.hp;
+            document.getElementById('score').textContent = playerFPS.score;
+            document.getElementById('ammo').textContent = playerFPS.ammo;
+        }
+
+        function loopUtamaFPS() {
+            updateMusuhFPS();
+            gambarLayarFPS();
+            requestAnimationFrame(loopUtamaFPS);
+        }
+        loopUtamaFPS();
+
+        // ----------------------
+        // KODE GAME ULAR
+        // ----------------------
+        const canvasUlar = document.getElementById('layarUlar');
+        const ctxUlar = canvasUlar.getContext('2d');
+        const skorUlarTampilan = document.getElementById('skorUlar');
+        const skorTertinggiUlarTampilan = document.getElementById('skorTertinggiUlar');
+        const tombolMulaiUlar = document.getElementById('tombolMulaiUlar');
+        const layarPesanUlar = document.getElementById('layarPesanUlar');
+        const teksPesanUlar = document.getElementById('teksPesanUlar');
+        const pilihKesulitanUlar = document.getElementById('pilihKesulitan');
+        const pilihTemaUlar = document.getElementById('pilihTema');
+        const bodyUlar = document.body;
+
+        const ukuranKotak = 20;
+        const jumlahKotak = canvasUlar.width / ukuranKotak;
+
+        let ular = [];
+        let arahUlar = 'kanan';
+        let makananUlar = {};
+        let skorUlar = 0;
+        let berjalanUlar = false;
+        let kecepatanUlar = 120;
+        let kecepatanDasarUlar = 120;
+        let intervalUlar;
+
+        let skorTertinggiUlar = localStorage.getItem('skorUlar') || 0;
+        skorTertinggiUlarTampilan.textContent = skorTertinggiUlar;
+
+        pilihKesulitanUlar.addEventListener('change', () => {
+            const tingkat = pilihKesulitanUlar.value;
+            if (tingkat === 'mudah') kecepatanDasarUlar = 150;
+            if (tingkat === 'sedang') kecepatanDasarUlar = 120;
+            if (tingkat === 'sulit') kecepatanDasarUlar = 90;
+            if (tingkat === 'ekstrim') kecepatanDasarUlar = 60;
+            resetPermainanUlar();
+        });
+
+        pilihTemaUlar.addEventListener('change', () => {
+            bodyUlar.classList.remove('tema-hijau', 'tema-biru', 'tema-ungu', 'tema-oranye');
+            bodyUlar.classList.add(pilihTemaUlar.value);
+            gambarUlar();
+        });
+
+        function resetPermainanUlar() {
+            ular = [
+                {x: 10, y: 10},
+                {x: 9, y: 10},
+                {x: 8, y: 10}
+            ];
+            arahUlar = 'kanan';
+            skorUlar = 0;
+            skorUlarTampilan.textContent = skorUlar;
+            kecepatanUlar = kecepatanDasarUlar;
+            buatMakananUlar();
+            berjalanUlar = false;
+            clearInterval(intervalUlar);
+            teksPesanUlar.textContent = 'Siap Bermain?';
+            layarPesanUlar.classList.remove('hidden');
+            gambarUlar();
+        }
+
+        function buatMakananUlar() {
+            makananUlar = {
+                x: Math.floor(Math.random() * jumlahKotak),
+                y: Math.floor(Math.random() * jumlahKotak)
+            };
+            if (ular.some(segmen => segmen.x === makananUlar.x && segmen.y === makananUlar.y)) {
+                buatMakananUlar();
+            }
+        }
+
+        function gambarUlar() {
+            ctxUlar.fillStyle = '#1E293B';
+            ctxUlar.fillRect(0, 0, canvasUlar.width, canvasUlar.height);
+
+            const warnaUlar = getComputedStyle(bodyUlar).getPropertyValue('--warna-ular').trim();
+            const warnaUlarMuda = getComputedStyle(bodyUlar).getPropertyValue('--warna-ular-muda').trim();
+            const warnaMakanan = getComputedStyle(bodyUlar).getPropertyValue('--warna-makanan').trim();
+
+            ular.forEach((segmen, indeks) => {
+                ctxUlar.fillStyle = indeks === 0 ? warnaUlar : warnaUlarMuda;
+                ctxUlar.fillRect(segmen.x * ukuranKotak + 1, segmen.y * ukuranKotak + 1, ukuranKotak - 2, ukuranKotak - 2);
+                ctxUlar.strokeStyle = '#0F172A';
+                ctxUlar.strokeRect(segmen.x * ukuranKotak + 1, segmen.y * ukuranKotak + 1, ukuranKotak - 2, ukuranKotak - 2);
+            });
+
+            ctxUlar.fillStyle = warnaMakanan;
+            ctxUlar.beginPath();
+            ctxUlar.arc(makananUlar.x * ukuranKotak + ukuranKotak/2, makananUlar.y * ukuranKotak + ukuranKotak/2, ukuranKotak/2 - 2, 0, Math.PI * 2);
+            ctxUlar.fill();
+            ctxUlar.strokeStyle = '#0F172A';
+            ctxUlar.stroke();
+        }
+
+        function gerakUlar() {
+            const kepala = {...ular[0]};
+
+            switch(arahUlar) {
+                case 'atas': kepala.y--; break;
+                case 'bawah': kepala.y++; break;
+                case 'kiri': kepala.x--; break;
+                case 'kanan': kepala.x++; break;
+            }
+
+            if (kepala.x < 0 || kepala.x >= jumlahKotak || kepala.y < 0 || kepala.y >= jumlahKotak) {
+                akhirPermainanUlar();
+                return;
+            }
+
+            if (ular.some(segmen => segmen.x === kepala.x && segmen.y === kepala.y)) {
+                akhirPermainanUlar();
+                return;
+            }
+
+            ular.unshift(kepala);
+
+            if (kepala.x === makananUlar.x && kepala.y === makananUlar.y) {
+                skorUlar += 10;
+                skorUlarTampilan.textContent = skorUlar;
+                document.getElementById('papanUlar').classList.add('anim-makan');
+                setTimeout(() => document.getElementById('papanUlar').classList.remove('anim-makan'), 200);
+                buatMakananUlar();
+                if (skorUlar % 50 === 0 && kecepatanUlar > 40) {
+                    kecepatanUlar -= 5;
+                    clearInterval(intervalUlar);
+                    intervalUlar = setInterval(gerakUlar, kecepatanUlar);
+                }
+            } else {
+                ular.pop();
+            }
+
+            gambarUlar();
+        }
+
+        function ubahArahUlar(arahBaru) {
+            if (!berjalanUlar) return;
+            if (
+                (arahBaru === 'atas' && arahUlar !== 'bawah') ||
+                (arahBaru === 'bawah' && arahUlar !== 'atas') ||
+                (arahBaru === 'kiri' && arahUlar !== 'kanan') ||
+                (arahBaru === 'kanan' && arahUlar !== 'kiri')
+            ) {
+                arahUlar = arahBaru;
+            }
+        }
+
+        function mulaiPermainanUlar() {
+            if (berjalanUlar) return;
+            resetPermainanUlar();
+            berjalanUlar = true;
+            layarPesanUlar.classList.add('hidden');
+            intervalUlar = setInterval(gerakUlar, kecepatanUlar);
+        }
+
+        function akhirPermainanUlar() {
+            berjalanUlar = false;
+            clearInterval(intervalUlar);
+            if (skorUlar > skorTertinggiUlar) {
+                skorTertinggiUlar = skorUlar;
+                localStorage.setItem('skorUlar', skorTertinggiUlar);
+                skorTertinggiUlarTampilan.textContent = skorTertinggiUlar;
+            }
+            teksPesanUlar.textContent = `GAME OVER! Skor: ${skorUlar}`;
+            layarPesanUlar.classList.remove('hidden');
+        }
+
+        let sentuhMulaiX, sentuhMulaiY;
+        canvasUlar.addEventListener('touchstart', (e) => {
+            sentuhMulaiX = e.touches[0].clientX;
+            sentuhMulaiY = e.touches[0].clientY;
+            e.preventDefault();
+        });
+
+        canvasUlar.addEventListener('touchend', (e) => {
+            if (!sentuhMulaiX || !sentuhMulaiY || !berjalanUlar) return;
+            const sentuhAkhirX = e.changedTouches[0].clientX;
+            const sentuhAkhirY = e.changedTouches[0].clientY;
+            const selisihX = sentuhAkhirX - sentuhMulaiX;
+            const selisihY = sentuhAkhirY - sentuhMulaiY;
+
+            if (Math.abs(selisihX) > Math.abs(selisihY)) {
+                if (selisihX > 30) ubahArahUlar('kanan');
+                else if (selisihX < -30) ubahArahUlar('kiri');
+            } else {
+                if (selisihY > 30) ubahArahUlar('bawah');
+                else if (selisihY < -30) ubahArahUlar('atas');
+            }
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowUp': ubahArahUlar('atas'); break;
+                case 'ArrowDown': ubahArahUlar('bawah'); break;
+                case 'ArrowLeft': ubahArahUlar('kiri'); break;
+                case 'ArrowRight': ubahArahUlar('kanan'); break;
+                case ' ': if (!berjalanUlar) mulaiPermainanUlar(); break;
+            }
+        });
+
+        tombolMulaiUlar.addEventListener('click', mulaiPermainanUlar);
+
+        resetPermainanUlar();
+    </script>
+
+</body>
+</html>
+
