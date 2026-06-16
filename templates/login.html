@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk Admin - Fahril Shop</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .kotak-login { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
+        .pesan { padding: 10px; border-radius: 5px; margin-bottom: 15px; background: #ffebee; color: #c62828; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 15px; }
+        button { width: 100%; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #219653; }
+        .kembali { text-align: center; margin-top: 15px; display: block; color: #3498db; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="kotak-login">
+        <h2>🔐 Masuk Admin</h2>
+        {% with pesan = get_flashed_messages() %}
+            {% if pesan %}<div class="pesan">{{ pesan[0] }}</div>{% endif %}
+        {% endwith %}
+        <form method="POST">
+            <input type="text" name="username" placeholder="Nama Pengguna" required>
+            <input type="password" name="password" placeholder="Kata Sandi" required>
+            <button type="submit">Masuk</button>
+        </form>
+        <a href="/" class="kembali">← Kembali ke Toko</a>
+    </div>
+</body>
+</html>
