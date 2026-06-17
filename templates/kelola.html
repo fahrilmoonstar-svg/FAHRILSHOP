@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Produk</title>
+    <style>
+        body{font-family:Arial;padding:15px;max-width:700px;margin:auto;}
+        table{width:100%;border-collapse:collapse;margin:15px 0;}
+        th,td{border:1px solid #ddd;padding:10px;text-align:left;}
+        th{background:#f5f5f5;}
+        input{width:100%;padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}
+        .btn-hapus{background:#f44336;color:white;border:none;padding:5px 10px;border-radius:3px;}
+        .pesan{background:#e8f5e9;padding:10px;border-radius:4px;margin-bottom:10px;}
+    </style>
+</head>
+<body>
+    <h2>⚙️ KELOLA PRODUK</h2>
+    {% with pesan = get_flashed_messages() %}
+        {% if pesan %}
+            <div class="pesan">{{ pesan[0] }}</div>
+        {% endif %}
+    {% endwith %}
+
+    <h3>Tambah Produk Baru</h3>
+    <form method="POST">
+        <input type="hidden" name="aksi" value="tambah">
+        <input type="text" name="nama" placeholder="Nama Produk" required>
+        <input type="number" name="harga" placeholder="Harga (Rp)" required>
+        <input type="number" name="stok" placeholder="Stok (999 = Selalu Tersedia)" required>
+        <input type="text" name="masa" placeholder="Masa Aktif (contoh: 30 Hari)" value="-">
+        <input type="text" name="ket" placeholder="Keterangan" value="-">
+        <button type="submit" style="background:#2196f3;color:white;border:none;padding:10px 15px;border-radius:4px;">TAMBAH</button>
+    </form>
+
+    <h3>Daftar Produk</h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Harga</th>
+            <th>Stok</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+        {% for p in produk %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nama }}</td>
+            <td>Rp {{ p.harga }}</td>
+            <td>{{ p.stok }}</td>
+            <td>{{ p.status }}</td>
+            <td>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="aksi" value="hapus">
+                    <input type="hidden" name="id" value="{{ p.id }}">
+                    <button type="submit" class="btn-hapus">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="/laporan" style="margin-right:15px;">📊 Laporan Penjualan</a>
+    <a href="/logout">🚪 Keluar</a>
+</body>
+</html>
