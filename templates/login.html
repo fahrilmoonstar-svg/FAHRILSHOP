@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin</title>
+    <style>body{font-family:Arial;padding:15px;max-width:480px;margin:auto;}</style>
+</head>
+<body>
+    <h2>🔐 Login Admin</h2>
+    {% with pesan = get_flashed_messages() %}
+      {% if pesan %}<div style="background:#ffebee;padding:8px;border-radius:3px;">{{ pesan[0] }}</div>{% endif %}
+    {% endwith %}
+    <form method="POST">
+        <label>Username:</label><br>
+        <input type="text" name="username" required style="width:100%;padding:8px;margin:5px 0;"><br>
+        <label>Password:</label><br>
+        <input type="password" name="password" required style="width:100%;padding:8px;margin:5px 0;"><br>
+        <button type="submit" style="width:100%;padding:10px;background:#4caf50;color:white;border:none;border-radius:3px;">Masuk</button>
+    </form>
+    <br>
+    <a href="/">⬅ Kembali</a>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Produk</title>
+    <style>body{font-family:Arial;padding:15px;max-width:600px;margin:auto;} table{width:100%;border-collapse:collapse;margin:15px 0;} th,td{border:1px solid #ddd;padding:8px;text-align:left;}</style>
+</head>
+<body>
+    <h2>⚙️ Kelola Produk</h2>
+    {% with pesan = get_flashed_messages() %}
+      {% if pesan %}<div style="background:#e8f5e9;padding:8px;border-radius:3px;">{{ pesan[0] }}</div>{% endif %}
+    {% endwith %}
+
+    <h3>Tambah Produk Baru</h3>
+    <form method="POST">
+        <input type="hidden" name="aksi" value="tambah">
+        <input type="text" name="nama" placeholder="Nama produk" required style="width:100%;padding:8px;margin:5px 0;"><br>
+        <input type="number" name="harga" placeholder="Harga" required style="width:100%;padding:8px;margin:5px 0;"><br>
+        <input type="number" name="stok" placeholder="Stok (999=selalu)" required style="width:100%;padding:8px;margin:5px 0;"><br>
+        <button type="submit" style="padding:8px 15px;background:#2196f3;color:white;border:none;">Tambah</button>
+    </form>
+
+    <h3>Daftar Produk</h3>
+    <table>
+        <tr><th>ID</th><th>Nama</th><th>Harga</th><th>Stok</th><th>Status</th><th>Aksi</th></tr>
+        {% for p in produk %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nama }}</td>
+            <td>Rp {{ p.harga }}</td>
+            <td>{{ p.stok }}</td>
+            <td>{{ p.status }}</td>
+            <td>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="aksi" value="hapus">
+                    <input type="hidden" name="id" value="{{ p.id }}">
+                    <button type="submit" style="background:#f44336;color:white;border:none;padding:4px 8px;">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/laporan">📊 Lihat Laporan</a> | <a href="/logout">🚪 Keluar</a>
+</body>
+</html>
