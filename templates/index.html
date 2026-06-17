@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Toko Fahril</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="font-family: Arial; padding: 15px;">
+    <h2>Daftar Produk</h2>
+    <ul>
+        {% for p in produk %}
+        <li>{{ p.nama }} - Rp {{ p.harga }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
