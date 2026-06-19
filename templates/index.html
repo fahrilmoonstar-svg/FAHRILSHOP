@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Fahril</title>
+    <style>
+        body{font-family:Arial;padding:15px;max-width:480px;margin:auto;}
+        .hasil{background:#e8f5e9;padding:15px;border-radius:8px;margin:10px 0;border-left:4px solid #2e7d32;}
+        .btn-wa{display:block;text-align:center;padding:12px;background:#25d366;color:white;text-decoration:none;border-radius:8px;margin-top:10px;font-weight:bold;}
+        select, input{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;box-sizing:border-box;}
+        button{width:100%;padding:12px;background:#1976d2;color:white;border:none;border-radius:6px;font-size:16px;margin-top:10px;}
+        .link-menu{display:block;padding:10px;text-align:center;margin:10px 0;border-radius:6px;text-decoration:none;font-weight:bold;}
+        .link-game{background:#9c27b0;color:white;}
+        .link-kontrol{background:#e91e63;color:white;}
+    </style>
+</head>
+<body>
+    <h2>🛒 TOKO FAHRIL</h2>
+
+    {% if hasil %}
+    <div class="hasil">
+        ✅ Pesanan Berhasil<br>
+        Produk : {{ hasil.produk }}<br>
+        Jumlah : {{ hasil.jumlah }} pcs<br>
+        Total  : Rp {{ hasil.total }}
+        {% if link_wa %}
+            <a href="{{ link_wa }}" target="_blank" class="btn-wa">📲 PESAN VIA WHATSAPP</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        <label>Pilih Produk :</label>
+        <select name="produk" required>
+            {% for p in produk %}
+            <option value="{{ p.id }}">{{ p.nama }} - Rp {{ p.harga }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Jumlah :</label>
+        <input type="number" name="jumlah" value="1" min="1">
+
+        <label>Diskon (%) :</label>
+        <input type="number" name="diskon" value="0" min="0" max="100">
+
+        <button type="submit">TAMPILKAN PESANAN</button>
+    </form>
+
+    <a href="/login" class="link-menu">🔐 Masuk Admin</a>
+    <a href="/game" class="link-menu link-game">🎮 MAIN GAME</a>
+    <a href="/control" class="link-menu link-kontrol">📱 KONTROL PERANGKAT</a>
+</body>
+</html>
