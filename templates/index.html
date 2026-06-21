@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Fahril</title>
+    <style>
+        body{font-family:Arial;padding:15px;max-width:480px;margin:auto;background:#121212;color:white;}
+        .hasil{background:#1e1e1e;padding:15px;border-radius:8px;margin:10px 0;border-left:4px solid #2e7d32;}
+        .btn-wa{display:block;text-align:center;padding:12px;background:#25d366;color:white;text-decoration:none;border-radius:8px;margin-top:10px;font-weight:bold;}
+        select, input{width:100%;padding:10px;margin:8px 0;border:1px solid #444;background:#1e1e1e;color:white;border-radius:6px;box-sizing:border-box;}
+        button{width:100%;padding:12px;background:#1976d2;color:white;border:none;border-radius:6px;font-size:16px;margin-top:10px;cursor:pointer;}
+        .link-menu{display:block;padding:10px;text-align:center;margin:10px 0;border-radius:6px;text-decoration:none;font-weight:bold;}
+        .link-game{background:#9c27b0;color:white;}
+        .link-kontrol{background:#e91e63;color:white;}
+        .link-erls{background:#673ab7;color:white;}
+
+        /* ===== CSS PAKET PREMIUM ===== */
+        .panel-premium {
+            margin-top:30px; 
+            padding:20px; 
+            background:#1a1a2e; 
+            border-radius:12px; 
+            border:1px solid #ffd700;
+        }
+        .premium-grid {
+            display:grid; 
+            gap:15px; 
+            margin-top:15px;
+        }
+        .card-premium {
+            text-align:center; 
+            background:rgba(255,215,0,0.08); 
+            border-radius:10px; 
+            padding:20px;
+            transition:0.3s;
+        }
+        .card-premium:hover {
+            border:1px solid #ffd700;
+            background:rgba(255,215,0,0.12);
+        }
+        .harga {
+            color:#ffd700; 
+            font-size:24px; 
+            font-weight:bold; 
+            margin:10px 0;
+        }
+        .btn-beli {
+            display:inline-block; 
+            padding:8px 20px; 
+            background:#ffd700; 
+            color:#121212; 
+            border-radius:6px; 
+            text-decoration:none; 
+            font-weight:bold; 
+            font-size:14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>🛒 TOKO FAHRIL</h2>
+
+    {% if hasil %}
+    <div class="hasil">
+        ✅ Pesanan Berhasil<br>
+        Produk : {{ hasil.produk }}<br>
+        Jumlah : {{ hasil.jumlah }} pcs<br>
+        Total  : Rp {{ hasil.total }}
+        {% if link_wa %}
+            <a href="{{ link_wa }}" target="_blank" class="btn-wa">📲 PESAN VIA WHATSAPP</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- FORM PRODUK BIASA -->
+    <form method="POST">
+        <label>Pilih Produk :</label>
+        <select name="produk" required>
+            {% for p in produk %}
+            <option value="{{ p.id }}">{{ p.nama }} - Rp {{ p.harga }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Jumlah :</label>
+        <input type="number" name="jumlah" value="1" min="1">
+
+        <label>Diskon (%) :</label>
+        <input type="number" name="diskon" value="0" min="0" max="100">
+
+        <button type="submit">TAMPILKAN PESANAN</button>
+    </form>
+
+    <!-- ============================================== -->
+    <!-- 🎁 PAKET PREMIUM BARU -->
+    <!-- ============================================== -->
+    <div class="panel-premium">
+        <h3 style="color:#ffd700; text-align:center; margin:0 0 15px 0;">👑 PAKET PREMIUM</h3>
+        
+        <div class="premium-grid">
+            <!-- PAKET 1 -->
+            <div class="card-premium">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="#ffd700">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                </svg>
+                <h4>PAKET DASAR</h4>
+                <p style="font-size:13px; opacity:0.8;">Bayar Sekali • Selamanya Aktif</p>
+                <div class="harga">Rp 25.000</div>
+                <a href="https://wa.me/62882020654074?text=Saya%20mau%20beli%20Paket%20Dasar%20-%20Rp%2025.000" class="btn-beli">BELI SEKARANG</a>
+            </div>
+
+            <!-- PAKET 2 -->
+            <div class="card-premium">
+                <svg width="45" height="45" viewBox="0 0 24 24" fill="#ffd700">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                </svg>
+                <h4>PAKET LENGKAP</h4>
+                <p style="font-size:13px; opacity:0.8;">Semua Fitur + Update Baru</p>
+                <div class="harga">Rp 50.000</div>
+                <a href="https://wa.me/62882020654074?text=Saya%20mau%20beli%20Paket%20Lengkap%20-%20Rp%2050.000" class="btn-beli">BELI SEKARANG</a>
+            </div>
+
+            <!-- PAKET 3 -->
+            <div class="card-premium">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="#ffd700">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                </svg>
+                <h4>PAKET PREMIUM PLUS</h4>
+                <p style="font-size:13px; opacity:0.8;">Semua Isi + Bantuan Langsung</p>
+                <div class="harga">Rp 100.000</div>
+                <a href="https://wa.me/62882020654074?text=Saya%20mau%20beli%20Paket%20Plus%20-%20Rp%20100.000" class="btn-beli">BELI SEKARANG</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MENU LAINNYA -->
+    <a href="/login-erls" class="link-menu link-erls">🔐 LOGIN ERLS COMMUNITY</a>
+    <a href="/login" class="link-menu">🔐 MASUK ADMIN</a>
+    <a href="/game" class="link-menu link-game">🎮 MAIN GAME</a>
+    <a href="/control" class="link-menu link-kontrol">📱 KONTROL PERANGKAT</a>
+</body>
+</html>
