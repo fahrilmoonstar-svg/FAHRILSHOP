@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERLS COMMUNITY</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:Arial;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+            background:#121212;
+        }
+        .log{
+            background:rgba(255,255,255,0.05);
+            padding:30px;
+            border-radius:12px;
+            border:1px solid white;
+            box-shadow:-5px 5px rgba(255,255,255,0.2);
+            width:320px;
+        }
+        .hhh{
+            color:white;
+            text-align:center;
+            margin-bottom:20px;
+            font-size:22px;
+        }
+        .inus{
+            width:100%;
+            padding:10px;
+            margin:8px 0 15px;
+            border:1px solid white;
+            background:transparent;
+            color:white;
+            border-radius:6px;
+            outline:none;
+        }
+        .me2{
+            width:100%;
+            padding:12px;
+            background:#2196F3;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            font-weight:bold;
+            font-size:16px;
+        }
+        #hasil{
+            margin-top:15px;
+            text-align:center;
+            font-weight:bold;
+            font-size:14px;
+        }
+        .kembali{
+            display:block;
+            text-align:center;
+            margin-top:15px;
+            color:#ccc;
+            text-decoration:none;
+            font-size:13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="log">
+    <h1 class="hhh">ERLS COMMUNITY</h1>
+
+    <h4 style="color:white; font-size:14px;">Username</h4>
+    <input type="text" id="name" class="inus" placeholder="Masukan Username">
+
+    <h4 style="color:white; font-size:14px;">Password</h4>
+    <input type="password" id="pass" class="inus" placeholder="Minimal 6 Karakter">
+
+    <br>
+    <button class="me2" onclick="gas()">KONFIRMASI</button>
+
+    <p id="hasil">{% if pesan %}{{ pesan }}{% endif %}</p>
+    <a href="/" class="kembali">⬅ Kembali ke Toko</a>
+</div>
+
+<script>
+function gas() {
+    let uname = document.getElementById("name").value.trim();
+    let pass = document.getElementById("pass").value;
+    let hasil = document.getElementById("hasil");
+
+    if(uname === "") {
+        alert("ISI USERNAME DULU!");
+        hasil.innerHTML = "⚠️ ISI USERNAME DULU!";
+        hasil.style.color = "#ff4444";
+    }
+    else if(pass === "") {
+        alert("ISI PASSWORD DULU!");
+        hasil.innerHTML = "⚠️ ISI PASSWORD DULU!";
+        hasil.style.color = "#ff4444";
+    }
+    else if(pass.length < 6) {
+        alert("PASSWORD MINIMAL 6 KARAKTER!");
+        hasil.innerHTML = "⚠️ PASSWORD MINIMAL 6 KARAKTER!";
+        hasil.style.color = "#ffbb33";
+    }
+    else {
+        hasil.innerHTML = "✅ BERHASIL LOGIN MEMUAT DATA!";
+        hasil.style.color = "#00C851";
+    }
+}
+</script>
+
+</body>
+</html>
