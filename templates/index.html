@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Fahril 🛒</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:Arial;background:#0f0f23;color:white;}
+
+        /* ===== SIDEBAR CSS DARI KODE KAMU + ANIMASI ===== */
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background: #1a1a2e;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: 20px;
+            transition: left 0.3s ease-in-out;
+            z-index: 999;
+            border-right: 1px solid #333;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background: rgb(138, 73, 151);
+        }
+
+        /* ===== KONTEN UTAMA ===== */
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* ===== FOOTER SESUAI KODE KAMU ===== */
+        .footer {
+            margin-left: 200px;
+            padding: 15px;
+            background-color: rgb(138, 73, 151);
+            color: white;
+            text-align: center;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* ===== TOMBOL MENU HP ===== */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            z-index: 1000;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .menu-toggle:hover {
+            background: rgb(138, 73, 151);
+        }
+
+        /* ===== KARTU & ELEMEN LAIN ===== */
+        .card{background:#1a1a3a;border-radius:12px;padding:18px;margin-bottom:15px;border:1px solid #333;}
+        .btn{display:block;width:100%;padding:12px;border-radius:8px;text-align:center;text-decoration:none;font-weight:bold;margin-top:10px;border:none;cursor:pointer;}
+        .btn-wa{background:#25d366;color:white;}
+        .btn-blue{background:#2196F3;color:white;}
+        .btn-gold{background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;}
+        select,input{width:100%;padding:10px;margin:8px 0;border:1px solid #444;background:#222;color:white;border-radius:6px;}
+        
+        /* === CSS TABEL === */
+        .table-container {
+            background:#111;
+            padding:15px;
+            border-radius:8px;
+            margin-top:15px;
+            font-family:monospace;
+            font-size:13px;
+            line-height:1.6;
+        }
+        .table-header {
+            color:#00d8ff;
+            border-bottom:1px solid #444;
+            padding-bottom:8px;
+            margin-bottom:8px;
+        }
+        .divider {
+            color:#666;
+            margin:4px 0;
+        }
+
+        /* ===== RESPONSIVE HP ===== */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            .sidebar {
+                left: -200px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .content, .footer {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOMBOL MENU -->
+    <button class="menu-toggle">☰</button>
+
+    <!-- SIDEBAR MENU -->
+    <div class="sidebar">
+        <a href="/">🏠 BERANDA</a>
+        <a href="/login-erls">🔐 LOGIN ERLS</a>
+        <a href="/admin">⚙️ ADMIN PANEL</a>
+        <a href="/game">🎮 GAME</a>
+        <a href="/control">📱 KONTROL</a>
+        <a href="#" onclick="alert('Sedang Dalam Pengembangan')">ℹ️ TENTANG</a>
+    </div>
+
+    <!-- KONTEN UTAMA -->
+    <div class="content">
+        <h2 style="text-align:center;margin-bottom:20px;color:#ffd700;">🛒 TOKO FAHRIL</h2>
+
+        <!-- FORM PEMBELIAN PRODUK -->
+        <div class="card">
+            <h3>📦 PEMBELIAN PRODUK</h3>
+            <form method="POST">
+                <label>Pilih Produk:</label>
+                <select name="produk" required>
+                    <option value="1">Kuota Smartfren 4GB - Rp 22.000</option>
+                    <option value="2">Kuota Smartfren 10GB - Rp 22.000</option>
+                    <option value="3">Alight Motion Premium - Rp 7.000</option>
+                    <option value="4">Kuota Unlimited 28H - Rp 67.000</option>
+                    <option value="5">Jasa Edit Video JJ - Rp 1.000</option>
+                </select>
+
+                <label>Jumlah:</label>
+                <input type="number" name="jumlah" value="1" min="1">
+
+                <button type="submit" class="btn btn-blue">✅ TAMPILKAN PESANAN</button>
+            </form>
+
+            {% if hasil %}
+            <div style="margin-top:15px;padding:12px;background:#22332e;border-radius:8px;border-left:4px solid #2ecc71;">
+                ✅ Berhasil!<br>
+                Produk: {{ hasil.nama }}<br>
+                Total Harga: <b>Rp {{ hasil.total }}</b>
+                <a href="{{ link_wa }}" target="_blank" class="btn btn-wa">📲 PESAN VIA WA</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- PAKET PREMIUM -->
+        <div class="card">
+            <h3 style="color:#ffd700;text-align:center;margin-bottom:15px;">👑 PAKET PREMIUM</h3>
+            
+            <button class="btn btn-gold" onclick="beliPaket('Dasar', 25000)">PAKET DASAR - Rp 25.000</button>
+            <button class="btn btn-gold" onclick="beliPaket('Lengkap', 50000)">PAKET LENGKAP - Rp 50.000</button>
+            <button class="btn btn-gold" onclick="beliPaket('Plus', 100000)">PAKET PLUS - Rp 100.000</button>
+        </div>
+
+        <!-- TABEL DATA MAHASISWA -->
+        <div class="card">
+            <h3 style="color:#00d8ff;margin-bottom:10px;">📋 DATA MAHASISWA (SEPERTI KODE PYTHON)</h3>
+            <div class="table-container" id="tabelMahasiswa">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER SESUAI KODE KAMU -->
+    <div class="footer">
+        &copy; 2026 Toko Fahril | Dibuat dengan ❤️ & Koding
+    </div>
+
+<script>
+// SCRIPT SIDEBAR BUKA/TUTUP
+const menuToggle = document.querySelector('.menu-toggle');
+const sidebar = document.querySelector('.sidebar');
+
+menuToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('active');
+});
+
+// SCRIPT TABEL OTOMATIS
+const dataMahasiswa = [
+    {nama: "Budi Santoso", nilai: 85.5, grade: "A"},
+    {nama: "Siti Aminah", nilai: 92.0, grade: "A+"},
+    {nama: "Andi Pratama", nilai: 76.3, grade: "B"},
+    {nama: "Rina Wijaya", nilai: 68.7, grade: "C+"},
+    {nama: "Dedi Susanto", nilai: 59.9, grade: "C"}
+];
+
+const wadahTabel = document.getElementById("tabelMahasiswa");
+let tampilan = `<div class="table-header">No    Nama            Nilai     Grade</div>`;
+tampilan += `<div class="divider">--------------------------------------------------</div>`;
+
+dataMahasiswa.forEach((mhs, index) => {
+    let no = index + 1;
+    tampilan += `<div>${no.toString().padEnd(5)} ${mhs.nama.padEnd(15)} ${mhs.nilai.toFixed(1).padEnd(10)} ${mhs.grade.padEnd(5)}</div>`;
+});
+
+tampilan += `<div class="divider">--------------------------------------------------</div>`;
+wadahTabel.innerHTML = tampilan;
+
+// FUNGSI BELI PAKET
+function beliPaket(nama, harga) {
+    let nomor = "62882020654074";
+    let pesan = `Halo Admin! Saya mau beli ${nama} - Rp ${harga.toLocaleString('id-ID')}`;
+    let link = `https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`;
+    window.open(link, '_blank');
+}
+</script>
+
+</body>
+</html>
