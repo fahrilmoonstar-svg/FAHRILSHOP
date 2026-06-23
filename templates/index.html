@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Fahril 🛒 | VERSI SANGAR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f0f23;
+            color: #ffffff;
+        }
+
+        /* SIDEBAR CSS SESUAI KODE */
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background-color: #111111;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid #333333;
+        }
+
+        .sidebar a {
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+        }
+
+        .sidebar a:hover {
+            background-color: #444444;
+        }
+
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .footer {
+            margin-left: 200px;
+            padding: 15px;
+            background-color: #8a4997;
+            color: #ffffff;
+            text-align: center;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* TOMBOL MENU HP */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            background-color: #1a1a2e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .menu-toggle:hover {
+            background-color: #8a4997;
+        }
+
+        /* KARTU & ELEMEN UMUM */
+        .card {
+            background-color: #1a1a3a;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 1px solid #333333;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-wa {
+            background-color: #25d366;
+            color: white;
+        }
+
+        .btn-blue {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .btn-gold {
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #000000;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #444444;
+            background-color: #222222;
+            color: white;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        /* TABEL DATA */
+        .table-container {
+            background-color: #111111;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .table-header {
+            color: #00d8ff;
+            border-bottom: 1px solid #444444;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+
+        .divider {
+            color: #666666;
+            margin: 4px 0;
+        }
+
+        /* RESPONSIVE UNTUK HP */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            .sidebar {
+                left: -200px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .content, .footer {
+                margin-left: 0 !important;
+            }
+        }
+
+        /* EFEK ANIMASI & BUG */
+        @keyframes invisible {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .invisible-bug { animation: invisible 1.5s infinite; }
+
+        @keyframes crashUI {
+            0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
+            25% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+            50% { transform: translate(2px, -2px); filter: hue-rotate(180deg); }
+            75% { transform: translate(-2px, -2px); filter: hue-rotate(270deg); }
+            100% { transform: translate(0, 0); filter: hue-rotate(360deg); }
+        }
+        .crash-effect { animation: crashUI 0.2s infinite; }
+
+        @keyframes iosCrash {
+            0% { clip-path: inset(0 0 0 0); }
+            20% { clip-path: inset(5% 0 15% 0); }
+            40% { clip-path: inset(10% 0 5% 0); }
+            60% { clip-path: inset(3% 0 8% 0); }
+            80% { clip-path: inset(8% 0 3% 0); }
+            100% { clip-path: inset(0 0 0 0); }
+        }
+        .ios-crash { animation: iosCrash 0.15s infinite; }
+
+        .btn-effect {
+            background-color: #ff4757;
+            color: white;
+            margin: 5px;
+            width: auto;
+            display: inline-block;
+        }
+
+        /* AREA ANIMASI KARAKTER */
+        #areaKarakter {
+            background-color: #1a1a2e;
+            border-radius: 12px;
+            border: 1px solid #333333;
+            margin-top: 15px;
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        #overlayMulai {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: rgba(0,0,0,0.8);
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="menu-toggle">☰</button>
+
+    <div class="sidebar">
+        <a href="/">🏠 BERANDA</a>
+        <a href="/login-erls">🔐 LOGIN ERLS</a>
+        <a href="/admin">⚙️ ADMIN PANEL</a>
+        <a href="/game">🎮 GAME</a>
+        <a href="/control">📱 KONTROL</a>
+        <a href="#" onclick="tampilPeringatan()">⚠️ INVISIBLE BUG</a>
+        <a href="#" onclick="aktifkanCrash()">💥 CRASH UI</a>
+        <a href="#" onclick="aktifkanIOS()">🍎 CRASH iOS</a>
+    </div>
+
+    <div class="content">
+        <h2 style="text-align:center; margin-bottom:20px; color:#ffd700;">🛒 TOKO FAHRIL | VERSI SANGAR 🗿</h2>
+
+        <div class="card">
+            <h3>📦 PEMBELIAN PRODUK</h3>
+            <form method="POST">
+                <label>Pilih Produk:</label>
+                <select name="produk" required>
+                    <option value="1">Kuota Smartfren 4GB - Rp 22.000</option>
+                    <option value="2">Kuota Smartfren 10GB - Rp 22.000</option>
+                    <option value="3">Alight Motion Premium - Rp 7.000</option>
+                    <option value="4">Kuota Unlimited 28H - Rp 67.000</option>
+                    <option value="5">Jasa Edit Video JJ - Rp 1.000</option>
+                </select>
+
+                <label>Jumlah:</label>
+                <input type="number" name="jumlah" value="1" min="1">
+
+                <button type="submit" class="btn btn-blue">✅ TAMPILKAN PESANAN</button>
+            </form>
+
+            {% if hasil %}
+            <div style="margin-top:15px; padding:12px; background:#22332e; border-radius:8px; border-left:4px solid #2ecc71;">
+                ✅ Berhasil!<br>
+                Produk: {{ hasil.nama }}<br>
+                Total Harga: <b>Rp {{ hasil.total }}</b>
+                <a href="{{ link_wa }}" target="_blank" class="btn btn-wa">📲 PESAN VIA WA</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h3 style="color:#ff4757; text-align:center;">💀 SISTEM BUG</h3>
+            <div style="text-align:center;">
+                <button class="btn btn-effect" onclick="aktifkanInvisible()">🟦 INVISIBLE BUG</button>
+                <button class="btn btn-effect" onclick="aktifkanCrash()">💥 CRASH UI</button>
+                <button class="btn btn-effect" onclick="aktifkanIOS()">🍎 iOS CRASH</button>
+                <button class="btn btn-effect" onclick="nonaktifkanSemua()">✅ NORMAL</button>
+            </div>
+            <p id="statusEfek" style="margin-top:10px; text-align:center; color:#aaaaaa;">Status: NORMAL ✅</p>
+        </div>
+
+        <div class="card">
+            <h3 style="color:#00ffcc;">🔧 CEK KONDISI SISTEM</h3>
+            
+            <label>🕒 Masukkan Jam (0-23):</label>
+            <input type="number" id="inputJam" value="10" min="0" max="23">
+            
+            <label>🌡️ Masukkan Suhu (°C):</label>
+            <input type="number" id="inputSuhu" value="28" min="-10" max="50">
+            
+            <label>📊 Masukkan Nilai Ujian:</label>
+            <input type="number" id="inputNilai" value="75" min="0" max="100">
+
+            <button class="btn btn-blue" onclick="cekSemua()">✅ CEK HASIL</button>
+
+            <div id="hasilCek" style="margin-top:15px; padding:10px; background:#111; border-radius:6px;">
+                📌 Hasil akan muncul di sini...
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color:#00ff99; margin-bottom:10px;">🐍 ANIMASI KARAKTER BERJALAN</h3>
+            <canvas id="areaKarakter" width="450" height="280"></canvas>
+            <div id="overlayMulai" onclick="mulaiAnimasi()">KLIK UNTUK MULAI 🚀</div>
+        </div>
+
+        <div class="card">
+            <h3 style="color:#ffd700; text-align:center; margin-bottom:15px;">👑 PAKET PREMIUM</h3>
+            
+            <button class="btn btn-gold" onclick="beliPaket('Dasar', 25000)">PAKET DASAR - Rp 25.000</button>
+            <button class="btn btn-gold" onclick="beliPaket('Lengkap', 50000)">PAKET LENGKAP - Rp 50.000</button>
+            <button class="btn btn-gold" onclick="beliPaket('Plus', 100000)">PAKET PLUS - Rp 100.000</button>
+        </div>
+
+        <div class="card">
+            <h3 style="color:#00d8ff; margin-bottom:10px;">📋 DATA MAHASISWA</h3>
+            <div class="table-container" id="tabelMahasiswa"></div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        &copy; 2026 Toko Fahril | SYSTEM V3.6 🗿
+    </div>
+
+<script>
+// SIDEBAR TOGGLE
+const menuToggle = document.querySelector('.menu-toggle');
+const sidebar = document.querySelector('.sidebar');
+if (menuToggle && sidebar) {
+    menuToggle.addEventListener('click', () => sidebar.classList.toggle('active'));
+}
+
+// TABEL DATA
+const dataMahasiswa = [
+    {nama: "Budi Santoso", nilai: 85.5, grade: "A"},
+    {nama: "Siti Aminah", nilai: 92.0, grade: "A+"},
+    {nama: "Andi Pratama", nilai: 76.3, grade: "B"},
+    {nama: "Rina Wijaya", nilai: 68.7, grade: "C+"},
+    {nama: "Dedi Susanto", nilai: 59.9, grade: "C"}
+];
+
+const wadahTabel = document.getElementById("tabelMahasiswa");
+if (wadahTabel) {
+    let tampilanTabel = `<div class="table-header">No    Nama            Nilai     Grade</div>`;
+    tampilanTabel += `<div class="divider">--------------------------------------------------</div>`;
+
+    dataMahasiswa.forEach((mhs, index) => {
+        tampilanTabel += `<div>${(index+1).toString().padEnd(5)} ${mhs.nama.padEnd(15)} ${mhs.nilai.toFixed(1).padEnd(10)} ${mhs.grade.padEnd(5)}</div>`;
+    });
+
+    tampilanTabel += `<div class="divider">--------------------------------------------------</div>`;
+    wadahTabel.innerHTML = tampilanTabel;
+}
+
+// EFEK BUG & CRASH
+const statusText = document.getElementById('statusEfek');
+
+function aktifkanInvisible() {
+    const semua = document.querySelectorAll('.card, .btn, .table-container, canvas');
+    semua.forEach(el => el.classList.add('invisible-bug'));
+    if(statusText) {
+        statusText.innerHTML = "STATUS: INVISIBLE BUG 🟥";
+        statusText.style.color = "#ff4757";
+    }
+}
+
+function aktifkanCrash() {
+    nonaktifkanSemua();
+    const semua = document.querySelectorAll('.card, .content, .btn');
+    semua.forEach(el => el.classList.add('crash-effect'));
+    if(statusText) {
+        statusText.innerHTML = "STATUS: CRASH UI 💥";
+        statusText.style.color = "#ff6b6b";
+    }
+}
+
+function aktifkanIOS() {
+    nonaktifkanSemua();
+    const semua = document.querySelectorAll('.card, .table-container');
+    semua.forEach(el => el.classList.add('ios-crash'));
+    if(statusText) {
+        statusText.innerHTML = "STATUS: iOS CRASH 🍎";
+        statusText.style.color = "#ffa502";
+    }
+}
+
+function nonaktifkanSemua() {
+    const semua = document.querySelectorAll('.card, .btn, .table-container, canvas, .content');
+    semua.forEach(el => el.classList.remove('invisible-bug', 'crash-effect', 'ios-crash'));
+    if(statusText) {
+        statusText.innerHTML = "STATUS: NORMAL ✅";
+        statusText.style.color = "#2ed573";
+    }
+}
+
+function tampilPeringatan() {
+    alert("⚠️ SISTEM BUG TERDETEKSI\nIni hanya efek visual, tidak merusak sistem apapun 🗿");
+}
+
+// CEK KONDISI SISTEM
+function cekSemua() {
+    const jamInput = document.getElementById("inputJam");
+    const suhuInput = document.getElementById("inputSuhu");
+    const nilaiInput = document.getElementById("inputNilai");
+
+    if (!jamInput || !suhuInput || !nilaiInput) return;
+
+    const jam = parseInt(jamInput.value);
+    const suhu = parseFloat(suhuInput.value);
+    const nilai = parseInt(nilaiInput.value);
+
+    let hasil = "<b>📊 HASIL CEK SISTEM:</b><br><br>";
+
+    hasil += jam >= 18 ? `🕒 ${jam} WIB → 💡 <b>LAMPU MENYALA</b><br>` : `🕒 ${jam} WIB → 🔌 <b>LAMPU MATI</b><br>`;
+
+    if (suhu >= 30) hasil += `🌡️ ${suhu}°C → 🔥 <b>PANAS - NYALAKAN KIPAS</b><br>`;
+    else if (suhu >= 20) hasil += `🌡️ ${suhu}°C → ✅ <b>SUHU NYAMAN</b><br>`;
+    else hasil += `🌡️ ${suhu}°C → ❄️ <b>DINGIN - NYALAKAN PEMANAS</b><br>`;
+
+    if (nilai >= 90) hasil += `📊 ${nilai} → 🟢 <b>NILAI A - SANGAT BAGUS</b><br>`;
+    else if (nilai >= 80) hasil += `📊 ${nilai} → 🟢 <b>NILAI B - BAGUS</b><br>`;
+    else if (nilai >= 70) hasil += `📊 ${nilai} → 🟡 <b>NILAI C - CUKUP</b><br>`;
+    else if (nilai >= 60) hasil += `📊 ${nilai} → 🟠 <b>NILAI D - PERLU BELAJAR</b><br>`;
+    else hasil += `📊 ${nilai} → 🔴 <b>NILAI E - TIDAK LULUS</b><br>`;
+
+    const hasilCek = document.getElementById("hasilCek");
+    if (hasilCek) hasilCek.innerHTML = hasil;
+}
+
+// ANIMASI KARAKTER BERJALAN
+const canvas = document.getElementById('areaKarakter');
+const ctx = canvas ? canvas.getContext('2d') : null;
+
+let animasiMulai = false;
+let waktu = 0;
+const JUMLAH_BAGIAN = 22;
+const JARAK_BAGIAN = 11;
+let bagianTubuh = [];
+
+let mouse = {
+    x: canvas ? canvas.width / 2 : 0,
+    y: canvas ? canvas.height / 2 : 0
+};
+
+function buatBagian() {
+    bagianTubuh = [];
+    for (let i = 0; i < JUMLAH_BAGIAN; i++) {
+        bagianTubuh.push({
+            x: canvas.width / 2 + i * JARAK_BAGIAN,
+            y: canvas.height / 2,
+            sudut: 0,
+            ukuran: JARAK_BAGIAN * (0.8 + 0.4 * Math.sin((i / JUMLAH_BAGIAN) * Math.PI)),
+            faseKaki: i * 0.5,
+            jumlahKaki: (i % 3 === 0 && i < JUMLAH_BAGIAN - 3) ? 2 : 0
+        });
+    }
+}
+
+function gambarKarakter() {
+    if (!ctx || bagianTubuh.length === 0) return;
+
+    for (let i = 0; i < bagianTubuh.length; i++) {
+        const b = bagianTubuh[i];
+
+        if (i === 0) {
+            b.x += (mouse.x - b.x) * 0.07;
+            b.y += (mouse.y - b.y) * 0.07;
+        } else {
+            b.x += (bagianTubuh[i - 1].x - b.x) * 0.12;
+            b.y += (bagianTubuh[i - 1].y - b.y) * 0.12;
+        }
+
+        if (i > 0) {
+            b.sudut = Math.atan2(b.y - bagianTubuh[i - 1].y, b.x - bagianTubuh[i - 1].x);
+        }
+
+        ctx.save();
+        ctx.translate(b.x, b.y);
+        ctx.rotate(b.sudut);
+
+        ctx.fillStyle = '#ffd700';
+        ctx.beginPath();
+        ctx.roundRect(-b.ukuran / 2, -b.ukuran / 2, b.ukuran, b.ukuran, 8);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        if (b.jumlahKaki > 0) {
+            ctx.fillStyle = '#ffaa00';
+            for (let k = 0; k < b.jumlahKaki; k++) {
+                let posX = -b.ukuran / 2 - 4 + k * 7;
+                let posY = Math.sin(waktu + b.faseKaki + k) * 5;
+                ctx.fillRect(posX, posY, 4, 9);
+            }
+        }
+
+        if (i === 0) {
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(b.ukuran / 3, -b.ukuran / 3, 3.5, 0, Math.PI * 2);
+            ctx.arc(b.ukuran / 3, b.ukuran / 3, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        ctx.restore();
+    }
+}
+
+function updateAnimasi() {
+    if (!animasiMulai || !ctx || !canvas) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    waktu += 0.05;
+
+    bagianTubuh.forEach(b => {
+        b.x -= 1.3;
+        if (b.x < -40) b.x = canvas.width + 40;
+    });
+
+    gambarKarakter();
+    requestAnimationFrame(updateAnimasi);
+}
+
+if (canvas) {
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+    });
+
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.touches[0].clientX - rect.left;
+        mouse.y = e.touches[0].clientY - rect.top;
+    });
+}
+
+function mulaiAnimasi() {
+    const overlay = document.getElementById('overlayMulai');
+    if (!animasiMulai && overlay) {
+        animasiMulai = true;
+        overlay.style.display = 'none';
+        updateAnimasi();
+    }
+}
+
+function beliPaket(nama, harga) {
+    const nomorWA = "62882020654074";
+    const pesan = `Halo Admin! Saya mau beli ${nama} - Rp ${harga.toLocaleString('id-ID')}`;
+    window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
+}
+
+// INISIALISASI
+if (canvas) buatBagian();
+</script>
+
+</body>
+</html>
