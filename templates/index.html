@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAHRIL SHOP 🛒 | TOKO ONLINE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0f0f23;
+            color: #ffffff;
+        }
+
+        /* HEADER & SIDEBAR */
+        .header {
+            background-color: #111111;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            border-bottom: 1px solid #333333;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .menu-toggle {
+            background-color: #1a1a2e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 22px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .menu-toggle:hover {
+            background-color: #8a4997;
+        }
+
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background-color: #111111;
+            position: fixed;
+            left: 0;
+            top: 56px;
+            border-right: 1px solid #333333;
+            padding-top: 15px;
+            transition: 0.3s ease;
+            z-index: 998;
+        }
+
+        .sidebar a {
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+            padding: 15px 20px;
+            border-bottom: 1px solid #222222;
+            cursor: pointer;
+        }
+
+        .sidebar a:hover {
+            background-color: #444444;
+        }
+
+        /* HALAMAN */
+        .halaman {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .halaman.aktif {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* HUD & VERSI */
+        .hud {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            color: #ff3333;
+            font-size: 14px;
+            letter-spacing: 2px;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .hud.visible {
+            opacity: 1;
+        }
+
+        .hud-item {
+            margin-bottom: 8px;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        .version-tag {
+            position: fixed;
+            bottom: 10px;
+            right: 15px;
+            color: #333333;
+            font-size: 10px;
+            letter-spacing: 1px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        /* KONTEN */
+        .content {
+            margin-left: 220px;
+            margin-top: 60px;
+            padding: 25px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .judul-halaman {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffd700;
+        }
+
+        .card {
+            background-color: #1a1a3a;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+            border: 1px solid #333333;
+        }
+
+        /* KARTU PROFIL */
+        .profile-card {
+            background-color: #1a1a3a;
+            width: 280px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #333;
+            margin: 0 auto;
+        }
+
+        .foto-profil {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffd700;
+            margin-bottom: 15px;
+            background-color: #222;
+        }
+
+        .profile-card h3 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .profile-card p {
+            color: #aaaaaa;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .btn-follow {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .btn-follow:hover {
+            background-color: #1976D2;
+        }
+
+        .profile-card h4 {
+            color: #00ff99;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .profile-card ul {
+            text-align: left;
+            color: #ffffff;
+            padding-left: 20px;
+        }
+
+        .profile-card ul li {
+            margin-bottom: 5px;
+        }
+
+        /* KARTU PRODUK */
+        .container-produk {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .kartu-produk {
+            background-color: #1a1a3a;
+            border-radius: 12px;
+            border: 1px solid #333333;
+            overflow: hidden;
+            transition: 0.3s ease;
+        }
+
+        .kartu-produk:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+        }
+
+        .gambar-produk {
+            width: 100%;
+            height: 150px;
+            background-color: #222244;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        .isi-produk {
+            padding: 15px;
+        }
+
+        .nama-produk {
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .deskripsi {
+            font-size: 13px;
+            color: #aaaaaa;
+            margin-bottom: 10px;
+        }
+
+        .harga {
+            font-size: 19px;
+            font-weight: bold;
+            color: #00ff99;
+            margin-bottom: 12px;
+        }
+
+        /* TOMBOL */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-blue {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .btn-blue:hover {
+            background-color: #1976D2;
+        }
+
+        .btn-wa {
+            background-color: #25d366;
+            color: white;
+        }
+
+        .btn-wa:hover {
+            background-color: #20bd5a;
+        }
+
+        .btn-gold {
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #000;
+        }
+
+        /* FORM & DATA */
+        #idForm {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        #nama, #pilihProduk {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #222;
+            color: white;
+        }
+
+        #lists {
+            margin-top: 15px;
+        }
+
+        .item-data {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-edit {
+            background: #2196F3;
+            color: white;
+            padding: 5px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .btn-hapus {
+            background: #ff4757;
+            color: white;
+            padding: 5px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .hasil-cek {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            background: #111;
+        }
+
+        /* RESPONSIVE HP */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -220px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .content, .footer {
+                margin-left: 0 !important;
+            }
+        }
+
+        /* EFEK */
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #444444;
+            background-color: #222222;
+            color: white;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .btn-effect {
+            background-color: #ff4757;
+            color: white;
+            margin: 5px;
+            width: auto;
+            display: inline-block;
+            font-size: 14px;
+        }
+
+        #areaKarakter {
+            background-color: #1a1a3a;
+            border-radius: 12px;
+            border: 1px solid #333333;
+            margin-top: 15px;
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: 280px;
+        }
+
+        #overlayMulai {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: rgba(0,0,0,0.8);
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+        }
+
+        .footer {
+            margin-left: 220px;
+            padding: 20px;
+            background-color: #111111;
+            color: #aaaaaa;
+            text-align: center;
+            border-top: 1px solid #333333;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* GAME BATU GUNTING KERTAS */
+        .pilihan-btn {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .pilihan-btn button {
+            padding: 15px;
+            font-size: 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #2196F3;
+            transition: 0.3s;
+        }
+        .pilihan-btn button:hover {
+            background: #1976D2;
+            transform: scale(1.05);
+        }
+        .skor {
+            display: flex;
+            justify-content: space-around;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .hasil-game {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background: #111;
+            min-height: 60px;
+        }
+        .btn-ulang {
+            background: #00ff99;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HUD & VERSI -->
+    <div class="hud" id="hudStatus">
+        <div class="hud-item">SYSTEM ONLINE</div>
+        <div class="hud-item">READY TO PLAY</div>
+    </div>
+    <div class="version-tag">v1.2.0</div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">FAHRIL SHOP 🛒</div>
+        <button class="menu-toggle">☰</button>
+    </header>
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <a onclick="bukaHalaman('beranda')">🏠 BERANDA</a>
+        <a onclick="bukaHalaman('profil')">👤 PROFIL</a>
+        <a onclick="bukaHalaman('pelanggan')">📋 DATA PELANGGAN</a>
+        <a onclick="bukaHalaman('game')">🎮 GAME</a>
+        <a onclick="bukaHalaman('kontrol')">📱 KONTROL</a>
+    </nav>
+
+    <!-- KONTEN UTAMA -->
+    <div class="content">
+
+        <!-- HALAMAN BERANDA -->
+        <div id="beranda" class="halaman aktif">
+            <h2 class="judul-halaman">🏠 BERANDA</h2>
+            <div class="card">
+                <h3 style="text-align:center; color:#ffd700;">📦 DAFTAR PRODUK KAMI</h3>
+                <div class="container-produk">
+
+                    <!-- PRODUK 1 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">🚀</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">Smart Unlimited FUP 700MB/Hari</h3>
+                            <p class="deskripsi">Kuota harian 700MB, berlaku 28 hari</p>
+                            <div class="harga">Rp 67.000</div>
+                            <a href="https://wa.me/+62882020654074?text=Halo+Admin,+saya+ingin+pesan+Smart+Unlimited+FUP+700MB/Hari" class="btn btn-wa">💬 Pesan Lewat WA</a>
+                            <button class="btn btn-blue">🛒 Masukkan Keranjang</button>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 2 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">📱</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">3GB + Unlimited App (14 Hari)</h3>
+                            <p class="deskripsi">Kuota utama + Unlimited WA/IG/TikTok</p>
+                            <div class="harga">Rp 22.000</div>
+                            <a href="https://wa.me/+62882020654074?text=Halo+Admin,+saya+ingin+pesan+3GB+Unlimited+App+14+Hari" class="btn btn-wa">💬 Pesan Lewat WA</a>
+                            <button class="btn btn-blue">🛒 Masukkan Keranjang</button>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 3 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">📶</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">10GB + Unlimited App (7 Hari)</h3>
+                            <p class="deskripsi">Kuota besar + Aplikasi favorit</p>
+                            <div class="harga">Rp 22.000</div>
+                            <a href="https://wa.me/+62882020654074?text=Halo+Admin,+saya+ingin+pesan+10GB+Unlimited+App+7+Hari" class="btn btn-wa">💬 Pesan Lewat WA</a>
+                            <button class="btn btn-blue">🛒 Masukkan Keranjang</button>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 4 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">🎬</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">Alight Motion Premium 1 Tahun</h3>
+                            <p class="deskripsi">Akun Premium aktif 1 tahun, bisa edit video profesional</p>
+                            <div class="harga">Rp 7.000</div>
+                            <a href="https://wa.me/+62882020654074?text=Halo+Admin,+saya+ingin+pesan+Alight+Motion+Premium+1+Tahun" class="btn btn-wa">💬 Pesan Lewat WA</a>
+                            <button class="btn btn-blue">🛒 Masukkan Keranjang</button>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 5 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">🎨</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">Jasa Edit Video & Foto</h3>
+                            <p class="deskripsi">Edit cepat & hasil bagus, cocok untuk konten</p>
+                            <div class="harga">Rp 1.000</div>
+                            <a href="https://wa.me/+62882020654074?text=Halo+Admin,+saya+ingin+pesan+Jasa+Edit+Video+&+Foto" class="btn btn-wa">💬 Pesan Lewat WA</a>
+                            <button class="btn btn-blue">🛒 Masukkan Keranjang</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN PROFIL -->
+        <div id="profil" class="halaman">
+            <h2 class="judul-halaman">👤 HALAMAN PROFIL</h2>
+            <div class="profile-card">
+                <!-- GAMBAR DARI FOLDER STATIC ✅ -->
+                <img src="/static/foto_profil.png" alt="Foto Profil" class="foto-profil">
+                <h3>FAHRIL SHOP</h3>
+                <p>Online Store & Digital Products</p>
+                <button class="btn-follow">Follow</button>
+                <h4>Skills</h4>
+                <ul>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JavaScript</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HALAMAN DATA PELANGGAN -->
+        <div id="pelanggan" class="halaman">
+            <h2 class="judul-halaman">📋 DATA PELANGGAN</h2>
+            <div class="card">
+                <form id="idForm">
+                    <input type="text" id="nama" placeholder="Nama Pembeli">
+                    <select id="pilihProduk">
+                        <option value="67000">Smart Unlimited - Rp 67.000</option>
+                        <option value="22000">3GB+Unlimited - Rp 22.000</option>
+                        <option value="22000">10GB+Unlimited - Rp 22.000</option>
+                        <option value="7000">Alight Motion - Rp 7.000</option>
+                        <option value="1000">Jasa Edit - Rp 1.000</option>
+                    </select>
+                    <button type="submit" class="btn btn-gold">✅ SIMPAN DATA</button>
+                </form>
+                <button class="btn btn-blue" onclick="cekBeli()">🔍 CEK SYARAT BELI</button>
+                <div class="hasil-cek" id="statusBeli">✅ BISA MEMBELI | ADA CARA BAYAR</div>
+                <div id="lists"></div>
+            </div>
+        </div>
+
+        <!-- HALAMAN GAME -->
+        <div id="game" class="halaman">
+            <h2 class="judul-halaman">🎮 BATU GUNTING KERTAS</h2>
+            <div class="card">
+                <div class="skor">
+                    <div>👤 KAMU<br><strong id="skorPemain">0</strong></div>
+                    <div>🤖 KOMPUTER<br><strong id="skorKomputer">0</strong></div>
+                </div>
+                <div class="pilihan-btn">
+                    <button onclick="mainGame('batu')">🪨</button>
+                    <button onclick="mainGame('gunting')">✂️</button>
+                    <button onclick="mainGame('kertas')">📄</button>
+                </div>
+                <div class="hasil-game" id="hasilGame">Pilih untuk mulai!</div>
+                <button class="btn btn-ulang" onclick="ulangGame()">🔄 Ulang Permainan</button>
+            </div>
+        </div>
+
+        <!-- HALAMAN KONTROL -->
+        <div id="kontrol" class="halaman">
+            <h2 class="judul-halaman">📱 HALAMAN KONTROL</h2>
+            <div class="card">
+                <h3 style="color:#ff4757; text-align:center;">⚙️ SISTEM EFEK</h3>
+                <div style="text-align:center;">
+                    <button class="btn btn-effect" onclick="normalMode()">🟦 NORMAL</button>
+                    <button class="btn btn-effect" onclick="crashMode()">💥 CRASH</button>
+                    <button class="btn btn-effect" onclick="iosMode()">🍎 IOS</button>
+                    <button class="btn btn-effect" onclick="resetMode()">✅ RESET</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3 style="color:#00ff99;">🐍 ANIMASI LOGO</h3>
+                <div id="areaKarakter">
+                    <div id="overlayMulai" onclick="mulaiAnimasi()">KLIK UNTUK MULAI 🚀</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        &copy; 2026 FAHRIL SHOP | Dibuat dengan HTML & CSS 🗿
+    </div>
+
+    <script>
+        // Tampil HUD saat buka
+        window.addEventListener('load', () => {
+            document.getElementById('hudStatus').classList.add('visible');
+            setTimeout(() => {
+                document.getElementById('hudStatus').classList.remove('visible');
+            }, 3000);
+        });
+
+        // Buka halaman
+        function bukaHalaman(id) {
+            document.querySelectorAll('.halaman').forEach(el => el.classList.remove('aktif'));
+            document.getElementById(id).classList.add('aktif');
+            document.querySelector('.sidebar').classList.remove('active');
+        }
+
+        // Menu HP
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        // Mode Tampilan
+        function normalMode() {
+            document.querySelectorAll('.card, .btn').forEach(el => el.classList.remove('crash-effect', 'ios-crash'));
+        }
+        function crashMode() {
+            normalMode();
+            document.querySelectorAll('.card, .content').forEach(el => el.classList.add('crash-effect'));
+        }
+        function iosMode() {
+            normalMode();
+            document.querySelectorAll('.card').forEach(el => el.classList.add('ios-crash'));
+        }
+        function resetMode() {
+            document.querySelectorAll('.crash-effect, .ios-crash').forEach(el => el.classList.remove('crash-effect', 'ios-crash'));
+        }
+
+        // Animasi Logo
+        const canvas = document.getElementById('areaKarakter');
+        const ctx = canvas?.getContext('2d');
+        let animasiAktif = false;
+        let bagian = [];
+
+        function mulaiAnimasi() {
+            if (!ctx) return;
+            animasiAktif = true;
+            document.getElementById('overlayMulai').style.display = 'none';
+            bagian = [];
+            for(let i=0; i<22; i++) {
+                bagian.push({ x: 50 + i*11, y: 140, ukur: 11 * (0.8 + 0.4 * Math.sin(i*0.3)) });
+            }
+
+            function gambar() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                bagian.forEach((b, i) => {
+                    if(i === 0) {
+                        b.x += (100 - b.x) * 0.07;
+                        b.y += (140 - b.y) * 0.07;
+                    } else {
+                        b.x += (bagian[i-1].x - b.x) * 0.12;
+                        b.y += (bagian[i-1].y - b.y) * 0.12;
+                    }
+                    ctx.fillStyle = "#ffd700";
+                    ctx.beginPath();
+                    ctx.roundRect(b.x - b.ukur/2, b.y - b.ukur/2, b.ukur, b.ukur, 8);
+                    ctx.fill();
+                });
+                if(animasiAktif) requestAnimationFrame(gambar);
+            }
+            gambar();
+        }
+
+        // Data Pelanggan
+        const form = document.getElementById('idForm');
+        let dataPelanggan = JSON.parse(localStorage.getItem("pelanggan")) || [];
+
+        function tampilData() {
+            const list = document.getElementById('lists');
+            list.innerHTML = "";
+            dataPelanggan.forEach((item, i) => {
+                list.innerHTML += `
+                    <div class="item-data">
+                        <span>${item.nama} - Rp ${item.harga}</span>
+                        <div>
+                            <button class="btn-edit" onclick="editData(${i})">Edit</button>
+                            <button class="btn-hapus" onclick="hapusData(${i})">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            dataPelanggan.push({
+                nama: document.getElementById('nama').value,
+                harga: document.getElementById('pilihProduk').value
+            });
+            localStorage.setItem("pelanggan", JSON.stringify(dataPelanggan));
+            tampilData();
+            form.reset();
+        });
+
+        function editData(i) {
+            document.getElementById('nama').value = dataPelanggan[i].nama;
+            document.getElementById('pilihProduk').value = dataPelanggan[i].harga;
+            dataPelanggan.splice(i, 1);
+        }
+
+        function hapusData(i) {
+            dataPelanggan.splice(i, 1);
+            localStorage.setItem("pelanggan", JSON.stringify(dataPelanggan));
+            tampilData();
+        }
+
+        function cekBeli() {
+            document.getElementById('statusBeli').innerHTML = "✅ BISA MEMBELI | PEMBAYARAN TERSEDIA";
+        }
+
+        // GAME BATU GUNTING KERTAS
+        let skorPemain = 0;
+        let skorKomputer = 0;
+        const pilihan = ["batu", "gunting", "kertas"];
+
+        function mainGame(pemain) {
+            const acak = Math.floor(Math.random() * 3);
+            const komputer = pilihan[acak];
+            let hasil = "";
+            let warna = "";
+
+            if(pemain === komputer) {
+                hasil = "SERI";
+                warna = "#aaa";
+            } else if (
+                (pemain === "batu" && komputer === "gunting") ||
+                (pemain === "gunting" && komputer === "kertas") ||
+                (pemain === "kertas" && komputer === "batu")
+            ) {
+                hasil = "KAMU MENANG ✅";
+                warna = "#00ff99";
+                skorPemain++;
+            } else {
+                hasil = "KOMPUTER MENANG ❌";
+                warna = "#ff4757";
+                skorKomputer++;
+            }
+
+            document.getElementById('hasilGame').innerHTML = `Kamu: ${pemain} vs Komputer: ${komputer}<br><span style="color:${warna}">${hasil}</span>`;
+            document.getElementById('skorPemain').textContent = skorPemain;
+            document.getElementById('skorKomputer').textContent = skorKomputer;
+        }
+
+        function ulangGame() {
+            skorPemain = 0;
+            skorKomputer = 0;
+            document.getElementById('skorPemain').textContent = 0;
+            document.getElementById('skorKomputer').textContent = 0;
+            document.getElementById('hasilGame').textContent = "Pilih untuk mulai!";
+        }
+
+        tampilData();
+    </script>
+
+</body>
+</html>
