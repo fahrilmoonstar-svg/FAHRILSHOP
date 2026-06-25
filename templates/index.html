@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAHRIL SHOP 🛒 | TOKO ONLINE</title>
+    <style>
+        :root {
+            --glass: #1a1a3a;
+            --accent: #00e5ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0f0f23;
+            color: #ffffff;
+        }
+
+        /* MENU STYLE */
+        .my-nav {
+            background-color: #111111;
+            border-bottom: 1px solid #333;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 999;
+            padding: 12px 20px;
+        }
+
+        .my-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .menu-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-item.active {
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        .menu-item:hover {
+            width: 160px;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 28px rgba(0, 229, 255, 0.22);
+        }
+
+        .menu-label {
+            opacity: 0;
+            max-width: 0;
+            transform: translateX(-8px);
+            transition: opacity .25s ease, max-width .45s ease, transform .35s ease;
+            white-space: nowrap;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .menu-item:hover .menu-label {
+            opacity: 1;
+            max-width: 100px;
+            transform: translateX(0);
+        }
+
+        .menu-icon {
+            font-size: 22px;
+        }
+
+        /* UMUM */
+        .content {
+            margin-top: 90px;
+            padding: 25px;
+        }
+
+        .halaman {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .halaman.aktif {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .judul-halaman {
+            text-align: center;
+            color: var(--accent);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* CARD & PRODUK */
+        .card {
+            background-color: #1a1a3a;
+            border-radius: 12px;
+            border: 1px solid #333;
+            padding: 20px;
+            margin: 15px auto;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        .card img {
+            width: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            color: #aaa;
+            margin: 5px 0;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-wa {
+            background: #25d366;
+            color: white;
+        }
+        .btn-wa:hover { opacity: 0.9; }
+
+        .btn-blue {
+            background: #2196F3;
+            color: white;
+        }
+        .btn-blue:hover { opacity: 0.9; }
+
+        .btn-gold {
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #000;
+        }
+
+        /* KARTU PRODUK */
+        .container-produk {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .kartu-produk {
+            background: #1a1a3a;
+            border-radius: 12px;
+            border: 1px solid #333;
+            width: 280px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .kartu-produk:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .gambar-produk {
+            height: 150px;
+            background: #222244;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        .isi-produk {
+            padding: 15px;
+        }
+
+        .nama-produk {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .deskripsi {
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 12px;
+        }
+
+        .harga {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00ff99;
+            margin-bottom: 15px;
+        }
+
+        /* ANIMASI KUCING SVG */
+        #svgContainer {
+            width: 180px;
+            height: 180px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* KOTAK HATI 3D */
+        #kotakHati {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+            border-radius: 12px;
+            margin: 15px 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #overlayMulaiHati {
+            position: absolute;
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background: rgba(0,0,0,0.7);
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+        }
+
+        /* DIV CLASS */
+        .container-div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: #12122b;
+            border-radius: 10px;
+            justify-content: center;
+        }
+
+        .div1, .div2, .div3, .div4 {
+            width: 200px;
+            height: 150px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .div1 { background: #ff6b6b; box-shadow: 0 0 15px rgba(255,107,107,0.4); }
+        .div2 { background: #4ecdc4; box-shadow: 0 0 15px rgba(78,205,196,0.4); }
+        .div3 { background: #45b7d1; box-shadow: 0 0 15px rgba(69,183,229,0.4); }
+        .div4 { background: #96ceb4; color: #222; box-shadow: 0 0 15px rgba(150,206,180,0.4); }
+
+        /* GAME */
+        .skor {
+            display: flex;
+            justify-content: space-around;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .pilihan-btn {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pilihan-btn button {
+            padding: 15px;
+            font-size: 30px;
+            border: none;
+            border-radius: 8px;
+            background: #2196F3;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .pilihan-btn button:hover {
+            box-shadow: 0 0 15px #2196F3;
+            transform: scale(1.05);
+        }
+
+        .hasil-game {
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGASI -->
+    <nav class="my-nav">
+        <ul>
+            <li class="menu-item active" onclick="bukaHalaman('beranda')">
+                <span class="menu-icon">🏠</span>
+                <span class="menu-label">Beranda</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('div')">
+                <span class="menu-icon">📦</span>
+                <span class="menu-label">Div Class</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('python')">
+                <span class="menu-icon">🐍</span>
+                <span class="menu-label">Python</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('profil')">
+                <span class="menu-icon">👤</span>
+                <span class="menu-label">Profil</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('pelanggan')">
+                <span class="menu-icon">📋</span>
+                <span class="menu-label">Pelanggan</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('game')">
+                <span class="menu-icon">🎮</span>
+                <span class="menu-label">Game</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('ai')">
+                <span class="menu-icon">🤖</span>
+                <span class="menu-label">Bantuan</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('kasir')">
+                <span class="menu-icon">🧾</span>
+                <span class="menu-label">Kasir</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('kontrol')">
+                <span class="menu-icon">⚙️</span>
+                <span class="menu-label">Pengaturan</span>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content">
+
+        <!-- HALAMAN BERANDA -->
+        <div id="beranda" class="halaman aktif">
+            <h2 class="judul-halaman">🏠 BERANDA</h2>
+
+            <!-- ANIMASI KUCING SVG ✅ -->
+            <div id="svgContainer">
+                <svg width="150" height="150" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="cat">
+                    <path d="M30 20 L40 10 L50 20 L60 10 L70 20 L80 30 L70 40 L60 30 L50 40 L40 30 L30 40 Z" fill="#ff9a9e"/>
+                    <circle cx="50" cy="50" r="30" fill="#ff9a9e"/>
+                    <circle cx="40" cy="45" r="4" fill="#000" class="cat-eye"/>
+                    <circle cx="60" cy="45" r="4" fill="#000" class="cat-eye"/>
+                    <path d="M45 60 L50 65 L55 60" stroke="#000" stroke-width="2" class="cat-mouth"/>
+                    <path d="M40 55 L35 60" stroke="#000" stroke-width="2" class="cat-tail"/>
+                    <path d="M60 55 L65 60" stroke="#000" stroke-width="2" class="cat-tail"/>
+                </svg>
+            </div>
+
+            <div class="card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1010/1010782.png" alt="Logo">
+                <h3>FAHRIL SHOP</h3>
+                <p>✅ TOP UP & PRODUK DIGITAL ✅</p>
+                <p>Selamat Datang di Toko Saya</p>
+                <p>🟢 Layanan Cepat & Aman 🟢</p>
+                <p>📱 Mobile Legends | 🎬 Alight Motion | 📶 Kuota</p>
+            </div>
+
+            <h3 class="judul-halaman" style="font-size: 20px; margin-top: 30px;">📦 DAFTAR PRODUK</h3>
+
+            <div class="container-produk">
+                <!-- PRODUK 1 -->
+                <div class="kartu-produk">
+                    <div class="gambar-produk">🚀</div>
+                    <div class="isi-produk">
+                        <div class="nama-produk">Smart Unlimited 700MB/Hari</div>
+                        <div class="deskripsi">Kuota harian 700MB | Aktif 28 Hari</div>
+                        <div class="harga">Rp 67.000</div>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+Smart+Unlimited+700MB+Hari" class="btn btn-wa" target="_blank">💬 PESAN VIA WA</a>
+                    </div>
+                </div>
+
+                <!-- PRODUK 2 -->
+                <div class="kartu-produk">
+                    <div class="gambar-produk">📶</div>
+                    <div class="isi-produk">
+                        <div class="nama-produk">10GB + Unlimited Apps</div>
+                        <div class="deskripsi">10GB Utama | Unlimited WA/IG/TikTok</div>
+                        <div class="harga">Rp 22.000</div>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+10GB+Unlimited+Apps" class="btn btn-wa" target="_blank">💬 PESAN VIA WA</a>
+                    </div>
+                </div>
+
+                <!-- PRODUK 3 -->
+                <div class="kartu-produk">
+                    <div class="gambar-produk">📶</div>
+                    <div class="isi-produk">
+                        <div class="nama-produk">3GB + Unlimited Sosmed</div>
+                        <div class="deskripsi">3GB Utama | Aktif 7 Hari</div>
+                        <div class="harga">Rp 12.000</div>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+3GB+Unlimited+Sosmed" class="btn btn-wa" target="_blank">💬 PESAN VIA WA</a>
+                    </div>
+                </div>
+
+                <!-- PRODUK 4 -->
+                <div class="kartu-produk">
+                    <div class="gambar-produk">🎬</div>
+                    <div class="isi-produk">
+                        <div class="nama-produk">Alight Motion Premium</div>
+                        <div class="deskripsi">Fitur lengkap | Bebas iklan | 1 Tahun</div>
+                        <div class="harga">Rp 7.000</div>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+Alight+Motion+Premium" class="btn btn-gold" target="_blank">🔥 BELI SEKARANG</a>
+                    </div>
+                </div>
+
+                <!-- PRODUK 5 -->
+                <div class="kartu-produk">
+                    <div class="gambar-produk">✂️</div>
+                    <div class="isi-produk">
+                        <div class="nama-produk">Jasa Edit Video & Foto</div>
+                        <div class="deskripsi">Harga mulai Rp5.000 | Cepat & Bagus</div>
+                        <div class="harga">Mulai Rp 5.000</div>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+Jasa+Edit+Video+Foto" class="btn btn-blue" target="_blank">✍️ PESAN JASA</a>
+                    </div>
+                </div>
+
+                <!-- PRODUK 6 -->
+                <div class="kartu-produk">
+                    <div class="gambar-produk">💎</div>
+                    <div class="isi-produk">
+                        <div class="nama-produk">Mobile Legends Diamond</div>
+                        <div class="deskripsi">28 Diamond - Cepat & Aman</div>
+                        <div class="harga">Rp 10.000</div>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+Top+Up+ML+28+Diamond" class="btn btn-wa" target="_blank">⚡ TOP UP SEKARANG</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN DIV CLASS -->
+        <div id="div" class="halaman">
+            <h2 class="judul-halaman">📦 CONTOH DIV CLASS</h2>
+            <div class="container-div">
+                <div class="div1">DIV 1</div>
+                <div class="div2">DIV 2</div>
+                <div class="div3">DIV 3</div>
+                <div class="div4">DIV 4</div>
+            </div>
+        </div>
+
+        <!-- HALAMAN PYTHON (SUDAH DIUBAH) -->
+        <div id="python" class="halaman">
+            <h2 class="judul-halaman">🐍 PROGRAM PYTHON</h2>
+            <div class="card">
+                <p style="color:#00ff99; font-size:16px;">✅ Program berjalan dengan baik: Menampilkan tulisan "Hello World!"</p>
+                <p style="color:#aaa; margin-top:10px;">Fitur program Python hanya untuk tampilan contoh saja ✅</p>
+            </div>
+        </div>
+
+        <!-- HALAMAN PROFIL -->
+        <div id="profil" class="halaman">
+            <h2 class="judul-halaman">👤 PROFIL TOKO</h2>
+            <div class="card">
+                <h3>FAHRIL SHOP</h3>
+                <p>Toko Digital & Top Up Game</p>
+                <p>📍 Jakarta Timur</p>
+                <p>✅ Terpercaya & Cepat</p>
+            </div>
+        </div>
+
+        <!-- HALAMAN PELANGGAN -->
+        <div id="pelanggan" class="halaman">
+            <h2 class="judul-halaman">📋 DATA PELANGGAN</h2>
+            <div class="card">
+                <p style="color:#aaa;">Fitur sedang dikembangkan ✨</p>
+            </div>
+        </div>
+
+        <!-- HALAMAN GAME -->
+        <div id="game" class="halaman">
+            <h2 class="judul-halaman">🎮 GAME BATU KERTAS GUNTING</h2>
+            <div class="card">
+                <div class="skor">
+                    <div>Kamu: <span id="skorKamu">0</span></div>
+                    <div>Komputer: <span id="skorComp">0</span></div>
+                </div>
+                <div class="pilihan-btn">
+                    <button onclick="mainGame('Batu')">✊</button>
+                    <button onclick="mainGame('Kertas')">✋</button>
+                    <button onclick="mainGame('Gunting')">✌️</button>
+                </div>
+                <div class="hasil-game" id="hasil">Pilih salah satu untuk mulai!</div>
+            </div>
+        </div>
+
+        <!-- HALAMAN BANTUAN -->
+        <div id="ai" class="halaman">
+            <h2 class="judul-halaman">🤖 BANTUAN</h2>
+            <div class="card">
+                <p>Jika ada kendala silakan hubungi kami lewat WA ✅</p>
+            </div>
+        </div>
+
+        <!-- HALAMAN KASIR -->
+        <div id="kasir" class="halaman">
+            <h2 class="judul-halaman">🧾 PROGRAM KASIR</h2>
+            <div class="card">
+                <p style="color:#aaa;">Fitur akan segera hadir ✨</p>
+            </div>
+        </div>
+
+        <!-- HALAMAN PENGATURAN -->
+        <div id="kontrol" class="halaman">
+            <h2 class="judul-halaman">⚙️ PENGATURAN</h2>
+            <div class="card">
+                <p style="color:#aaa;">Tampilan sudah disesuaikan ✅</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // BUKA HALAMAN
+        function bukaHalaman(id) {
+            document.querySelectorAll('.halaman').forEach(h => h.classList.remove('aktif'));
+            document.getElementById(id).classList.add('aktif');
+
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        // ANIMASI KUCING
+        const cat = document.querySelector('.cat');
+        setInterval(() => {
+            cat.style.transform = "rotate(" + (Math.sin(Date.now() * 0.002) * 3) + "deg)";
+        }, 50);
+
+        // GAME BATU KERTAS GUNTING
+        let skorKamu = 0;
+        let skorComp = 0;
+
+        function mainGame(pilihanUser) {
+            const pilihan = ['Batu', 'Kertas', 'Gunting'];
+            const pilihanComp = pilihan[Math.floor(Math.random() * 3)];
+            let hasil = "";
+
+            if(pilihanUser === pilihanComp) {
+                hasil = "🤝 SERI!";
+            } else if(
+                (pilihanUser === 'Batu' && pilihanComp === 'Gunting') ||
+                (pilihanUser === 'Kertas' && pilihanComp === 'Batu') ||
+                (pilihanUser === 'Gunting' && pilihanComp === 'Kertas')
+            ) {
+                hasil = "✅ KAMU MENANG!";
+                skorKamu++;
+            } else {
+                hasil = "❌ KOMPUTER MENANG!";
+                skorComp++;
+            }
+
+            document.getElementById('skorKamu').textContent = skorKamu;
+            document.getElementById('skorComp').textContent = skorComp;
+            document.getElementById('hasil').innerHTML = `Kamu: ${pilihanUser} | Komputer: ${pilihanComp} <br> ${hasil}`;
+        }
+    </script>
+
+</body>
+</html>
