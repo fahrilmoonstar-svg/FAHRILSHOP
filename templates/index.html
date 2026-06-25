@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAHRIL SHOP 🛒 | TOKO ONLINE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0f0f23;
+            color: #ffffff;
+        }
+
+        /* ==============================
+           EFEK MENU
+        ============================== */
+        .my-nav {
+            background-color: #111111;
+            border-bottom: 1px solid #333;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 999;
+            padding: 12px 20px;
+        }
+
+        .my-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .menu-item {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: width .45s cubic-bezier(.22, 1, .36, 1), 
+                        background .3s ease, 
+                        box-shadow .3s ease;
+            background-color: #1a1a2e;
+            cursor: pointer;
+            padding: 0 14px;
+        }
+
+        .menu-item:hover {
+            width: 160px;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 28px rgba(0, 229, 255, 0.22);
+        }
+
+        .menu-label {
+            opacity: 0;
+            max-width: 0;
+            transform: translateX(-8px);
+            transition: opacity .25s ease, 
+                        max-width .45s ease, 
+                        transform .35s ease;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .menu-item:hover .menu-label {
+            opacity: 1;
+            max-width: 100px;
+            transform: translateX(0);
+        }
+
+        .menu-icon {
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* =====================================
+           STYLE DARI GAMBAR BARU ✅
+        ===================================== */
+        .overlay-panel {
+            clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+            transition: 900ms cubic-bezier(.77, 0, .18, 1);
+        }
+
+        .overlay-panel {
+            transition: clip-path 900ms cubic-bezier(.77, 0, .18, 1);
+        }
+
+        .auth-container.active .overlay-panel {
+            transform: translateX(-100%);
+            clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%);
+        }
+
+        .auth-container.active .form-panel--login {
+            opacity: 0;
+            transform: translateX(-80px);
+            filter: blur(6px);
+        }
+
+        /* STYLE CARD SEBELUMNYA */
+        .card {
+            background-color: aquamarine;
+            font-family: poppins;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            margin: 25px;
+            border-radius: 8%;
+            color: #000;
+        }
+
+        .card img {
+            width: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            margin-bottom: 0px;
+            margin-top: 10px;
+        }
+
+        .card p {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .card button {
+            background-color: #25ea70bb;
+            border-radius: 5px;
+            border: none;
+            padding: 8px 20px;
+            margin-top: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #000;
+        }
+        .card button:hover {
+            background-color: #1fc95f;
+        }
+
+        /* =====================================
+           ISI WEB & SEMUA PRODUK LENGKAP
+        ===================================== */
+        .content {
+            margin-top: 90px;
+            padding: 25px;
+        }
+
+        .halaman {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .halaman.aktif {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* KARTU PRODUK LENGKAP SEPERTI ASLI */
+        .container-produk {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .kartu-produk {
+            background-color: #1a1a3a;
+            border-radius: 12px;
+            border: 1px solid #333333;
+            overflow: hidden;
+            transition: 0.3s ease;
+            width: 280px;
+        }
+
+        .kartu-produk:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+        }
+
+        .gambar-produk {
+            width: 100%;
+            height: 150px;
+            background-color: #222244;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        .isi-produk {
+            padding: 15px;
+        }
+
+        .nama-produk {
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .deskripsi {
+            font-size: 13px;
+            color: #aaaaaa;
+            margin-bottom: 10px;
+        }
+
+        .harga {
+            font-size: 19px;
+            font-weight: bold;
+            color: #00ff99;
+            margin-bottom: 12px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.3s ease;
+        }
+
+        .btn-wa {
+            background-color: #25d366;
+            color: white;
+        }
+        .btn-wa:hover {
+            background-color: #20bd5a;
+        }
+        .btn-blue {
+            background-color: #2196F3;
+            color: white;
+        }
+        .btn-blue:hover {
+            background-color: #1976D2;
+        }
+        .btn-gold {
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #000;
+        }
+
+        /* KOTAK HATI 3D */
+        #kotakHati {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+            border-radius: 12px;
+            margin: 15px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #overlayMulaiHati {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: rgba(0,0,0,0.8);
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+            z-index: 2;
+        }
+
+        /* RESPONSIVE HP */
+        @media (max-width: 768px) {
+            .my-nav ul {
+                justify-content: center;
+            }
+            .container-produk {
+                justify-content: center;
+            }
+        }
+
+        /* DIV CLASS */
+        .container-div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background-color: #12122b;
+            border-radius: 10px;
+            justify-content: center;
+        }
+
+        .div1, .div2, .div3, .div4 {
+            width: 200px;
+            height: 150px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+        }
+        .div1 { background:#ff6b6b; }
+        .div2 { background:#4ecdc4; box-shadow: 0 4px 12px rgba(78,205,196,0.3); }
+        .div3 { background:#45b7d1; box-shadow: 0 4px 12px rgba(69,183,209,0.3); }
+        .div4 { background:#96ceb4; color:#222; box-shadow: 0 4px 12px rgba(150,206,180,0.3); }
+
+        /* PYTHON */
+        .keterangan-fungsi {
+            background: #111;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            color: #00ff99;
+        }
+
+        .hasil-output {
+            background: #0a0a1a;
+            border: 1px solid #00ff99;
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 18px;
+            color: white;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-jalankan {
+            background: linear-gradient(45deg, #00ff99, #2196F3);
+            color: black;
+            font-weight: bold;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        /* GAME & KASIR */
+        .skor {
+            display: flex;
+            justify-content: space-around;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .pilihan-btn {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .pilihan-btn button {
+            padding: 15px;
+            font-size: 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #2196F3;
+            transition: 0.3s;
+        }
+        .pilihan-btn button:hover {
+            background: #1976D2;
+            transform: scale(1.05);
+        }
+        .hasil-game {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background: #111;
+            min-height: 60px;
+        }
+
+        .judul-halaman {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGASI -->
+    <nav class="my-nav">
+        <ul>
+            <li class="menu-item" onclick="bukaHalaman('beranda')">
+                <span class="menu-icon">🏠</span>
+                <span class="menu-label">Beranda</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('div')">
+                <span class="menu-icon">📦</span>
+                <span class="menu-label">Div Class</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('python')">
+                <span class="menu-icon">🐍</span>
+                <span class="menu-label">Python</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('profil')">
+                <span class="menu-icon">👤</span>
+                <span class="menu-label">Profil</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('pelanggan')">
+                <span class="menu-icon">📋</span>
+                <span class="menu-label">Pelanggan</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('game')">
+                <span class="menu-icon">🎮</span>
+                <span class="menu-label">Game</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('ai')">
+                <span class="menu-icon">🤖</span>
+                <span class="menu-label">Bantuan</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('kasir')">
+                <span class="menu-icon">🧾</span>
+                <span class="menu-label">Kasir</span>
+            </li>
+            <li class="menu-item" onclick="bukaHalaman('kontrol')">
+                <span class="menu-icon">⚙️</span>
+                <span class="menu-label">Pengaturan</span>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content">
+
+        <!-- HALAMAN BERANDA -->
+        <div id="beranda" class="halaman aktif">
+            <h2 class="judul-halaman">🏠 BERANDA</h2>
+            <div id="kotakHati">
+                <div id="overlayMulaiHati">✨ KLIK DISINI ✨</div>
+            </div>
+
+            <!-- CARD UTAMA -->
+            <div class="card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1010/1010782.png" alt="Logo">
+                <h3>FAHRIL SHOP</h3>
+                <p>Toko Produk Digital & Kuota Data</p>
+                <button>💌 PESAN SEKARANG</button>
+            </div>
+
+            <!-- ✅ SEMUA PRODUK LENGKAP & SUDAH DIUBAH ✅ -->
+            <div class="card">
+                <h3 style="color:#ffd700; text-align:center; margin-bottom:20px;">📦 DAFTAR PRODUK KAMI</h3>
+                <div class="container-produk">
+
+                    <!-- PRODUK 1 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">🚀</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">Smart Unlimited FUP 700MB/Hari</h3>
+                            <p class="deskripsi">Kuota harian 700MB | Masa aktif 28 hari</p>
+                            <div class="harga">Rp 67.000</div>
+                            <a href="https://wa.me/62882020654074?text=Halo+Admin,+saya+ingin+pesan+Smart+Unlimited+FUP+700MB/Hari" class="btn btn-wa">💬 Pesan Lewat WA</a>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 2 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">📶</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">10GB + Unlimited Apps</h3>
+                            <p class="deskripsi">Kuota 10GB + Unlimited WA/IG/TikTok | 7 Hari</p>
+                            <div class="harga">Rp 22.000</div>
+                            <a href="https://wa.me/62882020654074?text=Halo+Admin,+saya+ingin+pesan+10GB+Unlimited+Apps+7+Hari" class="btn btn-wa">💬 Pesan Lewat WA</a>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 3 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">📶</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">3GB + Unlimited Apps</h3>
+                            <p class="deskripsi">Kuota 3GB + Unlimited WA/IG/TikTok | 7 Hari</p>
+                            <div class="harga">Rp 12.000</div>
+                            <a href="https://wa.me/62882020654074?text=Halo+Admin,+saya+ingin+pesan+3GB+Unlimited+Apps+7+Hari" class="btn btn-wa">💬 Pesan Lewat WA</a>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 4 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">🎬💫</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">Alight Motion Premium</h3>
+                            <p class="deskripsi">Bebas iklan & fitur lengkap 1 Tahun</p>
+                            <div class="harga">Rp 7.000</div>
+                            <a href="https://wa.me/62882020654074?text=Halo+Admin,+saya+ingin+pesan+Alight+Motion+Premium+1+Tahun" class="btn btn-gold">🔥 BELI SEKARANG</a>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 5 -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">🎨</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">Jasa Edit Video & Foto</h3>
+                            <p class="deskripsi">Edit cepat & berkualitas untuk konten sosmed</p>
+                            <div class="harga">Mulai Rp 5.000</div>
+                            <a href="https://wa.me/62882020654074?text=Halo+Admin,+saya+ingin+pesan+Jasa+Edit+Video+Dan+Foto" class="btn btn-blue">✍️ PESAN JASA</a>
+                        </div>
+                    </div>
+
+                    <!-- ✅ PRODUK TOP UP ML SUDAH DIUBAH JADI 28 DM ✅ -->
+                    <div class="kartu-produk">
+                        <div class="gambar-produk">💎</div>
+                        <div class="isi-produk">
+                            <h3 class="nama-produk">Mobile Legends Diamond</h3>
+                            <p class="deskripsi">✅ 28 Diamond | Top up cepat & otomatis masuk</p>
+                            <div class="harga">Rp 10.000</div>
+                            <a href="https://wa.me/62882020654074?text=Halo+Admin,+saya+ingin+Top+Up+ML+28+Diamond+Harga+10Ribu" class="btn btn-wa">⚡ TOP UP SEKARANG</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN LAINNYA -->
+        <div id="div" class="halaman">
+            <h2 class="judul-halaman">📦 CONTOH DIV CLASS</h2>
+            <div class="card">
+                <div class="container-div">
+                    <div class="div1">DIV 1</div>
+                    <div class="div2">DIV 2</div>
+                    <div class="div3">DIV 3</div>
+                    <div class="div4">DIV 4</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="python" class="halaman">
+            <h2 class="judul-halaman">🐍 PROGRAM PYTHON</h2>
+            <div class="card">
+                <div class="keterangan-fungsi">
+                    ✅ Menampilkan teks "Hello World!"
+                </div>
+                <button class="btn-jalankan" onclick="jalankanPython()">▶️ TAMPILKAN</button>
+                <div class="hasil-output" id="hasilPy">Klik tombol di atas</div>
+            </div>
+        </div>
+
+        <div id="profil" class="halaman">
+            <h2 class="judul-halaman">👤 PROFIL</h2>
+            <div class="card" style="text-align:center;">
+                <h3>FAHRIL SHOP</h3>
+                <p style="color:#aaa;">Toko Digital & Jasa Edit | Jakarta Timur</p>
+            </div>
+        </div>
+
+        <div id="pelanggan" class="halaman">
+            <h2 class="judul-halaman">📋 DATA PELANGGAN</h2>
+            <div class="card">
+                <p style="color:#aaa; text-align:center;">Fitur akan segera hadir</p>
+            </div>
+        </div>
+
+        <div id="game" class="halaman">
+            <h2 class="judul-halaman">🎮 GAME BATU GUNTING KERTAS</h2>
+            <div class="card">
+                <div class="skor">
+                    <div>Kamu: <strong id="skorKamu">0</strong></div>
+                    <div>Komputer: <strong id="skorComp">0</strong></div>
+                </div>
+                <div class="pilihan-btn">
+                    <button onclick="pilihGame('Batu')">✊</button>
+                    <button onclick="pilihGame('Kertas')">✋</button>
+                    <button onclick="pilihGame('Gunting')">✌️</button>
+                </div>
+                <div class="hasil-game" id="hasilGame">Pilih untuk mulai!</div>
+            </div>
+        </div>
+
+        <div id="ai" class="halaman">
+            <h2 class="judul-halaman">🤖 BANTUAN</h2>
+            <div class="card">
+                <p style="color:#aaa; text-align:center;">Siap membantu kamu kapan saja</p>
+            </div>
+        </div>
+
+        <div id="kasir" class="halaman">
+            <h2 class="judul-halaman">🧾 PROGRAM KASIR</h2>
+            <div class="card">
+                <p style="color:#aaa; text-align:center;">Hitung harga & buat struk otomatis</p>
+            </div>
+        </div>
+
+        <div id="kontrol" class="halaman">
+            <h2 class="judul-halaman">⚙️ PENGATURAN</h2>
+            <div class="card">
+                <p style="color:#aaa; text-align:center;">Ubah tampilan sesuai selera</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script>
+        // BUKA HALAMAN
+        function bukaHalaman(id) {
+            document.querySelectorAll('.halaman').forEach(h => h.classList.remove('aktif'));
+            document.getElementById(id).classList.add('aktif');
+        }
+
+        // FUNGSI PYTHON
+        function jalankanPython() {
+            document.getElementById('hasilPy').textContent = "✅ HASIL : Hello World!";
+        }
+
+        // ANIMASI HATI 3D
+        const kotak = document.getElementById('kotakHati');
+        if(kotak) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, kotak.clientWidth / kotak.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({alpha:true});
+            renderer.setSize(kotak.clientWidth, kotak.clientHeight);
+            kotak.appendChild(renderer.domElement);
+
+            const bentukHati = new THREE.Shape();
+            bentukHati.moveo(0, -8o6);
+            bentukHati.bezierCurveTo(-1.6, -6.6, -6.6, -2, -8.8, 2.8);
+            bentukHati.bezierCurveTo(-9.1, 8, -3.5, 18, 0, 5.8);
+            bentukHati.bezierCurveTo(3.5, 18, 9.1, 8, 8.8, 2.8);
+            bentukHati.bezierCurveTo(6.6, -2, 1.6, -6.6, 0, -8.6);
+
+            const geometri = new THREE.ShapeGeometry(bentukHati);
+            const material = new THREE.MeshStandardMaterial(color:0xff2b6b, emissive:0xff004c, emissiveIntensity:0.8);
+            const hati = new THREE.Mesh(geometri, material);
+            scene.add(hati);
+            camera.position.z = 20;
+
+            function animasi() {
+                requestAnimationFrame(animasi);
+                hati.rotation.y += 0.01;
+                const skala = 1 + Math.sin(Date.now() * 0.002) * 0.1;
+                hati.scale.set(skala, skala, skala);
+                renderer.render(scene, camera);
+            }
+            animasi();
+        }
+
+        // GAME SEDERHANA
+        let skorKamu = 0;
+        let skorComp = 0;
+        function pilihGame(pemain) {
+            const pilihan = ['Batu','Kertas','Gunting'];
+            const comp = pilihan[Math.floor(Math.random()*3)];
+            let hasil = "";
+
+            if(pemain === comp) hasil = "🤝 SERI";
+            else if(
+                (pemain === 'Batu' && comp === 'Gunting') ||
+                (pemain === 'Kertas' && comp === 'Batu') ||
+                (pemain === 'Gunting' && comp === 'Kertas')
+            ) { hasil = "✅ KAMU MENANG!"; skorKamu++; }
+            else { hasil = "❌ KOMPUTER MENANG!"; skorComp++; }
+
+            document.getElementById('skorKamu').textContent = skorKamu;
+            document.getElementById('skorComp').textContent = skorComp;
+            document.getElementById('hasilGame').innerHTML = `Kamu: ${pemain} | Komputer: ${comp} <br> <strong>${hasil}</strong>`;
+        }
+    </script>
+</body>
+</html>
