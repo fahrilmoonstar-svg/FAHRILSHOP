@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAHRIL SHOP 🛒 | Top Up & Jasa Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00e5ff',
+                        secondary: '#8b5cf6',
+                        danger: '#ff0a6c',
+                        dark: '#12121f',
+                        dark2: '#1a1a2e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .neon-border::before {
+                content: '';
+                position: absolute;
+                inset: -2px;
+                background: conic-gradient(from 0deg, transparent 0deg 36deg, #00e5ff 36deg 48deg, transparent 48deg 126deg, #ff0a6c 126deg 138deg, transparent 138deg 216deg, #00e5ff 216deg 228deg, transparent 228deg 306deg, #ff0a6c 306deg 318deg, transparent 318deg 360deg);
+                border-radius: 18px;
+                z-index: -2;
+                filter: blur(1px) drop-shadow(0 0 10px #00e5ff80);
+                animation: rotate 6s linear infinite;
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(26, 26, 46, 0.85) 50%, rgba(22, 33, 62, 0.85) 100%);
+                background-image: url('https://oceanslinkupl.rf.gd/uploads/f527c432ccfc190df42d4f6749a61d00.jpg');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes rgb {
+            from { filter: hue-rotate(0deg); }
+            to { filter: hue-rotate(360deg); }
+        }
+
+        @keyframes berkedip {
+            0%, 100% { box-shadow: 0 0 25px currentColor, 0 0 50px rgba(0, 229, 255, 0.3); }
+            50% { box-shadow: 0 0 35px currentColor, 0 0 70px rgba(0, 229, 255, 0.5); }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-gray-200 font-sans">
+
+    <!-- NAVIGASI -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-dark/80 backdrop-blur-md border-b border-white/10 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <h1 class="text-xl font-bold text-primary">FAHRIL SHOP</h1>
+            <div class="flex gap-2 overflow-x-auto pb-1 md:overflow-visible">
+                <button onclick="bukaHalaman('beranda')" class="nav-btn active px-4 py-2 rounded-lg text-sm font-medium transition-all">🏠 Toko</button>
+                <button onclick="bukaHalaman('bio')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all">🔗 Bio Link</button>
+                <button onclick="bukaHalaman('tentang')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all">ℹ️ Tentang</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- KONTEN UTAMA -->
+    <main class="pt-20 pb-10 px-4 max-w-6xl mx-auto">
+
+        <!-- HALAMAN BERANDA / TOKO -->
+        <div id="beranda" class="halaman block">
+            <div class="text-center mb-10 animate-[fadeUp_0.6s_ease-out]">
+                <div class="inline-block text-[hsl(191.7,87.3%,65%)] animate-[rgb_5s_linear_infinite,_berkedip_2.5s_ease-in-out_infinite] px-8 py-5 rounded-2xl bg-dark2/80 border border-white/10 shadow-lg mb-6">
+                    <h2 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold">✨ FAHRIL SHOP ✨</h2>
+                </div>
+                <p class="text-gray-300 max-w-xl mx-auto">
+                    📱 Top Up Game | 📶 Kuota Data | 🎬 Aplikasi Premium | ✍️ Jasa Edit Video
+                </p>
+                <p class="text-primary mt-2">📍 Lokasi: Sulawesi Selatan</p>
+            </div>
+
+            <h3 class="text-xl font-semibold text-primary mb-6 text-center">📦 DAFTAR PRODUK</h3>
+
+            <!-- TEMPAT TAMPIL PRODUK (DIISI OTOMATIS OLEH KODE) -->
+            <div id="daftar-produk" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Produk akan muncul otomatis di sini -->
+            </div>
+        </div>
+
+        <!-- HALAMAN BIO LINK -->
+        <div id="bio" class="halaman hidden animate-[fadeUp_0.6s_ease-out]">
+            <div class="max-w-sm mx-auto bg-dark2 rounded-3xl overflow-hidden shadow-xl border border-white/10">
+                <div class="bg-gradient-to-r from-secondary to-primary p-6 text-center text-white">
+                    <div class="flex justify-between text-sm opacity-80 mb-4">
+                        <span>9:41</span>
+                        <span>FAHRIL SHOP</span>
+                        <span>📶</span>
+                    </div>
+                    <img src="/static/foto_profil.png" alt="Profil" class="w-24 h-24 rounded-full mx-auto border-4 border-white/30 object-cover mb-3">
+                    <h3 class="text-2xl font-bold mb-2">FAHRIL SHOP</h3>
+                    <p class="text-purple-100 text-sm">
+                        Toko Digital & Top Up Game • Cepat, Aman & Terpercaya 24 Jam
+                    </p>
+                    <div class="flex justify-center gap-4 mt-4">
+                        <a href="https://wa.me/62882020654074" target="_blank" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="p-6 space-y-4">
+                    <a href="https://wa.me/62882020654074" target="_blank" class="w-full bg-gradient-to-r from-secondary to-primary text-white font-semibold py-4 px-5 rounded-xl flex justify-between items-center hover:opacity-90 transition">
+                        <span>💬 Chat via WhatsApp</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#beranda" onclick="bukaHalaman('beranda')" class="w-full bg-dark border border-white/10 text-white font-semibold py-4 px-5 rounded-xl flex justify-between items-center hover:border-primary/50 transition">
+                        <span>🛒 Lihat Daftar Produk</span>
+                        <i class="fas fa-store"></i>
+                    </a>
+                    <a href="#" class="w-full bg-dark border border-white/10 text-white font-semibold py-4 px-5 rounded-xl flex justify-between items-center hover:border-primary/50 transition">
+                        <span>📸 Ikuti Instagram Kami</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <button class="w-full mt-2 bg-primary/10 border border-primary/30 text-primary font-medium py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-primary/20 transition">
+                        <i class="fas fa-star"></i> Dapatkan Promo Spesial
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN TENTANG -->
+        <div id="tentang" class="halaman hidden animate-[fadeUp_0.6s_ease-out] max-w-2xl mx-auto">
+            <h3 class="text-2xl font-bold text-primary mb-6 text-center">ℹ️ TENTANG KAMI</h3>
+            <div class="bg-dark2 rounded-2xl p-6 border border-white/10">
+                <p class="mb-4 text-gray-300">
+                    <strong>FAHRIL SHOP</strong> adalah toko online yang menyediakan layanan produk digital dan top up game dengan proses cepat, aman dan terpercaya.
+                </p>
+                <ul class="space-y-2 text-gray-300">
+                    <li>✅ Top Up Game (Mobile Legends, Free Fire, dll)</li>
+                    <li>✅ Paket Data & Kuota Internet</li>
+                    <li>✅ Aplikasi Premium (Alight Motion)</li>
+                    <li>✅ Jasa Edit Video & Desain</li>
+                    <li>✅ Layanan 24 Jam, Respon Cepat</li>
+                </ul>
+                <div class="mt-6 p-4 bg-dark rounded-xl border border-green-500/20">
+                    <p class="text-green-400 font-medium">📍 Lokasi: Sulawesi Selatan</p>
+                    <p class="text-green-400 font-medium">📞 Kontak: 0882-0206-54074</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark border-t border-white/10 py-6 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 FAHRIL SHOP. Semua hak dilindungi.</p>
+    </footer>
+
+    <script>
+        // ==============================================
+        // ✅ KODE PENTING: DATA PRODUK & FUNGSI WEBSITE
+        // Kamu cuma perlu ubah data di sini, otomatis berubah di semua tempat!
+        // ==============================================
+
+        // 1. DATA TOKO (MUDAH DIUBAH)
+        const dataToko = {
+            nama: "FAHRIL SHOP",
+            lokasi: "Sulawesi Selatan",
+            kontak: "0882-0206-54074",
+            waLink: "https://wa.me/62882020654074"
+        }
+
+        // 2. DAFTAR PRODUK (INI YANG BISA DIUBAH SESUKA HATI)
+        const daftarProduk = [
+            {
+                ikon: "📶",
+                nama: "Smart Unlimited 700MB/Hari",
+                deskripsi: "Kuota harian 700MB | Aktif 28 Hari",
+                harga: "Rp 67.000"
+            },
+            {
+                ikon: "📶",
+                nama: "10GB + Unlimited Apps 7 Hari",
+                deskripsi: "10GB Utama | Unlimited WA/IG/TikTok",
+                harga: "Rp 22.000"
+            },
+            {
+                ikon: "📶",
+                nama: "3GB + Unlimited Apps 14 Hari",
+                deskripsi: "3GB Utama | Unlimited WA/IG/TikTok",
+                harga: "Rp 22.000"
+            },
+            {
+                ikon: "🎬",
+                nama: "Alight Motion Premium",
+                deskripsi: "Full Fitur | Bebas Iklan | 1 Tahun",
+                harga: "Rp 7.000"
+            },
+            {
+                ikon: "💎",
+                nama: "Mobile Legends 28 Diamond",
+                deskripsi: "Top Up Cepat & Aman 24 Jam",
+                harga: "Rp 10.000"
+            },
+            {
+                ikon: "🎮",
+                nama: "Free Fire 50 Diamond",
+                deskripsi: "Top Up Cepat & Terpercaya",
+                harga: "Rp 8.000"
+            },
+            {
+                ikon: "⚙️",
+                nama: "Jasa Edit Video Alight Motion",
+                deskripsi: "Harga Mulai Dari Rp 5.000",
+                harga: "Mulai Rp 5.000"
+            }
+        ]
+
+        // ==============================================
+        // FUNGSI UNTUK MEMBUAT PRODUK OTOMATIS
+        // ==============================================
+        function tampilkanProduk() {
+            const wadah = document.getElementById('daftar-produk');
+            
+            daftarProduk.forEach(produk => {
+                const kartu = document.createElement('div');
+                kartu.className = 'relative bg-dark2 rounded-xl p-[2px] neon-border';
+                
+                kartu.innerHTML = `
+                    <div class="bg-dark2 rounded-xl p-5 h-full flex flex-col">
+                        <div class="text-4xl mb-3">${produk.ikon}</div>
+                        <h4 class="text-lg font-bold text-white mb-2">${produk.nama}</h4>
+                        <p class="text-gray-400 text-sm mb-3">${produk.deskripsi}</p>
+                        <p class="text-primary text-xl font-bold mt-auto">${produk.harga}</p>
+                        <a href="${dataToko.waLink}?text=Halo+Admin+saya+mau+pesan+${produk.nama.replace(/ /g, '+')}" target="_blank" class="mt-4 w-full bg-[#25d366] hover:bg-[#20bd5a] text-white font-medium py-2.5 rounded-lg text-center transition">💬 PESAN VIA WA</a>
+                    </div>
+                `;
+
+                wadah.appendChild(kartu);
+            });
+        }
+
+        // ==============================================
+        // FUNGSI PENGGANTI HALAMAN
+        // ==============================================
+        function bukaHalaman(id) {
+            document.querySelectorAll('.halaman').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('block');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-primary/20', 'text-primary');
+                btn.classList.add('text-gray-400');
+            });
+            event.currentTarget.classList.add('bg-primary/20', 'text-primary');
+            event.currentTarget.classList.remove('text-gray-400');
+        }
+
+        // ==============================================
+        // SAAT HALAMAN PERTAMA KALI DIBUKA
+        // ==============================================
+        window.onload = () => {
+            tampilkanProduk(); // Produk muncul otomatis
+            bukaHalaman('beranda');
+
+            // Ubah teks lokasi di bagian atas
+            document.querySelector('.text-primary.mt-2').textContent = `📍 Lokasi: ${dataToko.lokasi}`;
+        };
+    </script>
+
+</body>
+</html>
