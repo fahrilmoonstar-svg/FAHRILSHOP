@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAHRIL SHOP 🛒 | Top Up & Belajar Kode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00e5ff',
+                        secondary: '#8b5cf6',
+                        danger: '#ff0a6c',
+                        dark: '#121220',
+                        dark2: '#1a1a2e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .neon-border::before {
+                content: '';
+                position: absolute;
+                inset: -2px;
+                background: conic-gradient(from 0deg, transparent 0deg 36deg, #00e5ff 36deg 48deg, transparent 48deg 126deg, #ff0a6c 126deg 138deg, transparent 138deg 216deg, #00e5ff 216deg 228deg, transparent 228deg 306deg, #ff0a6c 306deg 318deg, transparent 318deg 360deg);
+                border-radius: 18px;
+                z-index: -2;
+                filter: blur(1px) drop-shadow(0 0 10px #00e5ff80);
+                animation: rotate 6s linear infinite;
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(26, 26, 46, 0.85) 50%, rgba(22, 33, 62, 0.85) 100%);
+                background-image: url('https://oceanslinkupl.rf.gd/uploads/f527c432ccfc190df42d4f6749a61d00.jpg');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }
+            .clock .frame {
+                position: absolute;
+                height: 95vmin;
+                width: 95vmin;
+                top: 50%;
+                left: 50%;
+                transform: translateY(-50%) translateX(-50%);
+            }
+            .clock .frame svg #knobs {
+                -webkit-animation: breathe 5s linear infinite;
+                animation: breathe 5s linear infinite;
+            }
+            .clock .frame svg #hands,
+            .clock .frame svg #hands g {
+                transform-origin: 657.5px 657.5px;
+            }
+            @keyframes rotate {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            @keyframes fadeUp {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes rgb {
+                from { filter: hue-rotate(0deg); }
+                to { filter: hue-rotate(360deg); }
+            }
+            @keyframes berkedip {
+                0%, 100% { box-shadow: 0 0 25px currentColor, 0 0 50px rgba(0, 229, 255, 0.3); }
+                50% { box-shadow: 0 0 35px currentColor, 0 0 70px rgba(0, 229, 255, 0.5); }
+            }
+            @keyframes breathe {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+                100% { transform: scale(1); }
+            }
+            @keyframes putarJarum {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+
+            #nav-links.active {
+                display: flex !important;
+            }
+        }
+    </style>
+
+    <!-- ✅ CSS DARI SEMUA GAMBAR SEBELUMNYA -->
+    <style>
+        body {
+            background: aqua;
+        }
+        h1 {
+            color: darkblue;
+            text-align: center;
+        }
+        input {
+            background: none;
+            border-color: white;
+            color: white;
+            width: 120px;
+        }
+        button {
+            color: black;
+        }
+    </style>
+
+</head>
+<body class="gradient-bg min-h-screen text-gray-200 font-sans">
+
+    <!-- ✅ HELLO WORLD DARI GAMBAR SEBELUMNYA -->
+    <h1>Hello, World!</h1>
+
+    <!-- ✅ ELEMEN UNTUK KODE GAMBAR BARU -->
+    <img id="gambar" alt="Gambar" class="hidden">
+    <a id="link" href="#" target="_blank" class="hidden"></a>
+
+    <nav class="fixed top-0 left-0 w-full z-50 bg-dark/80 backdrop-blur-md border-b border-white/10 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <h1 class="text-xl font-bold text-primary">FAHRIL SHOP</h1>
+            <button id="menu-btn" class="md:hidden text-white text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div id="nav-links" class="hidden md:flex flex-col md:flex-row gap-2 absolute top-full left-0 right-0 bg-dark/95 backdrop-blur-md p-4 md:p-0 border-b border-white/10 md:border-0">
+                <button onclick="bukaHalaman('beranda')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all">🏠 Toko</button>
+                <button onclick="bukaHalaman('belajar')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all">💻 Belajar Kode</button>
+                <button onclick="bukaHalaman('bio')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all">🔗 Bio Link</button>
+                <button onclick="bukaHalaman('tentang')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all">ℹ️ Tentang</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-10 px-4 max-w-6xl mx-auto">
+
+        <div id="beranda" class="halaman block">
+            <div class="relative w-full h-[400px] mb-10 overflow-hidden rounded-2xl border border-white/10">
+                <div class="clock absolute inset-0 flex items-center justify-center">
+                    <div class="frame">
+                        <svg viewBox="0 0 1315 1315" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="657.5" cy="657.5" r="620" stroke="#00e5ff" stroke-width="8" fill="none" />
+                            <g stroke="#8b5cf6" stroke-width="3">
+                                <line x1="657.5" y1="40" x2="657.5" y2="80"/>
+                                <line x1="1275" y1="657.5" x2="1235" y2="657.5"/>
+                                <line x1="657.5" y1="1275" x2="657.5" y2="1235"/>
+                                <line x1="40" y1="657.5" x2="80" y2="657.5"/>
+                                <line x1="1100" y1="200" x2="1120" y2="220"/>
+                                <line x1="215" y1="1100" x2="235" y2="1120"/>
+                                <line x1="1100" y1="1100" x2="1120" y2="1120"/>
+                                <line x1="200" y1="200" x2="220" y2="220"/>
+                            </g>
+                            <g id="hands">
+                                <line x1="657.5" y1="657.5" x2="657.5" y2="250" stroke="#ff0a6c" stroke-width="4" stroke-linecap="round" style="animation: putarJarum 60s linear infinite;" />
+                                <line x1="657.5" y1="657.5" x2="657.5" y2="280" stroke="#00e5ff" stroke-width="6" stroke-linecap="round" style="animation: putarJarum 360s linear infinite;" />
+                                <line x1="657.5" y1="657.5" x2="657.5" y2="400" stroke="#ffffff" stroke-width="7" stroke-linecap="round" style="animation: putarJarum 4320s linear infinite;" />
+                            </g>
+                            <g id="knobs">
+                                <circle cx="657.5" cy="120" r="18" fill="#00e5ff" />
+                                <circle cx="120" cy="657.5" r="18" fill="#00e5ff" />
+                                <circle cx="657.5" cy="1195" r="18" fill="#00e5ff" />
+                                <circle cx="1195" cy="657.5" r="18" fill="#00e5ff" />
+                                <circle cx="657.5" cy="657.5" r="12" fill="#ffffff" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4">
+                    <h1>✨ FAHRIL SHOP ✨</h1>
+                    <h2>📱 Top Up Game | 📶 Kuota Data | ✍️ Jasa Edit Video</h2>
+                    <p class="text-primary mt-2">📍 Lokasi: Sulawesi Selatan</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold text-primary mb-6 text-center">📦 DAFTAR PRODUK</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="relative bg-dark2 rounded-xl p-[2px] neon-border">
+                    <div class="bg-dark2 rounded-xl p-5 h-full flex flex-col">
+                        <div class="text-4xl mb-3">📶</div>
+                        <h4 class="text-lg font-bold text-white mb-2">Smart Unlimited 700MB/Hari</h4>
+                        <p class="text-gray-400 text-sm mb-3">Kuota harian 700MB | Aktif 28 Hari</p>
+                        <p class="text-primary text-xl font-bold mt-auto">Rp 67.000</p>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+Smart+Unlimited+700MB+Hari" target="_blank" class="mt-4 w-full bg-[#25d366] hover:bg-[#20bd5a] text-white font-medium py-2.5 rounded-lg text-center transition">💬 PESAN VIA WA</a>
+                    </div>
+                </div>
+
+                <div class="relative bg-dark2 rounded-xl p-[2px] neon-border">
+                    <div class="bg-dark2 rounded-xl p-5 h-full flex flex-col">
+                        <div class="text-4xl mb-3">📶</div>
+                        <h4 class="text-lg font-bold text-white mb-2">10GB + Unlimited Apps 7 Hari</h4>
+                        <p class="text-gray-400 text-sm mb-3">10GB Utama | Unlimited WA/IG/TikTok</p>
+                        <p class="text-primary text-xl font-bold mt-auto">Rp 22.000</p>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+10GB+Unlimited+Apps+7Hari" target="_blank" class="mt-4 w-full bg-[#25d366] hover:bg-[#20bd5a] text-white font-medium py-2.5 rounded-lg text-center transition">💬 PESAN VIA WA</a>
+                    </div>
+                </div>
+
+                <div class="relative bg-dark2 rounded-xl p-[2px] neon-border">
+                    <div class="bg-dark2 rounded-xl p-5 h-full flex flex-col">
+                        <div class="text-4xl mb-3">3GB + Unlimited Apps 14 Hari</h4>
+                        <p class="text-gray-400 text-sm mb-3">3GB Utama | Unlimited WA/IG/TikTok</p>
+                        <p class="text-primary text-xl font-bold mt-auto">Rp 22.000</p>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+3GB+Unlimited+Apps+14Hari" target="_blank" class="mt-4 w-full bg-[#25d366] hover:bg-[#20bd5a] text-white font-medium py-2.5 rounded-lg text-center transition">💬 PESAN VIA WA</a>
+                    </div>
+                </div>
+
+                <div class="relative bg-dark2 rounded-xl p-[2px] neon-border">
+                    <div class="bg-dark2 rounded-xl p-5 h-full flex flex-col">
+                        <div class="text-4xl mb-3">💎</div>
+                        <h4 class="text-lg font-bold text-white mb-2">Mobile Legends 28 Diamond</h4>
+                        <p class="text-gray-400 text-sm mb-3">Top Up Cepat & Aman 24 Jam</p>
+                        <p class="text-primary text-xl font-bold mt-auto">Rp 10.000</p>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+Top+Up+ML+28Diamond" target="_blank" class="mt-4 w-full bg-[#25d366] hover:bg-[#20bd5a] text-white font-medium py-2.5 rounded-lg text-center transition">💬 PESAN VIA WA</a>
+                    </div>
+                </div>
+
+                <div class="relative bg-dark2 rounded-xl p-[2px] neon-border">
+                    <div class="bg-dark2 rounded-xl p-5 h-full flex flex-col">
+                        <div class="text-4xl mb-3">🎮</div>
+                        <h4 class="text-lg font-bold text-white mb-2">Free Fire 50 Diamond</h4>
+                        <p class="text-gray-400 text-sm mb-3">Top Up Cepat & Terpercaya</p>
+                        <p class="text-danger text-xl font-bold mt-auto">Rp 8.000</p>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+Top+Up+FF+50Diamond" target="_blank" class="mt-4 w-full bg-[#25d366] hover:bg-[#20bd5a] text-white font-medium py-2.5 rounded-lg text-center transition">💬 PESAN VIA WA</a>
+                    </div>
+                </div>
+
+                <div class="relative bg-dark2 rounded-xl p-[2px] neon-border">
+                    <div class="bg-dark2 rounded-xl p-5 h-full flex flex-col">
+                        <div class="text-4xl mb-3">⚙️</div>
+                        <h4 class="text-lg font-bold text-white mb-2">Jasa Edit Video Alight Motion</h4>
+                        <p class="text-gray-400 text-sm mb-3">Harga Mulai Dari Rp 5.000</p>
+                        <p class="text-secondary text-xl font-bold mt-auto">Mulai Rp 5.000</p>
+                        <a href="https://wa.me/62882020654074?text=Halo+Admin+saya+mau+pesan+Jasa+Edit+Video" target="_blank" class="mt-4 w-full bg-[#25d366] hover:bg-[#20bd5a] text-white font-medium py-2.5 rounded-lg text-center transition">✍️ PESAN JASA</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="belajar" class="halaman hidden animate-[fadeUp_0.6s_ease-out]">
+            <h3 class="text-2xl font-bold text-primary mb-6 text-center">💻 BELAJAR PEMROGRAMAN</h3>
+            <p class="text-gray-400 text-center mb-8">Semua fitur lengkap & berjalan ✅</p>
+
+            <div class="bg-dark2 rounded-xl p-6 border border-white/10 mb-8">
+                <h4 class="text-lg font-bold text-white mb-3">🖼️ Contoh Gambar & Link</h4>
+                <div id="gambar-container" class="mb-4">
+                    <img id="gambar-preview" class="w-full max-w-md rounded-lg border border-primary/30" alt="Gambar dari kode">
+                </div>
+                <a id="link-preview" href="#" target="_blank" class="inline-block bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg text-sm font-medium">🔗 Buka Link Gambar</a>
+            </div>
+
+            <div class="bg-dark2 rounded-xl p-6 border border-white/10 mb-8">
+                <h4 class="text-lg font-bold text-white mb-3">🗑️ Contoh: Tombol Hapus Elemen</h4>
+                <div id="text" class="bg-dark rounded-lg p-4 mb-4 border border-primary/30">
+                    Ini adalah teks yang bisa dihapus dengan tombol di atas!
+                </div>
+                <button id="btn" class="bg-danger/20 hover:bg-danger/30 text-black px-5 py-2 rounded-lg text-sm font-medium transition">
+                    Klik untuk Hapus Teks
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-dark2 rounded-xl p-6 border border-white/10">
+                    <h4 class="text-lg font-bold text-white mb-2">🔢 Looping Angka 1-10</h4>
+                    <p class="text-gray-400 text-sm mb-4">Menampilkan angka dari 1 sampai 10</p>
+                    <button onclick="jalankan('looping')" class="bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg text-sm font-medium">▶️ Jalankan</button>
+                    <div id="res-looping" class="mt-3 bg-dark rounded-lg p-3 text-sm text-gray-300 min-h-[50px]">Hasil muncul di sini...</div>
+                </div>
+
+                <div class="bg-dark2 rounded-xl p-6 border border-white/10">
+                    <h4 class="text-lg font-bold text-white mb-2">✖️ Tabel Perkalian 1-10</h4>
+                    <p class="text-gray-400 text-sm mb-4">Menampilkan lengkap perkalian 1 sampai 10</p>
+                    <button onclick="jalankan('perkalian')" class="bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg text-sm font-medium">▶️ Jalankan</button>
+                    <div id="res-perkalian" class="mt-3 bg-dark rounded-lg p-3 text-sm text-gray-300 min-h-[50px] overflow-x-auto">Hasil muncul di sini...</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bio" class="halaman hidden"></div>
+        <div id="tentang" class="halaman hidden"></div>
+
+    </main>
+
+    <footer class="bg-dark border-t border-white/10 py-6 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 FAHRIL SHOP | Web Lengkap & Fitur Berjalan</p>
+    </footer>
+
+    <script>
+        // ✅ KODE DARI GAMBAR BARU: UBAH GAMBAR & LINK
+        let gambar = document.querySelector("#gambar");
+        let link = document.querySelector("#link");
+
+        gambar.setAttribute("src", "https://i.pinimg.com/736x/24/29/e7/2429e79eecea7d05b25df6aba3f54a80.jpg");
+
+        // Hubungkan ke elemen tampilan
+        document.getElementById("gambar-preview").src = gambar.src;
+        document.getElementById("link-preview").href = gambar.src;
+
+        // ✅ KODE SEBELUMNYA
+        let btn = document.querySelector("#btn");
+        let text = document.querySelector("#text");
+        btn.addEventListener("click", function() {
+            text.remove();
+        });
+
+        const menuBtn = document.querySelector("#menu-btn");
+        const navLinks = document.querySelector("#nav-links");
+        menuBtn.addEventListener("click", function() {
+            navLinks.classList.toggle("active");
+        });
+
+        function jalankan(jenis) {
+            let hasil = document.getElementById('res-' + jenis);
+            hasil.innerHTML = "⏳ Sedang memproses...";
+            setTimeout(() => {
+                if (jenis === 'looping') {
+                    let teks = "";
+                    for(let i=1; i<=10; i++) teks += i + "  ";
+                    hasil.innerHTML = `<span class="text-green-400">✅ Hasil: ${teks}</span>`;
+                }
+                else if (jenis === 'perkalian') {
+                    let teks = "";
+                    for(let a=1; a<=5; a++){
+                        for(let b=1; b<=10; b++) teks += `${a}x${b}=${a*b}  `;
+                        teks += "<br>";
+                    }
+                    hasil.innerHTML = `<span class="text-green-400">✅ Hasil:<br>${teks}</span>`;
+                }
+            }, 300);
+        }
+
+        function bukaHalaman(id) {
+            document.querySelectorAll('.halaman').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('block');
+            if(window.innerWidth < 768) navLinks.classList.remove('active');
+        }
+
+        window.onload = () => bukaHalaman('beranda');
+    </script>
+
+</body>
+</html>
