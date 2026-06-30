@@ -1,0 +1,90 @@
+{
+  "toko": {
+    "nama": "FAHRIL SHOP",
+    "tagline": "Layanan Top-Up & Jasa Digital | Cepat ✅ Aman ✅ Murah ✅",
+    "kontak": "62882020654074",
+    "tahun": "2026"
+  },
+  "produk": [
+    {
+      "kategori": "Mobile Legends",
+      "nama": "MLBB 28 Diamond",
+      "harga": "Rp 10.000",
+      "keterangan": "Diamond resmi, proses 1-5 menit",
+      "gambar": "https://i.ibb.co.com/BHkf68pp/ebcbb1aa79590d17a35a740e57bf774a.jpg",
+      "pesan_wa": "Halo Kak, pesan MLBB 28 DM"
+    },
+    {
+      "kategori": "Mobile Legends",
+      "nama": "MLBB 56 Diamond",
+      "harga": "Rp 17.000",
+      "keterangan": "Diamond resmi, masuk instan",
+      "gambar": "https://i.ibb.co.com/BHkf68pp/ebcbb1aa79590d17a35a740e57bf774a.jpg",
+      "pesan_wa": "Halo Kak, pesan MLBB 56 DM"
+    },
+    {
+      "kategori": "Mobile Legends",
+      "nama": "MLBB 86 Diamond",
+      "harga": "Rp 24.000",
+      "keterangan": "Diamond resmi, terpercaya",
+      "gambar": "https://i.ibb.co.com/BHkf68pp/ebcbb1aa79590d17a35a740e57bf774a.jpg",
+      "pesan_wa": "Halo Kak, pesan MLBB 86 DM"
+    },
+    {
+      "kategori": "Mobile Legends",
+      "nama": "MLBB 172 Diamond",
+      "harga": "Rp 47.000",
+      "keterangan": "Harga lebih hemat",
+      "gambar": "https://i.ibb.co.com/BHkf68pp/ebcbb1aa79590d17a35a740e57bf774a.jpg",
+      "pesan_wa": "Halo Kak, pesan MLBB 172 DM"
+    },
+    {
+      "kategori": "Mobile Legends",
+      "nama": "MLBB 257 Diamond",
+      "harga": "Rp 68.000",
+      "keterangan": "Paling laris dan cepat",
+      "gambar": "https://i.ibb.co.com/BHkf68pp/ebcbb1aa79590d17a35a740e57bf774a.jpg",
+      "pesan_wa": "Halo Kak, pesan MLBB 257 DM"
+    },
+    {
+      "kategori": "Free Fire",
+      "nama": "FF 70 Diamond",
+      "harga": "Rp 11.000",
+      "keterangan": "Diamond resmi, aman",
+      "gambar": "https://i.ibb.co.com/SwsXC0xf/8dbc6e3c498ccc0bd62a70a2a9d14704.jpg",
+      "pesan_wa": "Halo Kak, pesan FF 70 DM"
+    },
+    {
+      "kategori": "Free Fire",
+      "nama": "FF 140 Diamond",
+      "harga": "Rp 20.000",
+      "keterangan": "Harga terbaik",
+      "gambar": "https://i.ibb.co.com/SwsXC0xf/8dbc6e3c498ccc0bd62a70a2a9d14704.jpg",
+      "pesan_wa": "Halo Kak, pesan FF 140 DM"
+    },
+    {
+      "kategori": "Free Fire",
+      "nama": "FF 355 Diamond",
+      "harga": "Rp 44.000",
+      "keterangan": "Paling banyak dipakai",
+      "gambar": "https://i.ibb.co.com/SwsXC0xf/8dbc6e3c498ccc0bd62a70a2a9d14704.jpg",
+      "pesan_wa": "Halo Kak, pesan FF 355 DM"
+    },
+    {
+      "kategori": "Jasa & Edit",
+      "nama": "Jasa Edit Video",
+      "harga": "Mulai Rp 8.000",
+      "keterangan": "Preset & file proyek Alight Motion",
+      "gambar": "https://i.ibb.co.com/My33dxPw/88874932340ebdbe0fd027725a3c9eac.jpg",
+      "pesan_wa": "Halo Kak, pesan jasa edit video"
+    },
+    {
+      "kategori": "Paket Data",
+      "nama": "Kuota All Operator",
+      "harga": "Rp 9.000 - Rp 172.000",
+      "keterangan": "Telkomsel, Indosat, XL, Tri, Smartfren",
+      "gambar": "https://i.ibb.co.com/Fkd9pKCT/dc5666cf0352b0357c77f83e49a7842e.jpg",
+      "pesan_wa": "Halo Kak, tanya daftar paket kuota"
+    }
+  ]
+}
