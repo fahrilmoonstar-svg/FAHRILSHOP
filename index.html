@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAHRIL SHOP 🛒 | Layanan Digital</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
+        body { background:#f0f4f8; color:#333; }
+
+        /* 🔒 Proteksi Kode */
+        .strobo { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; transition:opacity .2s ease; pointer-events:none; }
+        .typewriter { position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); font-size:32px; font-weight:bold; color:#fff; z-index:10000; display:flex; gap:4px; }
+        .typewriter-letter { display:inline-block; opacity:0; transform:translateY(10px); animation:ketik .3s ease forwards; }
+        @keyframes ketik { to { opacity:1; transform:translateY(0); } }
+
+        /* Header & Umum */
+        header { background:linear-gradient(135deg, #2563eb, #1d4ed8); color:white; padding:1.2rem; text-align:center; border-radius:0 0 12px 12px; margin-top:1rem; }
+        .container { max-width:1200px; margin:0 auto; padding:1rem; }
+        h2 { text-align:center; margin:1.5rem 0; color:#1e40af; }
+
+        /* Pencarian & Filter */
+        .search-box { max-width:500px; margin:0 auto 1.5rem; position:relative; }
+        #cariProduk { width:100%; padding:.8rem 1rem; padding-left:2.5rem; border:2px solid #e2e8f0; border-radius:8px; font-size:1rem; outline:none; transition:border .2s; }
+        #cariProduk:focus { border-color:#2563eb; }
+        .search-icon { position:absolute; left:.8rem; top:50%; transform:translateY(-50%); color:#94a3b8; }
+        .filter-wrapper { display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center; margin-bottom:2rem; }
+        .filter-btn { padding:.6rem 1.2rem; border:none; border-radius:8px; background:#e2e8f0; color:#1e293b; font-weight:500; cursor:pointer; transition:all .2s ease; }
+        .filter-btn.active { background:#2563eb; color:white; box-shadow:0 2px 6px rgba(37,99,235,.3); }
+        .filter-btn:hover:not(.active) { background:#cbd5e1; }
+
+        /* Daftar Produk */
+        .produk-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.2rem; }
+        .kartu { background:white; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,.1); overflow:hidden; transition:transform .2s; }
+        .kartu:hover { transform:translateY(-3px); }
+        .foto-produk { width:100%; height:180px; object-fit:cover; background:#f3f4f6; }
+        .isi-kartu { padding:1rem; }
+        h3 { margin-bottom:.5rem; color:#1e40af; font-size:1.1rem; }
+        .deskripsi { font-size:.9rem; color:#666; margin-bottom:.8rem; }
+        .harga { font-weight:bold; color:#15803d; font-size:1.1rem; margin-bottom:1rem; }
+        .tombol-beli { display:block; text-align:center; background:#2563eb; color:white; padding:.7rem; border-radius:6px; text-decoration:none; font-weight:500; transition:background .2s; }
+        .tombol-beli:hover { background:#1d4ed8; }
+
+        /* 🆕 BAGIAN INPUT & TAMPIL TEKS */
+        .bagian-input { max-width:420px; margin:3rem auto; background:white; padding:2rem; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.1); }
+        .bagian-input h3 { text-align:center; margin-bottom:1.5rem; font-size:1.3rem; }
+        #username { width:100%; padding:.9rem 1rem; margin-bottom:1rem; border:2px solid #e2e8f0; border-radius:10px; font-size:1rem; transition:border-color .3s; }
+        #username:focus { outline:none; border-color:#2563eb; }
+        #btn { width:100%; padding:.9rem; background:#2563eb; color:white; border:none; border-radius:10px; font-weight:bold; font-size:1rem; cursor:pointer; transition:transform .2s, box-shadow .2s; }
+        #btn:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(37,99,235,.3); }
+        #result { margin-top:1.5rem; padding:1.2rem; background:#f8fafc; border-radius:10px; border-left:4px solid #2563eb; font-size:1.1rem; color:#1e293b; min-height:3rem; display:flex; align-items:center; transition:all .3s ease; }
+        .pesan-kosong { color:#dc2626 !important; border-left-color:#dc2626 !important; background:#fef2f2 !important; }
+        .pesan-sukses { color:#166534 !important; border-left-color:#16a34a !important; background:#f0fdf4 !important; }
+
+        /* Footer */
+        footer { text-align:center; padding:1.5rem; margin-top:2rem; color:#666; font-size:.9rem; }
+    </style>
+</head>
+<body>
+
+<!-- Efek Pembuka -->
+<div class="strobo"></div>
+<div class="typewriter"></div>
+
+<!-- Konten Toko -->
+<div id="konten-toko"></div>
+
+<!-- 🆕 BAGIAN INPUT & TAMPIL TEKS -->
+<div class="container">
+    <div class="bagian-input">
+        <h3>📝 Coba Ketik Sesuatu!</h3>
+        <input type="text" id="username" placeholder="Masukkan nama atau pesanmu di sini...">
+        <button id="btn">Kirim & Tampilkan</button>
+        <div id="result"></div>
+    </div>
+</div>
+
+<script>
+// 🔒 Proteksi Kode
+document.oncontextmenu = () => false;
+document.onkeydown = (e) => {
+    if ((e.ctrlKey && [83,85,67].includes(e.keyCode)) || e.keyCode === 123) { e.preventDefault(); return false; }
+};
+
+// 🎬 Efek Pembuka
+const strobo = document.querySelector('.strobo');
+const typeDiv = document.querySelector('.typewriter');
+let interval = setInterval(() => { strobo.style.opacity = strobo.style.opacity === '1' ? '0' : '1'; }, 150);
+setTimeout(() => {
+    clearInterval(interval);
+    strobo.style.opacity = '0';
+    strobo.style.display = 'none';
+    const teks = ['F','A','H','R','I','L',' ','P','R','O','J','E','C','T'];
+    teks.forEach((huruf, i) => {
+        const span = document.createElement('span');
+        span.className = 'typewriter-letter';
+        span.textContent = huruf;
+        span.style.animationDelay = `${i * 120}ms`;
+        typeDiv.appendChild(span);
+    });
+    setTimeout(() => { typeDiv.style.opacity = '0'; typeDiv.style.transition = 'opacity .4s ease'; }, 1800);
+}, 3000);
+
+// 🚀 Variabel Global Toko
+let dataToko = {};
+let kataKunci = "";
+
+// 🚀 Muat Produk dari JSON
+async function tampilkanProduk(kategoriPilih = "Semua") {
+    try {
+        const res = await fetch('produk.json');
+        dataToko = await res.json();
+        const daftarKategori = ["Semua", ...new Set(dataToko.produk.map(p => p.kategori))];
+        const produkFilter = dataToko.produk.filter(item => {
+            const cocokKategori = kategoriPilih === "Semua" || item.kategori === kategoriPilih;
+            const cocokCari = item.nama.toLowerCase().includes(kataKunci.toLowerCase()) || item.keterangan.toLowerCase().includes(kataKunci.toLowerCase());
+            return cocokKategori && cocokCari;
+        });
+
+        document.getElementById('konten-toko').innerHTML = `
+            <header><h1>${dataToko.toko.nama} 🛒</h1><p>${dataToko.toko.tagline}</p></header>
+            <div class="container">
+                <h2>Daftar Layanan Kami</h2>
+                <div class="search-box"><span class="search-icon">🔍</span><input type="text" id="cariProduk" placeholder="Cari layanan..." value="${kataKunci}"></div>
+                <div class="filter-wrapper">${daftarKategori.map(k => `<button class="filter-btn ${k === kategoriPilih ? 'active' : ''}" onclick="tampilkanProduk('${k}')">${k}</button>`).join('')}</div>
+                <div class="produk-grid">
+                    ${produkFilter.length > 0 ? produkFilter.map(item => `
+                        <div class="kartu">
+                            <img src="${item.gambar}" alt="${item.nama}" class="foto-produk" loading="lazy">
+                            <div class="isi-kartu">
+                                <h3>${item.nama}</h3>
+                                <p class="deskripsi">${item.keterangan}</p>
+                                <div class="harga">${item.harga}</div>
+                                <a href="https://wa.me/${dataToko.toko.kontak}?text=${encodeURIComponent(item.pesan_wa)}" target="_blank" class="tombol-beli">Pesan Sekarang</a>
+                            </div>
+                        </div>
+                    `).join('') : `<div style="grid-column:1/-1; text-align:center; padding:3rem; color:#64748b;">😞 Layanan tidak ditemukan</div>`}
+                </div>
+            </div>
+            <footer>&copy; ${dataToko.toko.tahun} ${dataToko.toko.nama} | Semua Hak Dilindungi</footer>
+        `;
+
+        // Aktifkan Pencarian
+        document.getElementById('cariProduk').addEventListener('input', (e) => { kataKunci = e.target.value; tampilkanProduk(kategoriPilih); });
+    } catch (err) {
+        document.getElementById('konten-toko').innerHTML = `<div style="text-align:center; padding:3rem; color:red;">❌ Pastikan file <b>produk.json</b> ada di folder yang sama!</div>`;
+        console.error(err);
+    }
+}
+
+// 🚀 FUNGSI BAGIAN INPUT & TAMPIL TEKS
+const input = document.querySelector("#username");
+const tombol = document.querySelector("#btn");
+const hasil = document.querySelector("#result");
+
+tombol.addEventListener("click", function() {
+    const teks = input.value.trim();
+    if (teks === "") {
+        hasil.textContent = "⚠️ Oops! Kolom tidak boleh kosong ya.";
+        hasil.className = "pesan-kosong";
+        return;
+    }
+    hasil.textContent = `✅ Kamu menulis: ${teks}`;
+    hasil.className = "pesan-sukses";
+    setTimeout(() => { input.value = ""; }, 1000);
+    setTimeout(() => { hasil.textContent = ""; hasil.className = ""; }, 6000);
+});
+input.addEventListener("keydown", (e) => { if (e.key === "Enter") tombol.click(); });
+
+// Jalankan Saat Halaman Selesai Dimuat
+window.onload = tampilkanProduk;
+
+// 🤖 Fungsi Bot Tetap Tersedia
+const config = { prefix: '.' };
+async function updateUser(jid, data) {
+    if (!window.userData) window.userData = {};
+    if (!window.userData[jid]) window.userData[jid] = {};
+    Object.assign(window.userData[jid], data);
+    return window.userData[jid];
+}
+async function executeCommand(sock, m, cmd, args) {
+    if (cmd === 'menu') {
+        await sock.sendMessage(m.key.remoteJid, { text: `📋 MENU ${dataToko?.toko?.nama || 'FAHRIL SHOP'} 🛒\n\n• .mlbb → Daftar MLBB\n• .ff → Daftar Free Fire\n• .edit → Jasa Edit\n• .kuota → Paket Data` });
+    }
+}
+async function handleMessage(sock, m) {
+    if (!m.message || !m.key?.remoteJid) return;
+    const teks = (m.message.conversation || m.message.extendedTextMessage?.text || "").trim();
+    if (!teks || !teks.startsWith(config.prefix)) return;
+    const argsArray = teks.slice(config.prefix.length).trim().split(/\s+/);
+    const cmd = argsArray.shift().toLowerCase();
+    await updateUser(m.key.remoteJid, { lastUsed: Date.now() });
+    await executeCommand(sock, m, cmd, argsArray.join(" "));
+}
+if (typeof module !== 'undefined') module.exports = { handleMessage };
+</script>
+
+</body>
+</html>
