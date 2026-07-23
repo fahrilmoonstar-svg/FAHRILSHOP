@@ -1,0 +1,3166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopUp Store - Digital Products</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ============ HEADER WITH LOGO ============ */
+        .header {
+            text-align: center;
+            padding: 20px 0 10px 0;
+            border-bottom: 2px solid #f0f2f5;
+            margin-bottom: 24px;
+        }
+
+        .header .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header .logo-container img {
+            max-width: 200px;
+            width: 70%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        /* ============ AUTH SECTION ============ */
+        .auth-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 2px solid #e9ecef;
+        }
+
+        .auth-section .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .auth-section .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .auth-section .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .auth-section .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+            background: white;
+        }
+
+        .auth-section .form-group input:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .auth-section .form-group input.error {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .auth-section .form-group input.success {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .auth-section .btn-auth {
+            padding: 10px 24px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            min-width: 120px;
+            height: 44px;
+        }
+
+        .auth-section .btn-auth:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+        }
+
+        .auth-result {
+            margin-top: 12px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .auth-result.show {
+            display: block;
+        }
+
+        .auth-result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .auth-result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .auth-result.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .auth-toggle {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .auth-toggle .tab-btn {
+            padding: 8px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .auth-toggle .tab-btn.active {
+            border-color: #1a1a2e;
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .auth-toggle .tab-btn:hover:not(.active) {
+            border-color: #1a1a2e;
+            color: #1a1a2e;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .user-info .greeting {
+            font-weight: 600;
+            color: #1a1a2e;
+            flex: 1;
+        }
+
+        .user-info .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .user-info .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .user-info.hidden {
+            display: none;
+        }
+
+        /* ============ AGE VERIFICATION SECTION ============ */
+        .age-verification {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 2px solid #e9ecef;
+        }
+
+        .age-verification .age-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+
+        .age-verification .age-subtitle {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 16px;
+        }
+
+        .age-verification .age-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .age-verification .age-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .age-verification .age-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .age-verification .age-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+            background: white;
+        }
+
+        .age-verification .age-group input:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .age-verification .age-group input.error {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .age-verification .btn-age {
+            padding: 10px 24px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            min-width: 120px;
+            height: 44px;
+        }
+
+        .age-verification .btn-age:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+        }
+
+        .age-verification .btn-age.granted {
+            background: #28a745;
+        }
+
+        .age-verification .btn-age.granted:hover {
+            background: #218838;
+        }
+
+        .age-verification .btn-age.denied {
+            background: #dc3545;
+        }
+
+        .age-verification .btn-age.denied:hover {
+            background: #c82333;
+        }
+
+        .age-result {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .age-result.show {
+            display: block;
+        }
+
+        .age-result.granted {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .age-result.denied {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .age-result .age-display {
+            font-size: 18px;
+            margin-top: 4px;
+        }
+
+        /* ============ MENU TABS ============ */
+        .menu-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .menu-tab {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: #495057;
+        }
+
+        .menu-tab:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .menu-tab.active {
+            background: #1a1a2e;
+            color: white;
+            border-color: #1a1a2e;
+            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.15);
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .menu-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .menu-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .product-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .product-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            border-color: #1a1a2e;
+        }
+
+        .product-item.selected {
+            border-color: #1a1a2e;
+            background: #f0f0f5;
+        }
+
+        .product-item .age-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #dc3545;
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        /* ============ CART ============ */
+        .cart-section {
+            margin-top: 32px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cart-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .cart-header .count {
+            background: #1a1a2e;
+            color: white;
+            border-radius: 20px;
+            padding: 2px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .cart-items {
+            margin-bottom: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #1a1a2e;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 14px;
+        }
+
+        .cart-item-meta {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .cart-item-price {
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+
+        .cart-item-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .cart-item-remove:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .cart-total .total-price {
+            color: #1a1a2e;
+            font-size: 22px;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 15px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: scale(1.02);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.2);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #1a1a2e;
+            border: 2px solid #1a1a2e;
+        }
+
+        .btn-outline:hover {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .btn-calculator {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        .btn-calculator:hover {
+            background: #5a4bd1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.2);
+        }
+
+        .btn-invoice {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-invoice:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(243, 156, 18, 0.2);
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #6c757d;
+            padding: 30px;
+            font-size: 15px;
+        }
+
+        /* ============ CALCULATOR SECTION ============ */
+        .calculator-section {
+            margin-top: 32px;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .calculator-section .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .calculator-grid .calc-input {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .calculator-grid .calc-input input,
+        .calculator-grid .calc-input select {
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.2s;
+            background: white;
+        }
+
+        .calculator-grid .calc-input input:focus,
+        .calculator-grid .calc-input select:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .calculator-grid .calc-input .btn-calc {
+            padding: 14px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .calculator-grid .calc-input .btn-calc:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+        }
+
+        .calculator-grid .calc-result {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #e9ecef;
+            min-height: 200px;
+        }
+
+        .calculator-grid .calc-result .result-label {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .calculator-grid .calc-result .result-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-top: 8px;
+        }
+
+        .calculator-grid .calc-result .result-error {
+            font-size: 16px;
+            color: #dc3545;
+            font-weight: 600;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .calculator-grid .calc-result .result-history {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #6c757d;
+            max-height: 80px;
+            overflow-y: auto;
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+            padding-top: 12px;
+        }
+
+        .calculator-grid .calc-result .result-history div {
+            padding: 2px 0;
+        }
+
+        .calc-operations {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .calc-operations button {
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1a1a2e;
+        }
+
+        .calc-operations button:hover {
+            border-color: #1a1a2e;
+            background: #f0f0f5;
+        }
+
+        .calc-operations button.active-op {
+            border-color: #1a1a2e;
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* ============ LYRIC SECTION ============ */
+        .lyric-section {
+            margin-top: 32px;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            text-align: center;
+        }
+
+        .lyric-section .lyric-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .lyric-section .lyric-artist {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 16px;
+        }
+
+        .lyric-section .lyric-container {
+            background: white;
+            border-radius: 10px;
+            padding: 24px;
+            border: 2px solid #e9ecef;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .lyric-section .lyric-container .lyric-line {
+            opacity: 0.3;
+            transition: all 0.3s ease;
+            padding: 2px 0;
+            font-size: 15px;
+            color: #1a1a2e;
+        }
+
+        .lyric-section .lyric-container .lyric-line.active {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        .lyric-section .lyric-container .lyric-line.chorus {
+            color: #6c5ce7;
+            font-weight: 600;
+        }
+
+        .lyric-section .lyric-container .lyric-line.title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            opacity: 1;
+        }
+
+        .lyric-section .lyric-container .lyric-line.empty {
+            height: 12px;
+        }
+
+        .lyric-section .lyric-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .lyric-section .lyric-controls .btn {
+            flex: 0 1 auto;
+            min-width: 120px;
+        }
+
+        .lyric-section .lyric-controls .btn-play {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        .lyric-section .lyric-controls .btn-play:hover {
+            background: #5a4bd1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.2);
+        }
+
+        .lyric-section .lyric-controls .btn-stop {
+            background: #dc3545;
+            color: white;
+        }
+
+        .lyric-section .lyric-controls .btn-stop:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        /* ============ CONTACT SECTION ============ */
+        .contact-section {
+            margin-top: 32px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .contact-section .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #1a1a2e;
+        }
+
+        .contact-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .contact-card p {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a2e;
+        }
+
+        .contact-card p a {
+            color: #1a1a2e;
+            text-decoration: none;
+        }
+
+        .contact-card p a:hover {
+            color: #2d2d44;
+            text-decoration: underline;
+        }
+
+        .contact-form {
+            margin-top: 20px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+            margin-bottom: 12px;
+            background: white;
+            font-family: inherit;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 14px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .contact-form button:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+        }
+
+        .contact-divider {
+            border: none;
+            border-top: 2px solid #e9ecef;
+            margin: 16px 0;
+        }
+
+        /* ============ MODAL ============ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .modal-close {
+            background: #f8f9fa;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1a1a2e;
+            font-weight: 700;
+        }
+
+        .modal-close:hover {
+            background: #e9ecef;
+            transform: rotate(90deg);
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .payment-method {
+            padding: 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #f8f9fa;
+        }
+
+        .payment-method:hover {
+            border-color: #1a1a2e;
+            background: white;
+        }
+
+        .payment-method.active {
+            border-color: #1a1a2e;
+            background: #f0f0f5;
+            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.08);
+        }
+
+        .payment-method .icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .payment-method .name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a1a2e;
+        }
+
+        .payment-method .desc {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 10px;
+            margin: 16px 0;
+        }
+
+        .order-summary .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .order-summary .row.total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 2px solid #e9ecef;
+            padding-top: 12px;
+            margin-top: 8px;
+        }
+
+        /* ============ QR CODE SECTION ============ */
+        .qr-section {
+            margin-top: 16px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            text-align: center;
+        }
+
+        .qr-section .qr-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+
+        .qr-section .qr-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .qr-section canvas {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 8px;
+            background: white;
+            max-width: 200px;
+            height: auto;
+        }
+
+        .qr-section .qr-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 8px;
+            word-break: break-all;
+            max-width: 300px;
+        }
+
+        .qr-section .qr-download {
+            margin-top: 12px;
+            padding: 8px 20px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 13px;
+        }
+
+        .qr-section .qr-download:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+        }
+
+        /* ============ INVOICE SECTION ============ */
+        .invoice-section {
+            margin-top: 16px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+
+        .invoice-section .invoice-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .invoice-section .invoice-preview {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .invoice-section .invoice-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .invoice-section .invoice-actions .btn {
+            flex: 0 1 auto;
+            min-width: 140px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            border: none;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 28px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.3s ease;
+            max-width: 90%;
+        }
+
+        .notification.success {
+            background: #28a745;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        .notification.info {
+            background: #17a2b8;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* ============ COOKIE DISPLAY ============ */
+        .cookie-display {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        /* ============ AGE LOCK OVERLAY ============ */
+        .age-lock-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .age-lock-overlay.active {
+            display: flex;
+        }
+
+        .age-lock-box {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        .age-lock-box .lock-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .age-lock-box h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .age-lock-box p {
+            color: #6c757d;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .age-lock-box .btn {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 10px;
+            }
+
+            .menu-tab {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .header .logo-container img {
+                max-width: 150px;
+            }
+
+            .auth-section .form-row,
+            .age-verification .age-row {
+                flex-direction: column;
+            }
+
+            .auth-section .btn-auth,
+            .age-verification .btn-age {
+                width: 100%;
+            }
+
+            .cart-actions .btn {
+                min-width: 100px;
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .modal {
+                padding: 20px;
+            }
+
+            .whatsapp-float {
+                width: 48px;
+                height: 48px;
+                font-size: 22px;
+                bottom: 16px;
+                right: 16px;
+            }
+
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .calculator-grid .calc-result {
+                min-height: 150px;
+            }
+
+            .calculator-grid .calc-result .result-value {
+                font-size: 32px;
+            }
+
+            .age-lock-box {
+                padding: 24px;
+            }
+
+            .qr-section canvas {
+                max-width: 150px;
+            }
+
+            .lyric-section .lyric-container {
+                padding: 16px;
+                max-height: 300px;
+            }
+
+            .lyric-section .lyric-container .lyric-line {
+                font-size: 14px;
+            }
+
+            .invoice-section .invoice-preview {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .product-item {
+                padding: 12px;
+            }
+
+            .product-name {
+                font-size: 13px;
+            }
+
+            .product-price {
+                font-size: 15px;
+            }
+
+            .menu-tabs {
+                gap: 4px;
+            }
+
+            .menu-tab {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .cart-header h2 {
+                font-size: 17px;
+            }
+
+            .cart-total {
+                font-size: 15px;
+                padding: 12px;
+            }
+
+            .cart-total .total-price {
+                font-size: 18px;
+            }
+
+            .auth-toggle .tab-btn {
+                font-size: 12px;
+                padding: 6px 14px;
+            }
+
+            .calc-operations {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 4px;
+            }
+
+            .calc-operations button {
+                padding: 8px;
+                font-size: 16px;
+            }
+
+            .header .logo-container img {
+                max-width: 120px;
+            }
+
+            .qr-section canvas {
+                max-width: 120px;
+            }
+
+            .lyric-section .lyric-container .lyric-line {
+                font-size: 13px;
+            }
+
+            .lyric-section .lyric-controls .btn {
+                min-width: 80px;
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .invoice-section .invoice-actions .btn {
+                min-width: 100px;
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ============ HEADER WITH LOGO ============ -->
+        <div class="header">
+            <div class="logo-container">
+                <img src="Logo.jpg" alt="Logo TopUp Store" width="70%">
+                <h1>TopUp Store</h1>
+                <p>Digital Products & Vouchers</p>
+            </div>
+        </div>
+
+        <!-- ============ AGE VERIFICATION ============ -->
+        <div class="age-verification" id="ageVerification">
+            <div class="age-title">Verifikasi Umur</div>
+            <div class="age-subtitle">Beberapa produk memerlukan verifikasi umur 18+ untuk diakses.</div>
+            
+            <div class="age-row">
+                <div class="age-group">
+                    <label>Tahun Lahir</label>
+                    <input type="number" id="birthYear" placeholder="YYYY (contoh: 2000)" min="1900" max="2026">
+                </div>
+                <div class="age-group">
+                    <label>Bulan Lahir</label>
+                    <input type="number" id="birthMonth" placeholder="MM (1-12)" min="1" max="12">
+                </div>
+                <div class="age-group">
+                    <label>Tanggal Lahir</label>
+                    <input type="number" id="birthDay" placeholder="DD (1-31)" min="1" max="31">
+                </div>
+                <button class="btn-age" id="ageVerifyBtn">Verifikasi Umur</button>
+            </div>
+
+            <div class="age-result" id="ageResult">
+                <div id="ageResultMessage"></div>
+                <div class="age-display" id="ageDisplay"></div>
+            </div>
+        </div>
+
+        <!-- ============ AUTH SECTION ============ -->
+        <div class="auth-section" id="authSection">
+            <div class="auth-toggle">
+                <button class="tab-btn active" id="loginTab" onclick="switchAuthTab('login')">Login</button>
+                <button class="tab-btn" id="registerTab" onclick="switchAuthTab('register')">Register</button>
+            </div>
+
+            <div id="loginForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="loginUsername" placeholder="Masukkan username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Masukkan password">
+                    </div>
+                    <button class="btn-auth" id="loginBtn">Login</button>
+                </div>
+            </div>
+
+            <div id="registerForm" style="display:none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="registerUsername" placeholder="Buat username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="registerPassword" placeholder="Buat password (min 6 karakter)">
+                    </div>
+                    <div class="form-group">
+                        <label>Konfirmasi Password</label>
+                        <input type="password" id="registerConfirm" placeholder="Konfirmasi password">
+                    </div>
+                    <button class="btn-auth" id="registerBtn">Register</button>
+                </div>
+            </div>
+
+            <div class="auth-result" id="authResult"></div>
+
+            <div class="user-info hidden" id="userInfo">
+                <span class="greeting" id="greetingText">Selamat datang, User!</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- ============ MENU ============ -->
+        <div class="menu-tabs" id="menuTabs">
+            <button class="menu-tab active" data-menu="mlbb">MLBB</button>
+            <button class="menu-tab" data-menu="ff">Free Fire</button>
+            <button class="menu-tab" data-menu="edit">Jasa Edit</button>
+            <button class="menu-tab" data-menu="axis-bronet">Axis Bronet</button>
+            <button class="menu-tab" data-menu="axis-warnet">Axis Warnet</button>
+            <button class="menu-tab" data-menu="axis-aktif">Axis Aktif</button>
+            <button class="menu-tab" data-menu="axis-pure">Axis Pure</button>
+            <button class="menu-tab" data-menu="axis-max">Axis Max</button>
+            <button class="menu-tab" data-menu="smart">Smart Nonstop</button>
+            <button class="menu-tab" data-menu="token">Token Listrik</button>
+            <button class="menu-tab" data-menu="pulsa-smartfren">Pulsa Smartfren</button>
+            <button class="menu-tab" data-menu="pulsa-xl">Pulsa XL</button>
+        </div>
+
+        <input type="text" class="search-box" id="searchBox" placeholder="Cari produk...">
+
+        <div id="menuContents"></div>
+
+        <!-- ============ CART ============ -->
+        <div class="cart-section">
+            <div class="cart-header">
+                <h2>Keranjang Belanja <span class="count" id="cartCount">0</span></h2>
+                <button class="btn btn-danger" onclick="clearCart()" style="flex:0 1 auto; padding: 8px 20px; font-size: 13px;">Kosongkan</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart">Keranjang kosong</div>
+            </div>
+            <div class="cart-total">
+                <span>Total</span>
+                <span class="total-price" id="cartTotal">Rp 0</span>
+            </div>
+            <div class="cart-actions">
+                <button class="btn btn-success" onclick="openPayment()">Bayar Sekarang</button>
+                <button class="btn btn-whatsapp" onclick="sendWhatsApp()">Via WhatsApp</button>
+                <button class="btn btn-invoice" onclick="generateInvoice()">📄 Generate Invoice</button>
+                <button class="btn btn-outline" onclick="openCookieModal()">Lihat Cookie</button>
+            </div>
+        </div>
+
+        <!-- ============ CALCULATOR SECTION ============ -->
+        <div class="calculator-section">
+            <h2 class="section-title">Kalkulator</h2>
+            <div class="calculator-grid">
+                <div class="calc-input">
+                    <input type="number" id="calcNum1" placeholder="Angka pertama" step="any">
+                    <input type="number" id="calcNum2" placeholder="Angka kedua" step="any">
+                    
+                    <div class="calc-operations">
+                        <button class="active-op" data-op="tambah">+</button>
+                        <button data-op="kurang">−</button>
+                        <button data-op="kali">×</button>
+                        <button data-op="bagi">÷</button>
+                    </div>
+                    
+                    <button class="btn-calc" onclick="hitungKalkulator()">Hitung</button>
+                </div>
+                <div class="calc-result" id="calcResult">
+                    <span class="result-label">Hasil</span>
+                    <span class="result-value" id="resultValue">0</span>
+                    <span class="result-error" id="resultError"></span>
+                    <div class="result-history" id="resultHistory"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ LYRIC SECTION ============ -->
+        <div class="lyric-section">
+            <div class="lyric-title">🎵 Shape of My Heart</div>
+            <div class="lyric-artist">— Sting</div>
+            
+            <div class="lyric-container" id="lyricContainer">
+                <!-- Lirik akan di-generate oleh JavaScript -->
+            </div>
+
+            <div class="lyric-controls">
+                <button class="btn btn-play" onclick="playLyrics()">▶️ Putar Lirik</button>
+                <button class="btn btn-stop" onclick="stopLyrics()">⏹️ Berhenti</button>
+                <button class="btn btn-outline" onclick="resetLyrics()">🔄 Reset</button>
+            </div>
+        </div>
+
+        <!-- ============ CONTACT SECTION ============ -->
+        <div class="contact-section">
+            <h2 class="section-title">Kontak Kami</h2>
+
+            <div class="contact-card">
+                <h3>WhatsApp / Telepon</h3>
+                <p>
+                    <a href="https://wa.me/62882020654074" target="_blank">
+                        +62 882-0206-5407
+                    </a>
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <h3>Akun TikTok</h3>
+                <p>
+                    <a href="https://tiktok.com/@fahrilmoonstar" target="_blank">
+                        tiktok.com/@fahrilmoonstar
+                    </a>
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <h3>Lokasi</h3>
+                <p>Indonesia</p>
+            </div>
+
+            <hr class="contact-divider">
+
+            <form class="contact-form" id="contactForm">
+                <input type="text" placeholder="Nama Anda" required>
+                <input type="email" placeholder="Email Anda" required>
+                <textarea placeholder="Tulis pesan..." rows="6" required></textarea>
+                <button type="submit">Kirim Pesan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp -->
+    <button class="whatsapp-float" onclick="sendWhatsApp()">&#128222;</button>
+
+    <!-- Age Lock Overlay -->
+    <div class="age-lock-overlay" id="ageLockOverlay">
+        <div class="age-lock-box">
+            <div class="lock-icon">🔞</div>
+            <h2>Akses Ditolak</h2>
+            <p>Anda harus berusia 18 tahun atau lebih untuk mengakses produk ini.</p>
+            <button class="btn btn-primary" onclick="closeAgeLock()">Kembali</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Pembayaran</h2>
+                <button class="modal-close" onclick="closePayment()">&#10005;</button>
+            </div>
+
+            <div class="order-summary" id="orderSummary"></div>
+
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="customerName" placeholder="Masukkan nama Anda" value="Pelanggan">
+            </div>
+
+            <div class="form-group">
+                <label>Nomor HP</label>
+                <input type="text" id="customerPhone" placeholder="Masukkan nomor HP" value="08123456789">
+            </div>
+
+            <label style="font-weight: 600; font-size: 14px; color: #1a1a2e; display: block; margin-bottom: 8px;">Metode Pembayaran</label>
+            <div class="payment-methods" id="paymentMethods">
+                <div class="payment-method active" data-method="bank">
+                    <span class="icon">&#127974;</span>
+                    <div class="name">Transfer Bank</div>
+                    <div class="desc">BCA / Mandiri</div>
+                </div>
+                <div class="payment-method" data-method="qris">
+                    <span class="icon">&#128179;</span>
+                    <div class="name">QRIS</div>
+                    <div class="desc">Scan QR Code</div>
+                </div>
+                <div class="payment-method" data-method="dana">
+                    <span class="icon">&#128176;</span>
+                    <div class="name">DANA</div>
+                    <div class="desc">E-Wallet</div>
+                </div>
+                <div class="payment-method" data-method="gopay">
+                    <span class="icon">&#128181;</span>
+                    <div class="name">GoPay</div>
+                    <div class="desc">E-Wallet</div>
+                </div>
+            </div>
+
+            <!-- QR Code Payment -->
+            <div class="qr-section">
+                <div class="qr-title">QR Code Pembayaran</div>
+                <div class="qr-container">
+                    <canvas id="qrCanvas"></canvas>
+                    <div class="qr-text" id="qrText">Scan untuk pembayaran</div>
+                    <button class="qr-download" onclick="downloadQR()">Download QR Code</button>
+                </div>
+            </div>
+
+            <!-- Invoice Section -->
+            <div class="invoice-section">
+                <div class="invoice-title">📄 Invoice</div>
+                <div class="invoice-preview" id="invoicePreview">Belum ada invoice</div>
+                <div class="invoice-actions">
+                    <button class="btn btn-primary" onclick="generateInvoicePDF()">📥 Download Invoice PDF</button>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-pay" onclick="processPayment()">Konfirmasi Pembayaran</button>
+        </div>
+    </div>
+
+    <!-- Cookie Modal -->
+    <div class="modal-overlay" id="cookieModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Cookie Browser</h2>
+                <button class="modal-close" onclick="closeCookieModal()">&#10005;</button>
+            </div>
+
+            <div style="background: #fff3cd; padding: 12px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #ffc107; font-size: 13px; color: #856404;">
+                <strong>Informasi:</strong> Ini adalah cookie dari browser Anda sendiri untuk keperluan debugging. Hanya Anda yang bisa melihatnya.
+            </div>
+
+            <div class="cookie-display" id="cookieDisplay">Loading...</div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="refreshCookies()" style="flex:1; padding: 8px 16px; font-size: 13px;">Refresh</button>
+                <button class="btn btn-danger" onclick="clearAllCookies()" style="flex:1; padding: 8px 16px; font-size: 13px;">Hapus Semua</button>
+                <button class="btn btn-outline" onclick="setTestCookie()" style="flex:1; padding: 8px 16px; font-size: 13px;">Set Test</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <script>
+        const WHATSAPP_NUMBER = '62882020654074';
+
+        // ============ QR CODE GENERATOR ============
+        const qrScript = document.createElement('script');
+        qrScript.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
+        document.head.appendChild(qrScript);
+
+        let qrCodeInstance = null;
+
+        function generateQR(text) {
+            const canvas = document.getElementById('qrCanvas');
+
+            if (qrCodeInstance) {
+                qrCodeInstance.clear();
+                qrCodeInstance = null;
+            }
+
+            if (typeof QRCode !== 'undefined') {
+                qrCodeInstance = new QRCode(canvas, {
+                    text: text,
+                    width: 200,
+                    height: 200,
+                    colorDark: '#1a1a2e',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+
+            document.getElementById('qrText').textContent = text;
+        }
+
+        function downloadQR() {
+            const canvas = document.getElementById('qrCanvas');
+            const link = document.createElement('a');
+            link.download = 'qr_code_pembayaran.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showNotification('QR Code berhasil di-download!', 'success');
+        }
+
+        function updateQRCode() {
+            const total = getCartTotal();
+            const name = document.getElementById('customerName').value || 'Pelanggan';
+            const text =
+                `TopUp Store - Pembayaran\nNama: ${name}\nTotal: Rp ${total.toLocaleString()}\nWA: ${WHATSAPP_NUMBER}`;
+            generateQR(text);
+        }
+
+        // ============ INVOICE GENERATOR (dari kode Python ReportLab) ============
+        function generateInvoice() {
+            if (cart.length === 0) {
+                showNotification('Keranjang kosong! Tambahkan produk dulu.', 'error');
+                return;
+            }
+
+            const name = document.getElementById('customerName').value || 'Pelanggan';
+            const total = getCartTotal();
+            const date = new Date().toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            const time = new Date().toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            const invoiceNumber = 'INV-' + Date.now().toString().slice(-8);
+
+            // Buat preview invoice
+            let preview = '='.repeat(50) + '\n';
+            preview += '              INVOICE\n';
+            preview += '='.repeat(50) + '\n\n';
+            preview += `Nomor: ${invoiceNumber}\n`;
+            preview += `Tanggal: ${date}\n`;
+            preview += `Waktu: ${time}\n`;
+            preview += `Pelanggan: ${name}\n`;
+            preview += '-'.repeat(50) + '\n\n';
+
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                preview += `${item.name} (${menuLabels[item.menu]}) x ${item.quantity}\n`;
+                preview += `  Rp ${item.price.toLocaleString()} x ${item.quantity} = Rp ${subtotal.toLocaleString()}\n\n`;
+            });
+
+            preview += '-'.repeat(50) + '\n';
+            preview += `TOTAL: Rp ${total.toLocaleString()}\n`;
+            preview += '='.repeat(50) + '\n';
+            preview += 'Terima kasih telah berbelanja!\n';
+            preview += 'TopUp Store - Digital Products';
+
+            document.getElementById('invoicePreview').textContent = preview;
+
+            // Simpan data invoice untuk download
+            window.invoiceData = {
+                number: invoiceNumber,
+                name: name,
+                date: date,
+                time: time,
+                items: cart,
+                total: total,
+                preview: preview
+            };
+
+            showNotification('Invoice berhasil digenerate!', 'success');
+        }
+
+        function generateInvoicePDF() {
+            const data = window.invoiceData;
+            if (!data) {
+                showNotification('Generate invoice dulu!', 'error');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Header
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('INVOICE', 105, 30, { align: 'center' });
+
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`Nomor: ${data.number}`, 20, 50);
+            doc.text(`Tanggal: ${data.date}`, 20, 60);
+            doc.text(`Waktu: ${data.time}`, 20, 70);
+            doc.text(`Pelanggan: ${data.name}`, 20, 80);
+
+            // Garis
+            doc.line(20, 90, 190, 90);
+
+            // Items
+            let y = 100;
+            doc.setFont('helvetica', 'bold');
+            doc.text('Produk', 20, y);
+            doc.text('Qty', 140, y);
+            doc.text('Subtotal', 160, y);
+            y += 10;
+
+            doc.setFont('helvetica', 'normal');
+            data.items.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                const name = item.name.length > 20 ? item.name.substring(0, 18) + '...' : item.name;
+                doc.text(name, 20, y);
+                doc.text(`${item.quantity}`, 142, y);
+                doc.text(`Rp ${subtotal.toLocaleString()}`, 150, y);
+                y += 10;
+
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+            });
+
+            // Total
+            y += 10;
+            doc.line(20, y, 190, y);
+            y += 10;
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(`TOTAL: Rp ${data.total.toLocaleString()}`, 20, y);
+
+            // Footer
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Terima kasih telah berbelanja!', 105, 280, { align: 'center' });
+            doc.text('TopUp Store - Digital Products', 105, 290, { align: 'center' });
+
+            // Save
+            doc.save(`invoice_${data.number}.pdf`);
+            showNotification('Invoice PDF berhasil di-download!', 'success');
+        }
+
+        // ============ LYRIC DATA ============
+        const lyrics = [
+            { text: "Shape of My Heart", type: "title" },
+            { text: "— Sting", type: "title" },
+            { text: "", type: "empty" },
+            { text: "He deals the cards as a meditation", type: "normal" },
+            { text: "And those he plays never suspect", type: "normal" },
+            { text: "He doesn't play for the money he wins", type: "normal" },
+            { text: "He doesn't play for the respect", type: "normal" },
+            { text: "", type: "empty" },
+            { text: "He deals the cards to find the answer", type: "normal" },
+            { text: "The sacred geometry of chance", type: "normal" },
+            { text: "The hidden law of a probable outcome", type: "normal" },
+            { text: "The numbers lead a dance", type: "normal" },
+            { text: "", type: "empty" },
+            { text: "I know that the spades are the swords of a soldier", type: "chorus" },
+            { text: "I know that the clubs are weapons of war", type: "chorus" },
+            { text: "I know that diamonds mean money for this art", type: "chorus" },
+            { text: "But that's not the shape of my heart", type: "chorus" },
+            { text: "", type: "empty" },
+            { text: "That's not the shape, the shape of my heart", type: "chorus" },
+            { text: "", type: "empty" },
+            { text: "If I told you that I loved you", type: "normal" },
+            { text: "You'd maybe think there's something wrong", type: "normal" },
+            { text: "I'm not a man of too many faces", type: "normal" },
+            { text: "The mask I wear is one", type: "normal" },
+            { text: "", type: "empty" },
+            { text: "But those who speak know nothing", type: "normal" },
+            { text: "And find out to their cost", type: "normal" },
+            { text: "Like those who curse their luck in too many places", type: "normal" },
+            { text: "And those who smile are lost", type: "normal" },
+            { text: "", type: "empty" },
+            { text: "I know that the spades are the swords of a soldier", type: "chorus" },
+            { text: "I know that the clubs are weapons of war", type: "chorus" },
+            { text: "I know that diamonds mean money for this art", type: "chorus" },
+            { text: "But that's not the shape of my heart", type: "chorus" },
+            { text: "", type: "empty" },
+            { text: "That's not the shape, the shape of my heart", type: "chorus" }
+        ];
+
+        let lyricInterval = null;
+        let currentLyricIndex = 0;
+        let isPlaying = false;
+
+        function renderLyrics() {
+            const container = document.getElementById('lyricContainer');
+            let html = '';
+
+            lyrics.forEach((line, index) => {
+                let className = 'lyric-line';
+                if (line.type === 'title') className += ' title';
+                if (line.type === 'chorus') className += ' chorus';
+                if (line.type === 'empty') className += ' empty';
+
+                const style = `animation-delay: ${index * 0.1}s;`;
+                html += `<div class="${className}" id="lyric-${index}" style="${style}">${line.text || '&nbsp;'}</div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function playLyrics() {
+            if (isPlaying) {
+                stopLyrics();
+                setTimeout(() => playLyrics(), 300);
+                return;
+            }
+
+            const container = document.getElementById('lyricContainer');
+            const lines = container.querySelectorAll('.lyric-line');
+
+            lines.forEach(line => {
+                line.classList.remove('active');
+            });
+
+            currentLyricIndex = 0;
+            isPlaying = true;
+
+            if (lines.length > 0) {
+                lines[0].classList.add('active');
+            }
+
+            container.scrollTop = 0;
+
+            let lineIndex = 0;
+            lyricInterval = setInterval(() => {
+                lines.forEach(line => {
+                    line.classList.remove('active');
+                });
+
+                lineIndex++;
+                if (lineIndex >= lines.length) {
+                    clearInterval(lyricInterval);
+                    isPlaying = false;
+                    showNotification('Lirik selesai! ❤️', 'success');
+                    return;
+                }
+
+                if (lines[lineIndex]) {
+                    lines[lineIndex].classList.add('active');
+                    lines[lineIndex].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+
+                currentLyricIndex = lineIndex;
+            }, 1800);
+
+            showNotification('🎵 Memutar lirik...', 'info');
+        }
+
+        function stopLyrics() {
+            if (lyricInterval) {
+                clearInterval(lyricInterval);
+                lyricInterval = null;
+            }
+            isPlaying = false;
+
+            const container = document.getElementById('lyricContainer');
+            const lines = container.querySelectorAll('.lyric-line');
+            lines.forEach(line => {
+                line.classList.remove('active');
+            });
+
+            showNotification('⏹️ Lirik dihentikan', 'info');
+        }
+
+        function resetLyrics() {
+            stopLyrics();
+            const container = document.getElementById('lyricContainer');
+            const lines = container.querySelectorAll('.lyric-line');
+            lines.forEach(line => {
+                line.classList.remove('active');
+            });
+            container.scrollTop = 0;
+            currentLyricIndex = 0;
+            showNotification('🔄 Lirik di-reset', 'info');
+        }
+
+        // ============ PRODUCT DATA ============
+        const products = {
+            'mlbb': [
+                { name: '5 DM', price: 4000, ageRequired: false },
+                { name: '12 DM', price: 6000, ageRequired: false },
+                { name: '14 DM', price: 7000, ageRequired: false },
+                { name: '19 DM', price: 8000, ageRequired: false },
+                { name: '28 DM', price: 10000, ageRequired: false },
+                { name: '36 DM', price: 12000, ageRequired: false },
+                { name: '44 DM', price: 14000, ageRequired: false },
+                { name: '56 DM', price: 17000, ageRequired: false },
+                { name: '59 DM', price: 18000, ageRequired: false },
+                { name: '70 DM', price: 21000, ageRequired: false },
+                { name: '74 DM', price: 22000, ageRequired: false },
+                { name: '86 DM', price: 24000, ageRequired: false },
+                { name: '100 DM', price: 28000, ageRequired: false },
+                { name: '112 DM', price: 31000, ageRequired: false },
+                { name: '140 DM', price: 38000, ageRequired: false },
+                { name: '144 DM', price: 39000, ageRequired: false },
+                { name: '172 DM', price: 47000, ageRequired: false },
+                { name: '185 DM', price: 49000, ageRequired: false },
+                { name: '222 DM', price: 58000, ageRequired: false },
+                { name: '240 DM', price: 64000, ageRequired: false },
+                { name: '258 DM', price: 68000, ageRequired: false },
+                { name: '278 DM', price: 75000, ageRequired: false },
+                { name: '296 DM', price: 78000, ageRequired: false },
+                { name: '300 DM', price: 79000, ageRequired: false },
+                { name: '344 DM', price: 91000, ageRequired: false },
+                { name: '345 DM', price: 92000, ageRequired: false },
+                { name: '355 DM', price: 94000, ageRequired: false },
+                { name: '370 DM', price: 98000, ageRequired: false },
+                { name: '374 DM', price: 100000, ageRequired: false },
+                { name: '381 DM', price: 101000, ageRequired: false },
+                { name: '384 DM', price: 103000, ageRequired: false },
+                { name: '408 DM', price: 107000, ageRequired: false },
+                { name: '429 DM', price: 111000, ageRequired: false },
+                { name: '448 DM', price: 119000, ageRequired: false },
+                { name: '460 DM', price: 122000, ageRequired: false },
+                { name: '514 DM', price: 132000, ageRequired: false },
+                { name: '518 DM', price: 136000, ageRequired: false },
+                { name: '522 DM', price: 138000, ageRequired: false },
+                { name: '568 DM', price: 144000, ageRequired: false },
+                { name: '600 DM', price: 151000, ageRequired: false },
+                { name: '601 DM', price: 154000, ageRequired: false },
+                { name: '642 DM', price: 165000, ageRequired: false },
+                { name: '706 DM', price: 178000, ageRequired: false },
+                { name: '712 DM', price: 183000, ageRequired: false },
+                { name: '716 DM', price: 184000, ageRequired: false },
+                { name: '717 DM', price: 185000, ageRequired: false },
+                { name: '875 DM', price: 216000, ageRequired: false },
+                { name: '963 DM', price: 240000, ageRequired: false },
+                { name: '977 DM', price: 244000, ageRequired: false },
+                { name: '1050 DM', price: 159000, ageRequired: false }
+            ],
+            'ff': [
+                { name: '10 DM', price: 4000, ageRequired: false },
+                { name: '15 DM', price: 5000, ageRequired: false },
+                { name: '20 DM', price: 6000, ageRequired: false },
+                { name: '25 DM', price: 7000, ageRequired: false },
+                { name: '30 DM', price: 8000, ageRequired: false },
+                { name: '50 DM', price: 9000, ageRequired: false },
+                { name: '55 DM', price: 10000, ageRequired: false },
+                { name: '70 DM', price: 11000, ageRequired: false },
+                { name: '80 DM', price: 12000, ageRequired: false },
+                { name: '90 DM', price: 14000, ageRequired: false },
+                { name: '100 DM', price: 15000, ageRequired: false },
+                { name: '120 DM', price: 17000, ageRequired: false },
+                { name: '140 DM', price: 19000, ageRequired: false },
+                { name: '150 DM', price: 20000, ageRequired: false },
+                { name: '160 DM', price: 22000, ageRequired: false },
+                { name: '170 DM', price: 24000, ageRequired: false },
+                { name: '190 DM', price: 25000, ageRequired: false },
+                { name: '200 DM', price: 26000, ageRequired: false },
+                { name: '210 DM', price: 27000, ageRequired: false },
+                { name: '250 DM', price: 34000, ageRequired: false },
+                { name: '260 DM', price: 35000, ageRequired: false },
+                { name: '280 DM', price: 36000, ageRequired: false },
+                { name: '300 DM', price: 40000, ageRequired: false },
+                { name: '355 DM', price: 45000, ageRequired: false },
+                { name: '360 DM', price: 46000, ageRequired: false },
+                { name: '375 DM', price: 48000, ageRequired: false },
+                { name: '405 DM', price: 52000, ageRequired: false },
+                { name: '425 DM', price: 53000, ageRequired: false },
+                { name: '475 DM', price: 60000, ageRequired: false },
+                { name: '500 DM', price: 63000, ageRequired: false },
+                { name: '510 DM', price: 65000, ageRequired: false },
+                { name: '545 DM', price: 68000, ageRequired: false },
+                { name: '565 DM', price: 70000, ageRequired: false },
+                { name: '600 DM', price: 77000, ageRequired: false },
+                { name: '635 DM', price: 79000, ageRequired: false },
+                { name: '720 DM', price: 87000, ageRequired: false },
+                { name: '770 DM', price: 93000, ageRequired: false },
+                { name: '800 DM', price: 98000, ageRequired: false },
+                { name: '860 DM', price: 104000, ageRequired: false },
+                { name: '930 DM', price: 112000, ageRequired: false },
+                { name: '1000 DM', price: 121000, ageRequired: false },
+                { name: '1050 DM', price: 129000, ageRequired: false },
+                { name: '1080 DM', price: 132000, ageRequired: false },
+                { name: '1450 DM', price: 172000, ageRequired: false },
+                { name: '2000 DM', price: 239000, ageRequired: false },
+                { name: '2180 DM', price: 257000, ageRequired: false }
+            ],
+            'edit': [
+                { name: '1 video', price: 8000, ageRequired: false }
+            ],
+            'axis-bronet': [
+                { name: '2 GB 24 jam 60 hari', price: 31000, ageRequired: false },
+                { name: '3 GB 24 jam 60 hari', price: 38000, ageRequired: false },
+                { name: '5 GB 24 jam 60 hari', price: 55000, ageRequired: false },
+                { name: '8 GB 24 jam 60 hari', price: 76000, ageRequired: false },
+                { name: '10 GB 24 jam 60 hari', price: 87000, ageRequired: false },
+                { name: '12 GB 24 jam 60 hari', price: 97000, ageRequired: false },
+                { name: '16 GB 24 jam 60 hari', price: 109000, ageRequired: false },
+                { name: '50 GB 24 jam 60 hari', price: 112000, ageRequired: false },
+                { name: '90 GB 25 jam 60 hari', price: 172000, ageRequired: false }
+            ],
+            'axis-warnet': [
+                { name: 'Unlimited 24 jam', price: 10000, ageRequired: false },
+                { name: 'Unlimited 48 jam', price: 22000, ageRequired: false },
+                { name: 'Unlimited 72 jam', price: 38000, ageRequired: false }
+            ],
+            'axis-aktif': [
+                { name: 'Masa aktif 30 hari', price: 8000, ageRequired: false }
+            ],
+            'axis-pure': [
+                { name: '1 GB 30 hari', price: 10000, ageRequired: false },
+                { name: '2 GB 30 hari', price: 19000, ageRequired: false },
+                { name: '3 GB 30 hari', price: 24000, ageRequired: false },
+                { name: '4 GB 30 hari', price: 31000, ageRequired: false },
+                { name: '5 GB 30 hari', price: 33000, ageRequired: false },
+                { name: '6 GB 30 hari', price: 46000, ageRequired: false },
+                { name: '8 GB 30 hari', price: 53000, ageRequired: false },
+                { name: '12 GB 30 hari', price: 56000, ageRequired: false },
+                { name: '16 GB 30 hari', price: 62000, ageRequired: false }
+            ],
+            'axis-max': [
+                { name: '2 GB + 500 MB 30 hari', price: 17000, ageRequired: false },
+                { name: '3 GB + 500 MB 30 hari', price: 24000, ageRequired: false },
+                { name: '4 GB + 1 GB 30 hari', price: 31000, ageRequired: false },
+                { name: '5 GB + 1 GB 30 hari', price: 38000, ageRequired: false }
+            ],
+            'smart': [
+                { name: '10 GB 7 hari', price: 22000, ageRequired: false },
+                { name: '3 GB 14 hari', price: 22000, ageRequired: false },
+                { name: '20 GB 3 hari', price: 23000, ageRequired: false }
+            ],
+            'token': [
+                { name: '15000', price: 20000, ageRequired: false },
+                { name: '20000', price: 25000, ageRequired: false },
+                { name: '25000', price: 30000, ageRequired: false }
+            ],
+            'pulsa-smartfren': [
+                { name: '15 ribu', price: 18000, ageRequired: false },
+                { name: '20 ribu', price: 23000, ageRequired: false },
+                { name: '25 ribu', price: 28000, ageRequired: false }
+            ],
+            'pulsa-xl': [
+                { name: '15 ribu', price: 18000, ageRequired: false },
+                { name: '20 ribu', price: 23000, ageRequired: false },
+                { name: '25 ribu', price: 28000, ageRequired: false }
+            ]
+        };
+
+        const menuLabels = {
+            'mlbb': 'MLBB',
+            'ff': 'Free Fire',
+            'edit': 'Jasa Edit',
+            'axis-bronet': 'Axis Bronet',
+            'axis-warnet': 'Axis Warnet',
+            'axis-aktif': 'Axis Aktif',
+            'axis-pure': 'Axis Pure',
+            'axis-max': 'Axis Max',
+            'smart': 'Smart Nonstop',
+            'token': 'Token Listrik',
+            'pulsa-smartfren': 'Pulsa Smartfren',
+            'pulsa-xl': 'Pulsa XL'
+        };
+
+        let cart = [];
+        let currentMenu = 'mlbb';
+        let selectedPayment = 'bank';
+        let currentUser = null;
+        let authTab = 'login';
+        let selectedOperator = 'tambah';
+        let history = [];
+        let isAgeVerified = false;
+        let userAge = null;
+
+        // ============ AGE VERIFICATION ============
+        function calculateAge(year, month, day) {
+            const today = new Date();
+            const birthdate = new Date(year, month - 1, day);
+
+            let age = today.getFullYear() - birthdate.getFullYear();
+            const monthDiff = today.getMonth() - birthdate.getMonth();
+            const dayDiff = today.getDate() - birthdate.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+
+            return age;
+        }
+
+        document.getElementById('ageVerifyBtn').addEventListener('click', function() {
+            const year = parseInt(document.getElementById('birthYear').value);
+            const month = parseInt(document.getElementById('birthMonth').value);
+            const day = parseInt(document.getElementById('birthDay').value);
+            const result = document.getElementById('ageResult');
+            const message = document.getElementById('ageResultMessage');
+            const display = document.getElementById('ageDisplay');
+
+            if (!year || !month || !day) {
+                result.className = 'age-result show denied';
+                message.textContent = 'Harap isi semua field tanggal lahir!';
+                display.textContent = '';
+                return;
+            }
+
+            if (year < 1900 || year > 2026) {
+                result.className = 'age-result show denied';
+                message.textContent = 'Tahun tidak valid!';
+                display.textContent = '';
+                return;
+            }
+
+            if (month < 1 || month > 12) {
+                result.className = 'age-result show denied';
+                message.textContent = 'Bulan tidak valid (1-12)!';
+                display.textContent = '';
+                return;
+            }
+
+            if (day < 1 || day > 31) {
+                result.className = 'age-result show denied';
+                message.textContent = 'Tanggal tidak valid (1-31)!';
+                display.textContent = '';
+                return;
+            }
+
+            const age = calculateAge(year, month, day);
+            userAge = age;
+            isAgeVerified = true;
+
+            localStorage.setItem('userAge', age);
+            localStorage.setItem('isAgeVerified', 'true');
+
+            if (age >= 18) {
+                result.className = 'age-result show granted';
+                message.textContent = 'Access granted';
+                display.textContent = `Umur Anda: ${age} tahun`;
+                document.getElementById('ageVerifyBtn').className = 'btn-age granted';
+                document.getElementById('ageVerifyBtn').textContent = 'Terverifikasi';
+                showNotification('Verifikasi umur berhasil! Akses diberikan.', 'success');
+            } else {
+                result.className = 'age-result show denied';
+                message.textContent = 'Access denied. You must be at least 18 years old.';
+                display.textContent = `Umur Anda: ${age} tahun`;
+                document.getElementById('ageVerifyBtn').className = 'btn-age denied';
+                document.getElementById('ageVerifyBtn').textContent = 'Ditolak';
+                showNotification('Akses ditolak! Anda harus berusia 18+.', 'error');
+            }
+        });
+
+        document.getElementById('birthDay').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('ageVerifyBtn').click();
+        });
+
+        const savedAge = localStorage.getItem('userAge');
+        const savedVerified = localStorage.getItem('isAgeVerified');
+        if (savedVerified === 'true' && savedAge) {
+            userAge = parseInt(savedAge);
+            isAgeVerified = true;
+            if (userAge >= 18) {
+                document.getElementById('ageVerifyBtn').className = 'btn-age granted';
+                document.getElementById('ageVerifyBtn').textContent = 'Terverifikasi';
+                document.getElementById('ageResult').className = 'age-result show granted';
+                document.getElementById('ageResultMessage').textContent = 'Access granted';
+                document.getElementById('ageDisplay').textContent = `Umur Anda: ${userAge} tahun`;
+            } else {
+                document.getElementById('ageVerifyBtn').className = 'btn-age denied';
+                document.getElementById('ageVerifyBtn').textContent = 'Ditolak';
+                document.getElementById('ageResult').className = 'age-result show denied';
+                document.getElementById('ageResultMessage').textContent = 'Access denied. You must be at least 18 years old.';
+                document.getElementById('ageDisplay').textContent = `Umur Anda: ${userAge} tahun`;
+            }
+        }
+
+        // ============ AGE LOCK ============
+        function checkAgeRequirement() {
+            if (!isAgeVerified || userAge < 18) {
+                document.getElementById('ageLockOverlay').classList.add('active');
+                return false;
+            }
+            return true;
+        }
+
+        function closeAgeLock() {
+            document.getElementById('ageLockOverlay').classList.remove('active');
+        }
+
+        document.getElementById('ageLockOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAgeLock();
+            }
+        });
+
+        // ============ CALCULATOR FUNCTIONS ============
+        function tambah(a, b) {
+            return a + b;
+        }
+
+        function kurang(a, b) {
+            return a - b;
+        }
+
+        function kali(a, b) {
+            return a * b;
+        }
+
+        function bagi(a, b) {
+            if (b === 0) {
+                throw new Error("Tidak bisa dibagi dengan nol!");
+            }
+            return a / b;
+        }
+
+        function hitungKalkulator() {
+            const num1Input = document.getElementById('calcNum1');
+            const num2Input = document.getElementById('calcNum2');
+            const resultValue = document.getElementById('resultValue');
+            const resultError = document.getElementById('resultError');
+            const resultHistory = document.getElementById('resultHistory');
+
+            resultError.textContent = '';
+            resultError.className = 'result-error';
+
+            try {
+                const num1 = parseFloat(num1Input.value);
+                const num2 = parseFloat(num2Input.value);
+
+                if (isNaN(num1) || isNaN(num2)) {
+                    throw new Error("Harap masukkan angka saja!");
+                }
+
+                let hasil;
+                let operatorSymbol = '';
+
+                if (selectedOperator === 'tambah') {
+                    hasil = tambah(num1, num2);
+                    operatorSymbol = '+';
+                } else if (selectedOperator === 'kurang') {
+                    hasil = kurang(num1, num2);
+                    operatorSymbol = '−';
+                } else if (selectedOperator === 'kali') {
+                    hasil = kali(num1, num2);
+                    operatorSymbol = '×';
+                } else if (selectedOperator === 'bagi') {
+                    hasil = bagi(num1, num2);
+                    operatorSymbol = '÷';
+                } else {
+                    throw new Error("Pilihan operasi tidak valid!");
+                }
+
+                resultValue.textContent = hasil;
+                resultValue.style.color = '#1a1a2e';
+
+                const historyText = `${num1} ${operatorSymbol} ${num2} = ${hasil}`;
+                history.push(historyText);
+                if (history.length > 5) {
+                    history.shift();
+                }
+
+                resultHistory.innerHTML = history.map(h => `<div>${h}</div>`).join('');
+                showNotification('Perhitungan berhasil!', 'success');
+
+            } catch (error) {
+                resultError.textContent = 'Error: ' + error.message;
+                resultError.className = 'result-error';
+                resultValue.textContent = '?';
+                resultValue.style.color = '#dc3545';
+                showNotification('Error: ' + error.message, 'error');
+            }
+        }
+
+        document.querySelectorAll('.calc-operations button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.calc-operations button').forEach(b => b.classList.remove('active-op'));
+                this.classList.add('active-op');
+                selectedOperator = this.dataset.op;
+            });
+        });
+
+        document.getElementById('calcNum2').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                hitungKalkulator();
+            }
+        });
+
+        // ============ AUTH FUNCTIONS ============
+        function switchAuthTab(tab) {
+            authTab = tab;
+            document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+            document.getElementById('registerTab').classList.toggle('active', tab === 'register');
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById('authResult').className = 'auth-result';
+            document.getElementById('authResult').textContent = '';
+        }
+
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const username = document.getElementById('loginUsername');
+            const password = document.getElementById('loginPassword');
+            const result = document.getElementById('authResult');
+
+            if (!username.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Username wajib diisi';
+                username.classList.add('error');
+                return;
+            }
+
+            if (!password.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Password wajib diisi';
+                password.classList.add('error');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[username.value] && users[username.value] === password.value) {
+                currentUser = username.value;
+                localStorage.setItem('currentUser', currentUser);
+                result.className = 'auth-result show success';
+                result.textContent = 'Login berhasil! Selamat datang, ' + username.value;
+                showUserInfo();
+                username.classList.remove('error');
+                password.classList.remove('error');
+                username.value = '';
+                password.value = '';
+                showNotification('Login berhasil!', 'success');
+            } else {
+                result.className = 'auth-result show error';
+                result.textContent = 'Username atau password salah!';
+                username.classList.add('error');
+                password.classList.add('error');
+            }
+        });
+
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            const username = document.getElementById('registerUsername');
+            const password = document.getElementById('registerPassword');
+            const confirm = document.getElementById('registerConfirm');
+            const result = document.getElementById('authResult');
+
+            if (!username.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Username wajib diisi';
+                username.classList.add('error');
+                return;
+            }
+
+            if (!password.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Password wajib diisi';
+                password.classList.add('error');
+                return;
+            }
+
+            if (password.value.length < 6) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Password minimal 6 karakter';
+                password.classList.add('error');
+                return;
+            }
+
+            if (password.value !== confirm.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Password dan konfirmasi tidak sama';
+                confirm.classList.add('error');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[username.value]) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Username sudah terdaftar!';
+                username.classList.add('error');
+                return;
+            }
+
+            users[username.value] = password.value;
+            localStorage.setItem('users', JSON.stringify(users));
+
+            result.className = 'auth-result show success';
+            result.textContent = 'Register berhasil! Silakan login.';
+            username.classList.remove('error');
+            password.classList.remove('error');
+            confirm.classList.remove('error');
+            username.value = '';
+            password.value = '';
+            confirm.value = '';
+
+            switchAuthTab('login');
+            showNotification('Register berhasil! Silakan login.', 'success');
+        });
+
+        document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+        document.getElementById('registerConfirm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('registerBtn').click();
+        });
+
+        function showUserInfo() {
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('greetingText').textContent = 'Selamat datang, ' + currentUser + '!';
+            document.querySelector('#authSection .auth-toggle').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('userInfo').classList.add('hidden');
+            document.querySelector('#authSection .auth-toggle').style.display = 'flex';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginTab').classList.add('active');
+            document.getElementById('registerTab').classList.remove('active');
+            document.getElementById('authResult').className = 'auth-result';
+            document.getElementById('authResult').textContent = '';
+            showNotification('Logout berhasil', 'info');
+        }
+
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[savedUser]) {
+                currentUser = savedUser;
+                showUserInfo();
+            }
+        }
+
+        // ============ RENDER PRODUCTS ============
+        function renderProducts(menuKey, searchTerm = '') {
+            const container = document.getElementById('menuContents');
+            const productList = products[menuKey] || [];
+
+            let filtered = productList;
+            if (searchTerm) {
+                filtered = productList.filter(p =>
+                    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            let html = '<div class="menu-content active">';
+            html += '<div class="product-grid">';
+
+            filtered.forEach((product, index) => {
+                const isSelected = cart.some(item => item.name === product.name && item.menu === menuKey);
+                const isAgeRestricted = product.ageRequired || false;
+                html += `
+                        <div class="product-item ${isSelected ? 'selected' : ''}" onclick="addToCart('${menuKey}', ${index})">
+                            ${isAgeRestricted ? '<span class="age-badge">18+</span>' : ''}
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-price">Rp ${product.price.toLocaleString()}</div>
+                        </div>
+                    `;
+            });
+
+            html += '</div></div>';
+            container.innerHTML = html;
+        }
+
+        // ============ CART FUNCTIONS ============
+        function addToCart(menuKey, index) {
+            const product = products[menuKey][index];
+
+            if (product.ageRequired) {
+                if (!isAgeVerified || userAge < 18) {
+                    document.getElementById('ageLockOverlay').classList.add('active');
+                    return;
+                }
+            }
+
+            const existingItem = cart.find(item => item.name === product.name && item.menu === menuKey);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: product.name,
+                    price: product.price,
+                    menu: menuKey,
+                    quantity: 1,
+                    ageRequired: product.ageRequired || false
+                });
+            }
+
+            updateCart();
+            renderProducts(currentMenu, document.getElementById('searchBox').value);
+            showNotification('Produk ditambahkan ke keranjang', 'success');
+        }
+
+        function removeFromCart(index) {
+            const item = cart[index];
+            cart.splice(index, 1);
+            updateCart();
+            renderProducts(currentMenu, document.getElementById('searchBox').value);
+            showNotification('Produk dihapus dari keranjang', 'info');
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartCount = document.getElementById('cartCount');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">Keranjang kosong</div>';
+                cartTotal.textContent = 'Rp 0';
+                cartCount.textContent = '0';
+                return;
+            }
+
+            let total = 0;
+            let totalItems = 0;
+            let html = '';
+
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                totalItems += item.quantity;
+                const ageBadge = item.ageRequired ? ' 🔞' : '';
+                html += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${item.name}${ageBadge}</div>
+                                <div class="cart-item-meta">${menuLabels[item.menu]} - Rp ${item.price.toLocaleString()} x ${item.quantity}</div>
+                            </div>
+                            <div>
+                                <span class="cart-item-price" style="margin-right: 12px;">Rp ${subtotal.toLocaleString()}</span>
+                                <button class="cart-item-remove" onclick="removeFromCart(${index})">Hapus</button>
+                            </div>
+                        </div>
+                    `;
+            });
+
+            cartItems.innerHTML = html;
+            cartTotal.textContent = `Rp ${total.toLocaleString()}`;
+            cartCount.textContent = totalItems;
+        }
+
+        function clearCart() {
+            if (cart.length === 0) {
+                showNotification('Keranjang sudah kosong', 'info');
+                return;
+            }
+            if (confirm('Yakin ingin mengosongkan keranjang?')) {
+                cart = [];
+                updateCart();
+                renderProducts(currentMenu, document.getElementById('searchBox').value);
+                showNotification('Keranjang dikosongkan', 'info');
+            }
+        }
+
+        function getCartTotal() {
+            return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
+        function getCartMessage() {
+            if (cart.length === 0) return null;
+
+            let total = 0;
+            let message = 'Pesanan Baru\n\n';
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                const ageBadge = item.ageRequired ? ' 🔞' : '';
+                message +=
+                    `${item.name}${ageBadge} (${menuLabels[item.menu]}) x ${item.quantity} = Rp ${subtotal.toLocaleString()}\n`;
+            });
+            message += `\nTotal: Rp ${total.toLocaleString()}`;
+            message += '\n\nSilakan lakukan pembayaran dan konfirmasi.';
+            return message;
+        }
+
+        // ============ PAYMENT ============
+        function openPayment() {
+            if (cart.length === 0) {
+                showNotification('Keranjang kosong!', 'error');
+                return;
+            }
+
+            const modal = document.getElementById('paymentModal');
+            modal.classList.add('active');
+
+            const summary = document.getElementById('orderSummary');
+            let html = '<div style="font-weight:600; margin-bottom:8px;">Ringkasan Pesanan</div>';
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                const ageBadge = item.ageRequired ? ' 🔞' : '';
+                html +=
+                    `<div class="row"><span>${item.name}${ageBadge} x ${item.quantity}</span><span>Rp ${subtotal.toLocaleString()}</span></div>`;
+            });
+            html += `<div class="row total"><span>Total</span><span>Rp ${total.toLocaleString()}</span></div>`;
+            summary.innerHTML = html;
+
+            setTimeout(updateQRCode, 300);
+
+            // Auto generate invoice
+            setTimeout(generateInvoice, 500);
+        }
+
+        function closePayment() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+
+        document.getElementById('paymentMethods').addEventListener('click', function(e) {
+            const method = e.target.closest('.payment-method');
+            if (method) {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                method.classList.add('active');
+                selectedPayment = method.dataset.method;
+                updateQRCode();
+            }
+        });
+
+        document.getElementById('customerName').addEventListener('input', function() {
+            if (document.getElementById('paymentModal').classList.contains('active')) {
+                updateQRCode();
+                setTimeout(generateInvoice, 300);
+            }
+        });
+
+        function processPayment() {
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+
+            if (!name) {
+                showNotification('Masukkan nama Anda', 'error');
+                return;
+            }
+
+            if (!phone) {
+                showNotification('Masukkan nomor HP', 'error');
+                return;
+            }
+
+            const total = getCartTotal();
+            const methodNames = {
+                'bank': 'Transfer Bank',
+                'qris': 'QRIS',
+                'dana': 'DANA',
+                'gopay': 'GoPay'
+            };
+
+            const message =
+                `Pembayaran Berhasil\n\nNama: ${name}\nHP: ${phone}\nMetode: ${methodNames[selectedPayment]}\nTotal: Rp ${total.toLocaleString()}\n\nTerima kasih telah berbelanja!`;
+
+            closePayment();
+            alert(message);
+
+            cart = [];
+            updateCart();
+            renderProducts(currentMenu, document.getElementById('searchBox').value);
+            showNotification('Pembayaran berhasil!', 'success');
+        }
+
+        // ============ WHATSAPP ============
+        function sendWhatsApp() {
+            if (cart.length === 0) {
+                showNotification('Keranjang kosong!', 'error');
+                return;
+            }
+
+            const message = getCartMessage();
+            const encodedMessage = encodeURIComponent(message);
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            window.open(url, '_blank');
+        }
+
+        // ============ COOKIE FUNCTIONS ============
+        function getCookies() {
+            return document.cookie.split(';').reduce((cookies, cookie) => {
+                const [name, value] = cookie.split('=').map(c => c.trim());
+                if (name) cookies[name] = decodeURIComponent(value);
+                return cookies;
+            }, {});
+        }
+
+        function displayCookies() {
+            const display = document.getElementById('cookieDisplay');
+            const cookies = getCookies();
+
+            if (Object.keys(cookies).length === 0) {
+                display.textContent = 'Tidak ada cookie yang tersimpan.';
+                return;
+            }
+
+            let text = '';
+            for (const [name, value] of Object.entries(cookies)) {
+                text += `${name}: ${value}\n`;
+            }
+            display.textContent = text;
+        }
+
+        function openCookieModal() {
+            document.getElementById('cookieModal').classList.add('active');
+            displayCookies();
+        }
+
+        function closeCookieModal() {
+            document.getElementById('cookieModal').classList.remove('active');
+        }
+
+        function refreshCookies() {
+            displayCookies();
+            showNotification('Cookie di-refresh', 'success');
+        }
+
+        function clearAllCookies() {
+            if (!confirm('Yakin ingin menghapus semua cookie?')) return;
+
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const eqPos = cookie.indexOf('=');
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            }
+
+            displayCookies();
+            showNotification('Semua cookie dihapus', 'success');
+        }
+
+        function setTestCookie() {
+            const testValue = 'Test_' + Date.now();
+            document.cookie = `testCookie=${testValue}; path=/; max-age=3600`;
+            displayCookies();
+            showNotification('Test cookie ditambahkan', 'success');
+        }
+
+        // ============ CONTACT FORM ============
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = this.querySelector('input[type="text"]').value;
+            const email = this.querySelector('input[type="email"]').value;
+            const message = this.querySelector('textarea').value;
+
+            if (!name || !email || !message) {
+                showNotification('Semua field harus diisi!', 'error');
+                return;
+            }
+
+            const waMessage = `Halo, saya ${name} (${email})\n\nPesan:\n${message}`;
+            const encoded = encodeURIComponent(waMessage);
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+            window.open(url, '_blank');
+
+            showNotification('Pesan terkirim!', 'success');
+            this.reset();
+        });
+
+        // ============ NOTIFICATION ============
+        function showNotification(message, type = 'info') {
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = `notification ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============ EVENT LISTENERS ============
+        document.getElementById('menuTabs').addEventListener('click', function(e) {
+            if (e.target.classList.contains('menu-tab')) {
+                document.querySelectorAll('.menu-tab').forEach(tab => tab.classList.remove('active'));
+                e.target.classList.add('active');
+                currentMenu = e.target.dataset.menu;
+                renderProducts(currentMenu, document.getElementById('searchBox').value);
+            }
+        });
+
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            renderProducts(currentMenu, e.target.value);
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // ============ INIT ============
+        renderProducts('mlbb');
+        updateCart();
+        renderLyrics();
+
+        setTimeout(() => {
+            generateQR('TopUp Store - Scan untuk pembayaran');
+        }, 1000);
+    </script>
+</body>
+</html>
