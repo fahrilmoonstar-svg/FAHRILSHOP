@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopUp Store - Digital Products & Admin</title>
+    <style>
+        /* ============ RESET & BASE ============ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ============ MODE TOGGLE ============ */
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            gap: 8px;
+            background: white;
+            padding: 6px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .mode-toggle .btn-mode {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 13px;
+        }
+
+        .mode-toggle .btn-mode.user {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .mode-toggle .btn-mode.admin {
+            background: #f0f2f5;
+            color: #495057;
+        }
+
+        .mode-toggle .btn-mode.admin.active {
+            background: #fdcb6e;
+            color: #1a1a2e;
+        }
+
+        .mode-toggle .btn-mode.user.active {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .mode-toggle .btn-mode:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            text-align: center;
+            padding: 20px 0 10px 0;
+            border-bottom: 2px solid #f0f2f5;
+            margin-bottom: 24px;
+        }
+
+        .header .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header .logo-container img {
+            max-width: 200px;
+            width: 70%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        /* ============ AUTH ============ */
+        .auth-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 2px solid #e9ecef;
+        }
+
+        .auth-section .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .auth-section .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .auth-section .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .auth-section .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+            background: white;
+        }
+
+        .auth-section .form-group input:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .auth-section .btn-auth {
+            padding: 10px 24px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            min-width: 120px;
+            height: 44px;
+        }
+
+        .auth-section .btn-auth:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+        }
+
+        .auth-result {
+            margin-top: 12px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .auth-result.show {
+            display: block;
+        }
+
+        .auth-result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .auth-result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .auth-toggle {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .auth-toggle .tab-btn {
+            padding: 8px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .auth-toggle .tab-btn.active {
+            border-color: #1a1a2e;
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .user-info .greeting {
+            font-weight: 600;
+            color: #1a1a2e;
+            flex: 1;
+        }
+
+        .user-info .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .user-info.hidden {
+            display: none;
+        }
+
+        /* ============ AGE VERIFICATION ============ */
+        .age-verification {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 2px solid #e9ecef;
+        }
+
+        .age-verification .age-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .age-verification .age-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .age-verification .age-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .age-verification .age-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+            background: white;
+        }
+
+        .age-verification .btn-age {
+            padding: 10px 24px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            min-width: 120px;
+            height: 44px;
+        }
+
+        .age-result {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .age-result.show {
+            display: block;
+        }
+
+        .age-result.granted {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .age-result.denied {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* ============ MENU TABS ============ */
+        .menu-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .menu-tab {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: #495057;
+        }
+
+        .menu-tab:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .menu-tab.active {
+            background: #1a1a2e;
+            color: white;
+            border-color: #1a1a2e;
+            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.15);
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .menu-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .menu-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .product-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .product-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            border-color: #1a1a2e;
+        }
+
+        .product-item.selected {
+            border-color: #1a1a2e;
+            background: #f0f0f5;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        /* ============ CART ============ */
+        .cart-section {
+            margin-top: 32px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cart-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .cart-header .count {
+            background: #1a1a2e;
+            color: white;
+            border-radius: 20px;
+            padding: 2px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .cart-items {
+            margin-bottom: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #1a1a2e;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 14px;
+        }
+
+        .cart-item-meta {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .cart-item-price {
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+
+        .cart-item-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .cart-total .total-price {
+            color: #1a1a2e;
+            font-size: 22px;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 15px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.2);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #1a1a2e;
+            border: 2px solid #1a1a2e;
+        }
+
+        .btn-outline:hover {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #6c757d;
+            padding: 30px;
+            font-size: 15px;
+        }
+
+        /* ============ ADMIN PANEL ============ */
+        .admin-panel {
+            display: none;
+            margin-top: 32px;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-panel .panel-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .admin-stats .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .admin-stats .stat-card .stat-label {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .admin-stats .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .admin-table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            overflow-x: auto;
+        }
+
+        .admin-table-container .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .admin-table-container .table-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .admin-table-container .table-header .btn-add {
+            padding: 8px 20px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 13px;
+        }
+
+        .admin-table-container .table-header .btn-add:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+        }
+
+        .admin-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .admin-table-container table th {
+            text-align: left;
+            padding: 10px 10px;
+            border-bottom: 2px solid #f0f2f5;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .admin-table-container table td {
+            padding: 10px;
+            border-bottom: 1px solid #f0f2f5;
+            color: #495057;
+        }
+
+        .admin-table-container table .badge-status {
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .admin-table-container table .badge-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .admin-table-container table .badge-status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .admin-table-container table .btn-action {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.3s;
+            margin: 0 2px;
+        }
+
+        .admin-table-container table .btn-action.edit {
+            background: #fdcb6e;
+            color: #1a1a2e;
+        }
+
+        .admin-table-container table .btn-action.edit:hover {
+            background: #f9ca24;
+        }
+
+        .admin-table-container table .btn-action.delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .admin-table-container table .btn-action.delete:hover {
+            background: #c82333;
+        }
+
+        /* ============ CONTACT ============ */
+        .contact-section {
+            margin-top: 32px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .contact-section .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #1a1a2e;
+        }
+
+        .contact-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .contact-card p {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a2e;
+        }
+
+        .contact-card p a {
+            color: #1a1a2e;
+            text-decoration: none;
+        }
+
+        .contact-form {
+            margin-top: 20px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+            margin-bottom: 12px;
+            background: white;
+            font-family: inherit;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 14px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .contact-form button:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+        }
+
+        .contact-divider {
+            border: none;
+            border-top: 2px solid #e9ecef;
+            margin: 16px 0;
+        }
+
+        /* ============ MODAL ============ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal .close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #6c757d;
+            transition: 0.3s;
+        }
+
+        .modal .close:hover {
+            color: #dc3545;
+            transform: rotate(90deg);
+        }
+
+        .modal h2 {
+            color: #1a1a2e;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .modal .form-group {
+            margin-bottom: 14px;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .modal .form-group input,
+        .modal .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .modal .form-group input:focus,
+        .modal .form-group select:focus {
+            outline: none;
+            border-color: #1a1a2e;
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.05);
+        }
+
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .modal .btn-submit:hover {
+            background: #2d2d44;
+            transform: translateY(-2px);
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .payment-method {
+            padding: 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #f8f9fa;
+        }
+
+        .payment-method:hover {
+            border-color: #1a1a2e;
+            background: white;
+        }
+
+        .payment-method.active {
+            border-color: #1a1a2e;
+            background: #f0f0f5;
+        }
+
+        .payment-method .icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .payment-method .name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a1a2e;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 10px;
+            margin: 16px 0;
+        }
+
+        .order-summary .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .order-summary .row.total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 2px solid #e9ecef;
+            padding-top: 12px;
+            margin-top: 8px;
+        }
+
+        /* ============ WHATSAPP FLOAT ============ */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            border: none;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+        }
+
+        /* ============ NOTIFICATION ============ */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 28px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 10001;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.3s ease;
+            max-width: 90%;
+        }
+
+        .notification.success {
+            background: #28a745;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        .notification.info {
+            background: #17a2b8;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* ============ COOKIE DISPLAY ============ */
+        .cookie-display {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        /* ============ AGE LOCK ============ */
+        .age-lock-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .age-lock-overlay.active {
+            display: flex;
+        }
+
+        .age-lock-box {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        .age-lock-box .btn {
+            width: 100%;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .header .logo-container img {
+                max-width: 150px;
+            }
+
+            .auth-section .form-row,
+            .age-verification .age-row {
+                flex-direction: column;
+            }
+
+            .auth-section .btn-auth,
+            .age-verification .btn-age {
+                width: 100%;
+            }
+
+            .cart-actions .btn {
+                min-width: 100px;
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .admin-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .mode-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 4px;
+            }
+
+            .mode-toggle .btn-mode {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .product-item {
+                padding: 12px;
+            }
+
+            .product-name {
+                font-size: 13px;
+            }
+
+            .product-price {
+                font-size: 15px;
+            }
+
+            .menu-tabs {
+                gap: 4px;
+            }
+
+            .menu-tab {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .header .logo-container img {
+                max-width: 120px;
+            }
+
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-table-container table {
+                font-size: 12px;
+            }
+
+            .admin-table-container table th,
+            .admin-table-container table td {
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============ MODE TOGGLE ============ -->
+    <div class="mode-toggle">
+        <button class="btn-mode user active" id="btnUserMode" onclick="setMode('user')">👤 User</button>
+        <button class="btn-mode admin" id="btnAdminMode" onclick="setMode('admin')">🔧 Admin</button>
+    </div>
+
+    <div class="container">
+        <!-- ============ HEADER ============ -->
+        <div class="header">
+            <div class="logo-container">
+                <img src="Logo.jpg" alt="Logo TopUp Store" width="70%">
+                <h1>TopUp Store</h1>
+                <p>Digital Products & Vouchers</p>
+            </div>
+        </div>
+
+        <!-- ============ AGE VERIFICATION ============ -->
+        <div class="age-verification" id="ageVerification">
+            <div class="age-title" style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px;">Verifikasi Umur</div>
+            <div class="age-subtitle" style="font-size: 14px; color: #6c757d; margin-bottom: 16px;">Beberapa produk memerlukan verifikasi umur 18+ untuk diakses.</div>
+            
+            <div class="age-row">
+                <div class="age-group">
+                    <label>Tahun Lahir</label>
+                    <input type="number" id="birthYear" placeholder="YYYY (contoh: 2000)" min="1900" max="2026">
+                </div>
+                <div class="age-group">
+                    <label>Bulan Lahir</label>
+                    <input type="number" id="birthMonth" placeholder="MM (1-12)" min="1" max="12">
+                </div>
+                <div class="age-group">
+                    <label>Tanggal Lahir</label>
+                    <input type="number" id="birthDay" placeholder="DD (1-31)" min="1" max="31">
+                </div>
+                <button class="btn-age" id="ageVerifyBtn">Verifikasi Umur</button>
+            </div>
+
+            <div class="age-result" id="ageResult">
+                <div id="ageResultMessage"></div>
+                <div class="age-display" id="ageDisplay"></div>
+            </div>
+        </div>
+
+        <!-- ============ AUTH SECTION ============ -->
+        <div class="auth-section" id="authSection">
+            <div class="auth-toggle">
+                <button class="tab-btn active" id="loginTab" onclick="switchAuthTab('login')">Login</button>
+                <button class="tab-btn" id="registerTab" onclick="switchAuthTab('register')">Register</button>
+            </div>
+
+            <div id="loginForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="loginUsername" placeholder="Masukkan username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Masukkan password">
+                    </div>
+                    <button class="btn-auth" id="loginBtn">Login</button>
+                </div>
+            </div>
+
+            <div id="registerForm" style="display:none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="registerUsername" placeholder="Buat username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="registerPassword" placeholder="Buat password (min 6 karakter)">
+                    </div>
+                    <div class="form-group">
+                        <label>Konfirmasi Password</label>
+                        <input type="password" id="registerConfirm" placeholder="Konfirmasi password">
+                    </div>
+                    <button class="btn-auth" id="registerBtn">Register</button>
+                </div>
+            </div>
+
+            <div class="auth-result" id="authResult"></div>
+
+            <div class="user-info hidden" id="userInfo">
+                <span class="greeting" id="greetingText">Selamat datang, User!</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- ============ MENU PRODUK (PRODUK ASLI ANDA) ============ -->
+        <div class="menu-tabs" id="menuTabs">
+            <button class="menu-tab active" data-menu="mlbb">MLBB</button>
+            <button class="menu-tab" data-menu="ff">Free Fire</button>
+            <button class="menu-tab" data-menu="edit">Jasa Edit</button>
+            <button class="menu-tab" data-menu="axis-bronet">Axis Bronet</button>
+            <button class="menu-tab" data-menu="axis-warnet">Axis Warnet</button>
+            <button class="menu-tab" data-menu="axis-aktif">Axis Aktif</button>
+            <button class="menu-tab" data-menu="axis-pure">Axis Pure</button>
+            <button class="menu-tab" data-menu="axis-max">Axis Max</button>
+            <button class="menu-tab" data-menu="smart">Smart Nonstop</button>
+            <button class="menu-tab" data-menu="token">Token Listrik</button>
+            <button class="menu-tab" data-menu="pulsa-smartfren">Pulsa Smartfren</button>
+            <button class="menu-tab" data-menu="pulsa-xl">Pulsa XL</button>
+        </div>
+
+        <input type="text" class="search-box" id="searchBox" placeholder="Cari produk...">
+
+        <div id="menuContents"></div>
+
+        <!-- ============ KERANJANG ============ -->
+        <div class="cart-section">
+            <div class="cart-header">
+                <h2>Keranjang Belanja <span class="count" id="cartCount">0</span></h2>
+                <button class="btn btn-danger" onclick="clearCart()" style="flex:0 1 auto; padding: 8px 20px; font-size: 13px;">Kosongkan</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart">Keranjang kosong</div>
+            </div>
+            <div class="cart-total">
+                <span>Total</span>
+                <span class="total-price" id="cartTotal">Rp 0</span>
+            </div>
+            <div class="cart-actions">
+                <button class="btn btn-success" onclick="openPayment()">Bayar Sekarang</button>
+                <button class="btn btn-whatsapp" onclick="sendWhatsApp()">Via WhatsApp</button>
+                <button class="btn btn-outline" onclick="openCookieModal()">Lihat Cookie</button>
+            </div>
+        </div>
+
+        <!-- ============ ADMIN PANEL ============ -->
+        <div class="admin-panel" id="adminPanel">
+            <h2 class="panel-title">🔧 Admin Dashboard</h2>
+
+            <!-- Stats -->
+            <div class="admin-stats" id="adminStats">
+                <!-- Akan di-generate oleh JS -->
+            </div>
+
+            <!-- Produk Table -->
+            <div class="admin-table-container">
+                <div class="table-header">
+                    <h3>📋 Daftar Produk (Semua Menu)</h3>
+                    <button class="btn-add" onclick="openProductModal()">+ Tambah Produk</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Produk</th>
+                            <th>Menu</th>
+                            <th>Harga</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminProductTable">
+                        <!-- Akan di-generate oleh JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============ CONTACT ============ -->
+        <div class="contact-section">
+            <h2 class="section-title">Kontak Kami</h2>
+
+            <div class="contact-card">
+                <h3>WhatsApp / Telepon</h3>
+                <p>
+                    <a href="https://wa.me/62882020654074" target="_blank">
+                        0882-0206-5407
+                    </a>
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <h3>Akun TikTok</h3>
+                <p>
+                    <a href="https://tiktok.com/@fahrilmoonstar" target="_blank">
+                        tiktok.com/@fahrilmoonstar
+                    </a>
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <h3>Lokasi</h3>
+                <p>Indonesia</p>
+            </div>
+
+            <hr class="contact-divider">
+
+            <form class="contact-form" id="contactForm">
+                <input type="text" placeholder="Nama Anda" required>
+                <input type="email" placeholder="Email Anda" required>
+                <textarea placeholder="Tulis pesan..." rows="6" required></textarea>
+                <button type="submit">Kirim Pesan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/62882020654074" class="whatsapp-float" target="_blank">💬</a>
+
+    <!-- Age Lock Overlay -->
+    <div class="age-lock-overlay" id="ageLockOverlay">
+        <div class="age-lock-box">
+            <div class="lock-icon">🔞</div>
+            <h2>Akses Ditolak</h2>
+            <p>Anda harus berusia 18 tahun atau lebih untuk mengakses produk ini.</p>
+            <button class="btn btn-primary" onclick="closeAgeLock()">Kembali</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal">
+            <button class="close" onclick="closePayment()">✕</button>
+            <h2>Pembayaran</h2>
+
+            <div class="order-summary" id="orderSummary"></div>
+
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="customerName" placeholder="Masukkan nama Anda" value="Pelanggan">
+            </div>
+
+            <div class="form-group">
+                <label>Nomor HP</label>
+                <input type="text" id="customerPhone" placeholder="Masukkan nomor HP" value="08123456789">
+            </div>
+
+            <label style="font-weight: 600; font-size: 14px; color: #1a1a2e; display: block; margin-bottom: 8px;">Metode Pembayaran</label>
+            <div class="payment-methods" id="paymentMethods">
+                <div class="payment-method active" data-method="bank">
+                    <span class="icon">🏦</span>
+                    <div class="name">Transfer Bank</div>
+                    <div class="desc">BCA / Mandiri</div>
+                </div>
+                <div class="payment-method" data-method="qris">
+                    <span class="icon">📱</span>
+                    <div class="name">QRIS</div>
+                    <div class="desc">Scan QR Code</div>
+                </div>
+                <div class="payment-method" data-method="dana">
+                    <span class="icon">💜</span>
+                    <div class="name">DANA</div>
+                    <div class="desc">E-Wallet</div>
+                </div>
+                <div class="payment-method" data-method="gopay">
+                    <span class="icon">🟢</span>
+                    <div class="name">GoPay</div>
+                    <div class="desc">E-Wallet</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-pay" onclick="processPayment()">Konfirmasi Pembayaran</button>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal">
+            <button class="close" onclick="closeModal('productModal')">✕</button>
+            <h2 id="productModalTitle">Tambah Produk</h2>
+            <form id="productForm">
+                <input type="hidden" id="editProductId">
+                <div class="form-group">
+                    <label>Nama Produk</label>
+                    <input type="text" id="productName" placeholder="Nama produk" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Menu</label>
+                        <select id="productMenu" required>
+                            <option value="mlbb">MLBB</option>
+                            <option value="ff">Free Fire</option>
+                            <option value="edit">Jasa Edit</option>
+                            <option value="axis-bronet">Axis Bronet</option>
+                            <option value="axis-warnet">Axis Warnet</option>
+                            <option value="axis-aktif">Axis Aktif</option>
+                            <option value="axis-pure">Axis Pure</option>
+                            <option value="axis-max">Axis Max</option>
+                            <option value="smart">Smart Nonstop</option>
+                            <option value="token">Token Listrik</option>
+                            <option value="pulsa-smartfren">Pulsa Smartfren</option>
+                            <option value="pulsa-xl">Pulsa XL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Harga (Rp)</label>
+                        <input type="number" id="productPrice" placeholder="Harga" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">💾 Simpan Produk</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cookie Modal -->
+    <div class="modal-overlay" id="cookieModal">
+        <div class="modal">
+            <button class="close" onclick="closeCookieModal()">✕</button>
+            <h2>Cookie Browser</h2>
+
+            <div style="background: #fff3cd; padding: 12px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #ffc107; font-size: 13px; color: #856404;">
+                <strong>Informasi:</strong> Ini adalah cookie dari browser Anda sendiri untuk keperluan debugging. Hanya Anda yang bisa melihatnya.
+            </div>
+
+            <div class="cookie-display" id="cookieDisplay">Loading...</div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="refreshCookies()" style="flex:1; padding: 8px 16px; font-size: 13px;">Refresh</button>
+                <button class="btn btn-danger" onclick="clearAllCookies()" style="flex:1; padding: 8px 16px; font-size: 13px;">Hapus Semua</button>
+                <button class="btn btn-outline" onclick="setTestCookie()" style="flex:1; padding: 8px 16px; font-size: 13px;">Set Test</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WHATSAPP_NUMBER = '62882020654074';
+
+        // ============ PRODUK ASLI ANDA (SEMUA PRODUK) ============
+        // Data produk dari screenshot Anda
+        const allProducts = {
+            'mlbb': [
+                { name: '5 DM', price: 4000 },
+                { name: '12 DM', price: 6000 },
+                { name: '14 DM', price: 7000 },
+                { name: '19 DM', price: 8000 },
+                { name: '28 DM', price: 10000 },
+                { name: '36 DM', price: 12000 },
+                { name: '44 DM', price: 14000 },
+                { name: '56 DM', price: 17000 },
+                { name: '59 DM', price: 18000 },
+                { name: '70 DM', price: 21000 },
+                { name: '74 DM', price: 22000 },
+                { name: '86 DM', price: 24000 },
+                { name: '100 DM', price: 28000 },
+                { name: '112 DM', price: 31000 },
+                { name: '140 DM', price: 38000 },
+                { name: '144 DM', price: 39000 },
+                { name: '172 DM', price: 47000 },
+                { name: '185 DM', price: 49000 },
+                { name: '222 DM', price: 58000 },
+                { name: '240 DM', price: 64000 },
+                { name: '258 DM', price: 68000 },
+                { name: '278 DM', price: 75000 },
+                { name: '296 DM', price: 78000 },
+                { name: '300 DM', price: 79000 },
+                { name: '344 DM', price: 91000 },
+                { name: '345 DM', price: 92000 },
+                { name: '355 DM', price: 94000 },
+                { name: '370 DM', price: 98000 },
+                { name: '374 DM', price: 100000 },
+                { name: '381 DM', price: 101000 },
+                { name: '384 DM', price: 103000 },
+                { name: '408 DM', price: 107000 },
+                { name: '429 DM', price: 111000 },
+                { name: '448 DM', price: 119000 },
+                { name: '460 DM', price: 122000 },
+                { name: '514 DM', price: 132000 },
+                { name: '518 DM', price: 136000 },
+                { name: '522 DM', price: 138000 },
+                { name: '568 DM', price: 144000 },
+                { name: '600 DM', price: 151000 },
+                { name: '601 DM', price: 154000 },
+                { name: '642 DM', price: 165000 },
+                { name: '706 DM', price: 178000 },
+                { name: '712 DM', price: 183000 },
+                { name: '716 DM', price: 184000 },
+                { name: '717 DM', price: 185000 },
+                { name: '875 DM', price: 216000 },
+                { name: '963 DM', price: 240000 },
+                { name: '977 DM', price: 244000 },
+                { name: '1050 DM', price: 159000 }
+            ],
+            'ff': [
+                { name: '10 DM', price: 4000 },
+                { name: '15 DM', price: 5000 },
+                { name: '20 DM', price: 6000 },
+                { name: '25 DM', price: 7000 },
+                { name: '30 DM', price: 8000 },
+                { name: '50 DM', price: 9000 },
+                { name: '55 DM', price: 10000 },
+                { name: '70 DM', price: 11000 },
+                { name: '80 DM', price: 12000 },
+                { name: '90 DM', price: 14000 },
+                { name: '100 DM', price: 15000 },
+                { name: '120 DM', price: 17000 },
+                { name: '140 DM', price: 19000 },
+                { name: '150 DM', price: 20000 },
+                { name: '160 DM', price: 22000 },
+                { name: '170 DM', price: 24000 },
+                { name: '190 DM', price: 25000 },
+                { name: '200 DM', price: 26000 },
+                { name: '210 DM', price: 27000 },
+                { name: '250 DM', price: 34000 },
+                { name: '260 DM', price: 35000 },
+                { name: '280 DM', price: 36000 },
+                { name: '300 DM', price: 40000 },
+                { name: '355 DM', price: 45000 },
+                { name: '360 DM', price: 46000 },
+                { name: '375 DM', price: 48000 },
+                { name: '405 DM', price: 52000 },
+                { name: '425 DM', price: 53000 },
+                { name: '475 DM', price: 60000 },
+                { name: '500 DM', price: 63000 },
+                { name: '510 DM', price: 65000 },
+                { name: '545 DM', price: 68000 },
+                { name: '565 DM', price: 70000 },
+                { name: '600 DM', price: 77000 },
+                { name: '635 DM', price: 79000 },
+                { name: '720 DM', price: 87000 },
+                { name: '770 DM', price: 93000 },
+                { name: '800 DM', price: 98000 },
+                { name: '860 DM', price: 104000 },
+                { name: '930 DM', price: 112000 },
+                { name: '1000 DM', price: 121000 },
+                { name: '1050 DM', price: 129000 },
+                { name: '1080 DM', price: 132000 },
+                { name: '1450 DM', price: 172000 },
+                { name: '2000 DM', price: 239000 },
+                { name: '2180 DM', price: 257000 }
+            ],
+            'edit': [
+                { name: '1 video', price: 8000 }
+            ],
+            'axis-bronet': [
+                { name: '2 GB 24 jam 60 hari', price: 31000 },
+                { name: '3 GB 24 jam 60 hari', price: 38000 },
+                { name: '5 GB 24 jam 60 hari', price: 55000 },
+                { name: '8 GB 24 jam 60 hari', price: 76000 },
+                { name: '10 GB 24 jam 60 hari', price: 87000 },
+                { name: '12 GB 24 jam 60 hari', price: 97000 },
+                { name: '16 GB 24 jam 60 hari', price: 109000 },
+                { name: '50 GB 24 jam 60 hari', price: 112000 },
+                { name: '90 GB 25 jam 60 hari', price: 172000 }
+            ],
+            'axis-warnet': [
+                { name: 'Unlimited 24 jam', price: 10000 },
+                { name: 'Unlimited 48 jam', price: 22000 },
+                { name: 'Unlimited 72 jam', price: 38000 }
+            ],
+            'axis-aktif': [
+                { name: 'Masa aktif 30 hari', price: 8000 }
+            ],
+            'axis-pure': [
+                { name: '1 GB 30 hari', price: 10000 },
+                { name: '2 GB 30 hari', price: 19000 },
+                { name: '3 GB 30 hari', price: 24000 },
+                { name: '4 GB 30 hari', price: 31000 },
+                { name: '5 GB 30 hari', price: 33000 },
+                { name: '6 GB 30 hari', price: 46000 },
+                { name: '8 GB 30 hari', price: 53000 },
+                { name: '12 GB 30 hari', price: 56000 },
+                { name: '16 GB 30 hari', price: 62000 }
+            ],
+            'axis-max': [
+                { name: '2 GB + 500 MB 30 hari', price: 17000 },
+                { name: '3 GB + 500 MB 30 hari', price: 24000 },
+                { name: '4 GB + 1 GB 30 hari', price: 31000 },
+                { name: '5 GB + 1 GB 30 hari', price: 38000 }
+            ],
+            'smart': [
+                { name: '10 GB 7 hari', price: 22000 },
+                { name: '3 GB 14 hari', price: 22000 },
+                { name: '20 GB 3 hari', price: 23000 }
+            ],
+            'token': [
+                { name: '15000', price: 20000 },
+                { name: '20000', price: 25000 },
+                { name: '25000', price: 30000 }
+            ],
+            'pulsa-smartfren': [
+                { name: '15 ribu', price: 18000 },
+                { name: '20 ribu', price: 23000 },
+                { name: '25 ribu', price: 28000 }
+            ],
+            'pulsa-xl': [
+                { name: '15 ribu', price: 18000 },
+                { name: '20 ribu', price: 23000 },
+                { name: '25 ribu', price: 28000 }
+            ]
+        };
+
+        const menuLabels = {
+            'mlbb': 'MLBB',
+            'ff': 'Free Fire',
+            'edit': 'Jasa Edit',
+            'axis-bronet': 'Axis Bronet',
+            'axis-warnet': 'Axis Warnet',
+            'axis-aktif': 'Axis Aktif',
+            'axis-pure': 'Axis Pure',
+            'axis-max': 'Axis Max',
+            'smart': 'Smart Nonstop',
+            'token': 'Token Listrik',
+            'pulsa-smartfren': 'Pulsa Smartfren',
+            'pulsa-xl': 'Pulsa XL'
+        };
+
+        // ============ MODE TOGGLE ============
+        let currentMode = 'user';
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('btnUserMode').classList.toggle('active', mode === 'user');
+            document.getElementById('btnAdminMode').classList.toggle('active', mode === 'admin');
+
+            document.querySelectorAll('.auth-section, .age-verification, .menu-tabs, .search-box, #menuContents, .cart-section, .contact-section')
+                .forEach(el => el.style.display = mode === 'user' ? '' : 'none');
+
+            document.getElementById('adminPanel').classList.toggle('active', mode === 'admin');
+
+            if (mode === 'admin') {
+                renderAdminStats();
+                renderAdminProducts();
+            }
+        }
+
+        // ============ ADMIN DATA ============
+        // Konversi produk ke format admin (dengan id)
+        let adminProducts = [];
+        let nextAdminId = 1;
+
+        function initAdminProducts() {
+            adminProducts = [];
+            nextAdminId = 1;
+            for (const [menu, items] of Object.entries(allProducts)) {
+                items.forEach(item => {
+                    adminProducts.push({
+                        id: nextAdminId++,
+                        name: item.name,
+                        menu: menu,
+                        price: item.price
+                    });
+                });
+            }
+        }
+
+        // ============ ADMIN RENDER ============
+        function renderAdminStats() {
+            const stats = document.getElementById('adminStats');
+            const totalProducts = adminProducts.length;
+            const totalMenu = [...new Set(adminProducts.map(p => p.menu))].length;
+            const totalValue = adminProducts.reduce((sum, p) => sum + p.price, 0);
+
+            stats.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-label">Total Produk</div>
+                        <div class="stat-value">${totalProducts}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Menu</div>
+                        <div class="stat-value">${totalMenu}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Nilai</div>
+                        <div class="stat-value">Rp ${totalValue.toLocaleString()}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Menu Terbanyak</div>
+                        <div class="stat-value">${Object.entries(allProducts).sort((a,b) => b[1].length - a[1].length)[0]?.[0] ? menuLabels[Object.entries(allProducts).sort((a,b) => b[1].length - a[1].length)[0][0]] : '-'}</div>
+                    </div>
+                `;
+        }
+
+        function renderAdminProducts() {
+            const tbody = document.getElementById('adminProductTable');
+
+            if (adminProducts.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #6c757d;">Belum ada produk</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = adminProducts.map((p, index) => `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${p.name}</td>
+                        <td><span class="badge-status active">${menuLabels[p.menu] || p.menu}</span></td>
+                        <td>Rp ${p.price.toLocaleString()}</td>
+                        <td><span class="badge-status active">Tersedia</span></td>
+                        <td>
+                            <button class="btn-action edit" onclick="editAdminProduct(${p.id})">✏️</button>
+                            <button class="btn-action delete" onclick="deleteAdminProduct(${p.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `).join('');
+        }
+
+        // ============ ADMIN CRUD ============
+        function openProductModal(data = null) {
+            const modal = document.getElementById('productModal');
+            const title = document.getElementById('productModalTitle');
+            const form = document.getElementById('productForm');
+
+            if (data) {
+                title.textContent = '✏️ Edit Produk';
+                document.getElementById('editProductId').value = data.id;
+                document.getElementById('productName').value = data.name;
+                document.getElementById('productMenu').value = data.menu;
+                document.getElementById('productPrice').value = data.price;
+            } else {
+                title.textContent = '➕ Tambah Produk';
+                form.reset();
+                document.getElementById('editProductId').value = '';
+                document.getElementById('productMenu').value = 'mlbb';
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editProductId').value;
+            const name = document.getElementById('productName').value.trim();
+            const menu = document.getElementById('productMenu').value;
+            const price = parseInt(document.getElementById('productPrice').value);
+
+            if (!name || !price) {
+                showNotification('❌ Harap isi semua field!', 'error');
+                return;
+            }
+
+            if (id) {
+                // Edit
+                const index = adminProducts.findIndex(p => p.id === parseInt(id));
+                if (index !== -1) {
+                    const oldMenu = adminProducts[index].menu;
+                    adminProducts[index] = { ...adminProducts[index], name, menu, price };
+                    // Update allProducts juga
+                    const oldProduct = allProducts[oldMenu].find(p => p.name === adminProducts[index].name);
+                    if (oldProduct) {
+                        const idx = allProducts[oldMenu].indexOf(oldProduct);
+                        if (idx !== -1) {
+                            allProducts[oldMenu][idx] = { name, price };
+                        }
+                    }
+                    showNotification('✅ Produk berhasil diupdate!', 'success');
+                }
+            } else {
+                // Add
+                const newProduct = { id: nextAdminId++, name, menu, price };
+                adminProducts.push(newProduct);
+                // Tambahkan ke allProducts juga
+                if (!allProducts[menu]) allProducts[menu] = [];
+                allProducts[menu].push({ name, price });
+                showNotification('✅ Produk berhasil ditambahkan!', 'success');
+            }
+
+            closeModal('productModal');
+            renderAdminStats();
+            renderAdminProducts();
+            // Refresh tampilan user
+            renderProducts(currentMenu, document.getElementById('searchBox').value);
+        });
+
+        function editAdminProduct(id) {
+            const product = adminProducts.find(p => p.id === id);
+            if (product) openProductModal(product);
+        }
+
+        function deleteAdminProduct(id) {
+            if (!confirm('Yakin ingin menghapus produk ini?')) return;
+
+            const product = adminProducts.find(p => p.id === id);
+            if (product) {
+                // Hapus dari allProducts
+                const menuProducts = allProducts[product.menu];
+                if (menuProducts) {
+                    const index = menuProducts.findIndex(p => p.name === product.name && p.price === product.price);
+                    if (index !== -1) menuProducts.splice(index, 1);
+                }
+            }
+
+            adminProducts = adminProducts.filter(p => p.id !== id);
+            renderAdminStats();
+            renderAdminProducts();
+            renderProducts(currentMenu, document.getElementById('searchBox').value);
+            showNotification('🗑️ Produk dihapus!', 'info');
+        }
+
+        // ============ MODAL HELPERS ============
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============ CART ============
+        let cart = [];
+        let currentMenu = 'mlbb';
+        let selectedPayment = 'bank';
+        let currentUser = null;
+        let authTab = 'login';
+        let isAgeVerified = false;
+        let userAge = null;
+
+        // ============ AUTH FUNCTIONS ============
+        function switchAuthTab(tab) {
+            authTab = tab;
+            document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+            document.getElementById('registerTab').classList.toggle('active', tab === 'register');
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById('authResult').className = 'auth-result';
+            document.getElementById('authResult').textContent = '';
+        }
+
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const username = document.getElementById('loginUsername');
+            const password = document.getElementById('loginPassword');
+            const result = document.getElementById('authResult');
+
+            if (!username.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Username wajib diisi';
+                return;
+            }
+            if (!password.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Password wajib diisi';
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[username.value] && users[username.value] === password.value) {
+                currentUser = username.value;
+                localStorage.setItem('currentUser', currentUser);
+                result.className = 'auth-result show success';
+                result.textContent = 'Login berhasil! Selamat datang, ' + username.value;
+                showUserInfo();
+                username.value = '';
+                password.value = '';
+                showNotification('Login berhasil!', 'success');
+            } else {
+                result.className = 'auth-result show error';
+                result.textContent = 'Username atau password salah!';
+            }
+        });
+
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            const username = document.getElementById('registerUsername');
+            const password = document.getElementById('registerPassword');
+            const confirm = document.getElementById('registerConfirm');
+            const result = document.getElementById('authResult');
+
+            if (!username.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Username wajib diisi';
+                return;
+            }
+            if (!password.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Password wajib diisi';
+                return;
+            }
+            if (password.value.length < 6) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Password minimal 6 karakter';
+                return;
+            }
+            if (password.value !== confirm.value) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Password dan konfirmasi tidak sama';
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[username.value]) {
+                result.className = 'auth-result show error';
+                result.textContent = 'Username sudah terdaftar!';
+                return;
+            }
+
+            users[username.value] = password.value;
+            localStorage.setItem('users', JSON.stringify(users));
+
+            result.className = 'auth-result show success';
+            result.textContent = 'Register berhasil! Silakan login.';
+            username.value = '';
+            password.value = '';
+            confirm.value = '';
+            switchAuthTab('login');
+            showNotification('Register berhasil! Silakan login.', 'success');
+        });
+
+        function showUserInfo() {
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('greetingText').textContent = 'Selamat datang, ' + currentUser + '!';
+            document.querySelector('#authSection .auth-toggle').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('userInfo').classList.add('hidden');
+            document.querySelector('#authSection .auth-toggle').style.display = 'flex';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginTab').classList.add('active');
+            document.getElementById('registerTab').classList.remove('active');
+            document.getElementById('authResult').className = 'auth-result';
+            document.getElementById('authResult').textContent = '';
+            showNotification('Logout berhasil', 'info');
+        }
+
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[savedUser]) {
+                currentUser = savedUser;
+                showUserInfo();
+            }
+        }
+
+        // ============ AGE VERIFICATION ============
+        function calculateAge(year, month, day) {
+            const today = new Date();
+            const birthdate = new Date(year, month - 1, day);
+            let age = today.getFullYear() - birthdate.getFullYear();
+            const monthDiff = today.getMonth() - birthdate.getMonth();
+            const dayDiff = today.getDate() - birthdate.getDate();
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) age--;
+            return age;
+        }
+
+        document.getElementById('ageVerifyBtn').addEventListener('click', function() {
+            const year = parseInt(document.getElementById('birthYear').value);
+            const month = parseInt(document.getElementById('birthMonth').value);
+            const day = parseInt(document.getElementById('birthDay').value);
+            const result = document.getElementById('ageResult');
+            const message = document.getElementById('ageResultMessage');
+            const display = document.getElementById('ageDisplay');
+
+            if (!year || !month || !day) {
+                result.className = 'age-result show denied';
+                message.textContent = 'Harap isi semua field!';
+                return;
+            }
+
+            const age = calculateAge(year, month, day);
+            userAge = age;
+            isAgeVerified = true;
+            localStorage.setItem('userAge', age);
+            localStorage.setItem('isAgeVerified', 'true');
+
+            if (age >= 18) {
+                result.className = 'age-result show granted';
+                message.textContent = '✅ Access granted';
+                display.textContent = `Umur Anda: ${age} tahun`;
+                document.getElementById('ageVerifyBtn').textContent = '✅ Terverifikasi';
+                showNotification('Verifikasi umur berhasil!', 'success');
+            } else {
+                result.className = 'age-result show denied';
+                message.textContent = '❌ Access denied. Anda harus berusia 18+.';
+                display.textContent = `Umur Anda: ${age} tahun`;
+                document.getElementById('ageVerifyBtn').textContent = '❌ Ditolak';
+                showNotification('Akses ditolak! Anda harus berusia 18+.', 'error');
+            }
+        });
+
+        // ============ RENDER PRODUCTS ============
+        function renderProducts(menuKey, searchTerm = '') {
+            const container = document.getElementById('menuContents');
+            const productList = allProducts[menuKey] || [];
+
+            let filtered = productList;
+            if (searchTerm) {
+                filtered = productList.filter(p =>
+                    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            let html = '<div class="menu-content active">';
+            html += '<div class="product-grid">';
+
+            filtered.forEach((product, index) => {
+                const isSelected = cart.some(item => item.name === product.name && item.menu === menuKey);
+                html += `
+                            <div class="product-item ${isSelected ? 'selected' : ''}" onclick="addToCart('${menuKey}', ${index})">
+                                <div class="product-name">${product.name}</div>
+                                <div class="product-price">Rp ${product.price.toLocaleString()}</div>
+                            </div>
+                        `;
+            });
+
+            html += '</div></div>';
+            container.innerHTML = html;
+        }
+
+        // ============ CART FUNCTIONS ============
+        function addToCart(menuKey, index) {
+            const product = allProducts[menuKey][index];
+            const existingItem = cart.find(item => item.name === product.name && item.menu === menuKey);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: product.name,
+                    price: product.price,
+                    menu: menuKey,
+                    quantity: 1
+                });
+            }
+
+            updateCart();
+            renderProducts(currentMenu, document.getElementById('searchBox').value);
+            showNotification('Produk ditambahkan ke keranjang', 'success');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+            renderProducts(currentMenu, document.getElementById('searchBox').value);
+            showNotification('Produk dihapus dari keranjang', 'info');
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartCount = document.getElementById('cartCount');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">Keranjang kosong</div>';
+                cartTotal.textContent = 'Rp 0';
+                cartCount.textContent = '0';
+                return;
+            }
+
+            let total = 0;
+            let totalItems = 0;
+            let html = '';
+
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                totalItems += item.quantity;
+                html += `
+                            <div class="cart-item">
+                                <div class="cart-item-info">
+                                    <div class="cart-item-name">${item.name}</div>
+                                    <div class="cart-item-meta">${menuLabels[item.menu]} - Rp ${item.price.toLocaleString()} x ${item.quantity}</div>
+                                </div>
+                                <div>
+                                    <span class="cart-item-price" style="margin-right: 12px;">Rp ${subtotal.toLocaleString()}</span>
+                                    <button class="cart-item-remove" onclick="removeFromCart(${index})">Hapus</button>
+                                </div>
+                            </div>
+                        `;
+            });
+
+            cartItems.innerHTML = html;
+            cartTotal.textContent = `Rp ${total.toLocaleString()}`;
+            cartCount.textContent = totalItems;
+        }
+
+        function clearCart() {
+            if (cart.length === 0) {
+                showNotification('Keranjang sudah kosong', 'info');
+                return;
+            }
+            if (confirm('Yakin ingin mengosongkan keranjang?')) {
+                cart = [];
+                updateCart();
+                renderProducts(currentMenu, document.getElementById('searchBox').value);
+                showNotification('Keranjang dikosongkan', 'info');
+            }
+        }
+
+        function getCartTotal() {
+            return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
+        function getCartMessage() {
+            if (cart.length === 0) return null;
+            let total = 0;
+            let message = 'Pesanan Baru\n\n';
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                message += `${item.name} (${menuLabels[item.menu]}) x ${item.quantity} = Rp ${subtotal.toLocaleString()}\n`;
+            });
+            message += `\nTotal: Rp ${total.toLocaleString()}`;
+            message += '\n\nSilakan lakukan pembayaran dan konfirmasi.';
+            return message;
+        }
+
+        // ============ PAYMENT ============
+        function openPayment() {
+            if (cart.length === 0) {
+                showNotification('Keranjang kosong!', 'error');
+                return;
+            }
+
+            document.getElementById('paymentModal').classList.add('active');
+
+            const summary = document.getElementById('orderSummary');
+            let html = '<div style="font-weight:600; margin-bottom:8px;">Ringkasan Pesanan</div>';
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                html +=
+                    `<div class="row"><span>${item.name} x ${item.quantity}</span><span>Rp ${subtotal.toLocaleString()}</span></div>`;
+            });
+            html += `<div class="row total"><span>Total</span><span>Rp ${total.toLocaleString()}</span></div>`;
+            summary.innerHTML = html;
+        }
+
+        function closePayment() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+
+        document.getElementById('paymentMethods').addEventListener('click', function(e) {
+            const method = e.target.closest('.payment-method');
+            if (method) {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                method.classList.add('active');
+                selectedPayment = method.dataset.method;
+            }
+        });
+
+        function processPayment() {
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+
+            if (!name) {
+                showNotification('Masukkan nama Anda', 'error');
+                return;
+            }
+            if (!phone) {
+                showNotification('Masukkan nomor HP', 'error');
+                return;
+            }
+
+            const total = getCartTotal();
+            const methodNames = { 'bank': 'Transfer Bank', 'qris': 'QRIS', 'dana': 'DANA', 'gopay': 'GoPay' };
+
+            const message =
+                `Pembayaran Berhasil\n\nNama: ${name}\nHP: ${phone}\nMetode: ${methodNames[selectedPayment]}\nTotal: Rp ${total.toLocaleString()}\n\nTerima kasih telah berbelanja!`;
+
+            closePayment();
+            alert(message);
+
+            cart = [];
+            updateCart();
+            renderProducts(currentMenu, document.getElementById('searchBox').value);
+            showNotification('Pembayaran berhasil!', 'success');
+        }
+
+        // ============ WHATSAPP ============
+        function sendWhatsApp() {
+            if (cart.length === 0) {
+                showNotification('Keranjang kosong!', 'error');
+                return;
+            }
+
+            const message = getCartMessage();
+            const encodedMessage = encodeURIComponent(message);
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            window.open(url, '_blank');
+        }
+
+        // ============ COOKIE FUNCTIONS ============
+        function getCookies() {
+            return document.cookie.split(';').reduce((cookies, cookie) => {
+                const [name, value] = cookie.split('=').map(c => c.trim());
+                if (name) cookies[name] = decodeURIComponent(value);
+                return cookies;
+            }, {});
+        }
+
+        function displayCookies() {
+            const display = document.getElementById('cookieDisplay');
+            const cookies = getCookies();
+            if (Object.keys(cookies).length === 0) {
+                display.textContent = 'Tidak ada cookie yang tersimpan.';
+                return;
+            }
+            let text = '';
+            for (const [name, value] of Object.entries(cookies)) {
+                text += `${name}: ${value}\n`;
+            }
+            display.textContent = text;
+        }
+
+        function openCookieModal() {
+            document.getElementById('cookieModal').classList.add('active');
+            displayCookies();
+        }
+
+        function closeCookieModal() {
+            document.getElementById('cookieModal').classList.remove('active');
+        }
+
+        function refreshCookies() {
+            displayCookies();
+            showNotification('Cookie di-refresh', 'success');
+        }
+
+        function clearAllCookies() {
+            if (!confirm('Yakin ingin menghapus semua cookie?')) return;
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const eqPos = cookie.indexOf('=');
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            }
+            displayCookies();
+            showNotification('Semua cookie dihapus', 'success');
+        }
+
+        function setTestCookie() {
+            const testValue = 'Test_' + Date.now();
+            document.cookie = `testCookie=${testValue}; path=/; max-age=3600`;
+            displayCookies();
+            showNotification('Test cookie ditambahkan', 'success');
+        }
+
+        // ============ CONTACT FORM ============
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = this.querySelector('input[type="text"]').value;
+            const email = this.querySelector('input[type="email"]').value;
+            const message = this.querySelector('textarea').value;
+
+            if (!name || !email || !message) {
+                showNotification('Semua field harus diisi!', 'error');
+                return;
+            }
+
+            const waMessage = `Halo, saya ${name} (${email})\n\nPesan:\n${message}`;
+            const encoded = encodeURIComponent(waMessage);
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+            window.open(url, '_blank');
+            showNotification('Pesan terkirim!', 'success');
+            this.reset();
+        });
+
+        // ============ NOTIFICATION ============
+        function showNotification(message, type = 'info') {
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = `notification ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============ EVENT LISTENERS ============
+        document.getElementById('menuTabs').addEventListener('click', function(e) {
+            if (e.target.classList.contains('menu-tab')) {
+                document.querySelectorAll('.menu-tab').forEach(tab => tab.classList.remove('active'));
+                e.target.classList.add('active');
+                currentMenu = e.target.dataset.menu;
+                renderProducts(currentMenu, document.getElementById('searchBox').value);
+            }
+        });
+
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            renderProducts(currentMenu, e.target.value);
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // ============ INIT ============
+        // Inisialisasi admin products dari allProducts
+        initAdminProducts();
+
+        renderProducts('mlbb');
+        updateCart();
+        renderAdminStats();
+        renderAdminProducts();
+
+        // Set default mode ke user
+        setMode('user');
+    </script>
+</body>
+</html>
