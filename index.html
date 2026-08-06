@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodePulse Africa Technologies</title>
+    
+    <!-- Font Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Kartu Utama */
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Judul & Deskripsi */
+        h2 {
+            color: #1a1a2e;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        /* Divider Garis */
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: #2563eb;
+            margin: 0 auto 30px auto;
+            border-radius: 10px;
+        }
+
+        /* List Layanan */
+        h3 {
+            color: #1a1a2e;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        li {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #1a1a2e;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        li:hover {
+            background: #2563eb;
+            color: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Responsive untuk HP */
+        @media (max-width: 500px) {
+            .container { padding: 30px 20px; }
+            ul { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>CodePulse Africa Technologies</h2>
+        <p>We provide software development services</p>
+        
+        <div class="divider"></div>
+
+        <h3>Services</h3>
+        <ul>
+            <li>Web Development</li>
+            <li>Networking</li>
+            <li>Cyber Security</li>
+            <li>CCTV Installation</li>
+        </ul>
+    </div>
+
+</body>
+</html>
