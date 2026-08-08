@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#03050f">
+    
+    <!-- Meta Tag Verifikasi Google -->
+    <meta name="google-site-verification" content="7EPOIOSsPShR57-zwAdyIZ0EBhxvQc24NIe6ziyBlsA" />
+    
+    <title>FAHRIL PROJECT — TopUp & IoT</title>
+    
+    <!-- Font Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tambahkan jQuery agar kode JavaScript jalan -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <style>
+        /* ===== RESET ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #03050f; color: #e0e0e0; font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh; padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, rgba(180, 40, 40, 0.08) 0%, transparent 60%);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #a02020; border-radius: 4px; }
+
+        .container {
+            max-width: 1100px; width: 100%; margin: 0 auto;
+            background: rgba(16, 16, 16, 0.92); border: 1px solid rgba(180, 40, 40, 0.25);
+            border-radius: 24px; padding: 40px 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            position: relative;
+        }
+
+        /* ===== HEADER ===== */
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(180, 40, 40, 0.2); margin-bottom: 30px; }
+        
+        .logo {
+            position: relative;
+            display: inline-block;
+        }
+        .logo h1 { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 28px; letter-spacing: 4px; text-transform: uppercase; background: linear-gradient(135deg, #e0e0e0 30%, #a02020 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo .sub { font-size: 13px; color: #888; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
+
+        /* ===== ORNAMEN SEGITIGA ===== */
+        .logo::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: -18px;
+            right: -18px;
+            border-top: 48px solid transparent;
+            border-right: 48px solid #a02020;
+        }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #d0d0d0; margin-bottom: 24px; margin-top: 30px; display: flex; align-items: center; gap: 16px; }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(180, 40, 40, 0.4), transparent); }
+
+        /* ===== MENU TABS ===== */
+        .menu-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(180, 40, 40, 0.15); }
+        .menu-tab {
+            padding: 8px 14px; background: rgba(255, 255, 255, 0.03); border: 2px solid transparent; border-radius: 8px;
+            cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.3s; color: #888;
+            font-family: 'Rajdhani', sans-serif; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .menu-tab:hover { background: rgba(180, 40, 40, 0.1); color: #e0e0e0; }
+        .menu-tab.active { background: #a02020; color: white; border-color: #a02020; }
+
+        /* ===== PRODUCT GRID ===== */
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .product-item { background: rgba(255, 255, 255, 0.02); border: 2px solid rgba(180, 40, 40, 0.12); border-radius: 4px; padding: 12px; text-align: center; transition: all 0.3s ease-in-out; cursor: pointer; }
+        .product-item:hover { transform: scale(1.03); border-color: #a02020; }
+        .product-item.selected { border-color: #a02020; background: rgba(180, 40, 40, 0.08); }
+        .product-name { font-size: 14px; font-weight: 600; color: #d0d0d0; }
+        .product-price { font-size: 16px; font-weight: 700; color: #a02020; margin-top: 4px; }
+
+        /* ===== CART ===== */
+        .cart-section { margin-top: 24px; padding: 20px; background: rgba(255, 255, 255, 0.02); border-radius: 12px; border: 1px solid rgba(180, 40, 40, 0.12); }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+        .cart-header h2 { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; color: #d0d0d0; letter-spacing: 2px; }
+        .cart-header h2 span { color: #a02020; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; margin-bottom: 8px; border-left: 4px solid #a02020; }
+        .cart-item-remove { background: #a02020; color: white; border: none; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 600; transition: 0.3s; }
+        .cart-item-remove:hover { background: #c03030; }
+        .cart-total { display: flex; justify-content: space-between; padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; font-weight: 700; font-family: 'Orbitron', monospace; color: #d0d0d0; }
+        .cart-total span:last-child { color: #a02020; }
+        .empty-cart { text-align: center; color: #888; padding: 30px; }
+        .cart-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+        .btn { padding: 12px 28px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; flex: 1; min-width: 120px; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-success { background: #a02020; color: white; }
+        .btn-success:hover { background: #c03030; transform: translateY(-2px); }
+        .btn-outline { background: transparent; color: #d0d0d0; border: 2px solid #a02020; }
+        .btn-outline:hover { background: #a02020; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-danger:hover { background: #c82333; }
+
+        /* ===== NOTIFICATION ===== */
+        .notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 14px 28px; border-radius: 10px; color: white; font-weight: 600; z-index: 10001; animation: slideDown 0.3s; max-width: 90%; font-family: 'Rajdhani', sans-serif; }
+        .notification.success { background: #28a745; }
+        .notification.error { background: #dc3545; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== WHATSAPP FLOAT ===== */
+        :root {
+            --center-size: 60px;
+            --center-btn-gradient: linear-gradient(135deg, #8a2be2, #ba55d3);
+            --anim-duration: 0.4s;
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: var(--center-size);
+            height: var(--center-size);
+            border-radius: 50%;
+            background: var(--center-btn-gradient);
+            border: 2px solid #ba55d3;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            z-index: 1000;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 0 25px rgba(138, 43, 226, 0.5);
+            transition:
+                transform var(--anim-duration) cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.3s ease,
+                background 0.3s ease;
+            outline: none;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 40px rgba(138, 43, 226, 0.8);
+        }
+
+        /* ===== TAMBAHAN 1: STYLE TOMBOL BIRU ===== */
+        button {
+            background: blue;
+            color: white;
+            border: 1px solid white;
+            display: block;
+            border-radius: 10px;
+            padding: 5px 20px;
+            cursor: pointer;
+            margin: 10px auto;
+        }
+        .menu-tabs button,
+        .cart-actions button,
+        .btn-success,
+        .btn-outline,
+        .btn-danger {
+            background: inherit;
+            color: inherit;
+            border: inherit;
+            border-radius: inherit;
+            padding: 12px 28px;
+            margin: 0;
+        }
+        .menu-tabs button { padding: 8px 14px; }
+
+        /* ===== TAMBAHAN 2: CSS ANIMASI LOGO ===== */
+        @keyframes animation{
+            0% { transform: translateX(40px) scale(0.9); box-shadow: none; }
+            50% { transform: translate(0px, 0px) scale(1.02); box-shadow: 0 0 10px #fff, 0 0 80px 2px #fff; }
+            100% { transform: translateX(-40px) scale(0.9); box-shadow: none; }
+        }
+        .logo h1 { animation: animation 2s ease-in-out infinite; }
+
+        /* ===== TAMBAHAN 3: GOOEY EFFECT ===== */
+        .mn-goo { filter: url(#mn-goo); }
+        .bead { transform: translate(var(--x), var(--y)) scale(1.4, 0.3); }
+
+        /* ===== TAMBAHAN 4: SIDEBAR CSS ===== */
+        .sidebar li a .links_name {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.4s;
+        }
+
+        /* ===== TAMBAHAN 5: STYLE UNTUK RANGE SLIDER ===== */
+        input[type="range"] {
+            width: 100%;
+            max-width: 300px;
+            accent-color: #a02020;
+            cursor: pointer;
+        }
+        .range-demo {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(180, 40, 40, 0.1);
+            text-align: center;
+        }
+        .range-demo h3 { color: #aaa; font-size: 16px; margin-bottom: 15px; }
+        .range-demo label { color: #aaa; display: block; margin-top: 15px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) { .container { padding: 24px 18px; } .header { flex-direction: column; align-items: center; text-align: center; } .product-grid { grid-template-columns: 1fr 1fr; gap: 8px; } }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SVG FILTER UNTUK GOOEY EFFECT ===== -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <filter id="mn-goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="7" />
+            <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 19 -9" />
+        </filter>
+    </svg>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <h1>FAHRIL PROJECT</h1>
+                <div class="sub">✦ TOPUP & IoT ✦</div>
+            </div>
+            <div class="tagline" style="text-align:right;">
+                <div class="big" style="font-family:'Orbitron';font-weight:700;font-size:18px;color:#c0c0c0;">#METAL DEV</div>
+                <div class="small" style="font-size:13px;color:#777;">since <span style="color:#a02020;">2024</span></div>
+            </div>
+        </header>
+
+        <!-- ===== DEMO SIDEBAR ===== -->
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid rgba(180,40,40,0.1);">
+            <h3 style="color:#aaa; margin-bottom:10px; font-size:14px;">Demo Sidebar Menu:</h3>
+            <ul class="sidebar" style="list-style: none; padding: 0;">
+                <li style="padding: 8px 0;">
+                    <a href="#" style="text-decoration: none; display: flex; gap: 10px;">
+                        <span style="color:#a02020;">🏠</span>
+                        <span class="links_name">Beranda</span>
+                    </a>
+                </li>
+                <li style="padding: 8px 0;">
+                    <a href="#" style="text-decoration: none; display: flex; gap: 10px;">
+                        <span style="color:#a02020;">🛒</span>
+                        <span class="links_name">Belanja</span>
+                    </a>
+                </li>
+                <li style="padding: 8px 0;">
+                    <a href="#" style="text-decoration: none; display: flex; gap: 10px;">
+                        <span style="color:#a02020;">📞</span>
+                        <span class="links_name">Kontak</span>
+                    </a>
+                </li>
+            </ul>
+            <p style="color:#666; font-size:12px; margin-top:10px;">*Nama menu disembunyikan dengan opacity:0, namun bisa dimunculkan dengan hover atau JS.</p>
+        </div>
+
+        <!-- ===== MENU TABS ===== -->
+        <div class="menu-tabs" id="menuTabs">
+            <button class="menu-tab active" data-menu="mlbb">MLBB</button>
+            <button class="menu-tab" data-menu="ff">Free Fire</button>
+            <button class="menu-tab" data-menu="edit">Jasa Edit</button>
+            <button class="menu-tab" data-menu="axis-bronet">Axis Bronet</button>
+            <button class="menu-tab" data-menu="axis-warnet">Axis Warnet</button>
+            <button class="menu-tab" data-menu="axis-aktif">Axis Aktif</button>
+            <button class="menu-tab" data-menu="axis-pure">Axis Pure</button>
+            <button class="menu-tab" data-menu="axis-max">Axis Max</button>
+            <button class="menu-tab" data-menu="smart">Smart</button>
+            <button class="menu-tab" data-menu="token">Token</button>
+            <button class="menu-tab" data-menu="pulsa-smartfren">Pulsa SF</button>
+            <button class="menu-tab" data-menu="pulsa-xl">Pulsa XL</button>
+        </div>
+
+        <!-- ===== PRODUK ===== -->
+        <div id="menuContents"></div>
+
+        <!-- ===== KERANJANG ===== -->
+        <div class="cart-section">
+            <div class="cart-header">
+                <h2>🛍️ Keranjang <span id="cartCount">0</span></h2>
+                <button class="btn btn-danger" onclick="clearCart()" style="flex:0;padding:8px 20px;font-size:13px;">Kosongkan</button>
+            </div>
+            <div id="cartItems">
+                <div class="empty-cart">Keranjang kosong</div>
+            </div>
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cartTotal">Rp 0</span>
+            </div>
+            <div class="cart-actions">
+                <button class="btn btn-success" onclick="alert('Fitur pembayaran sedang dikembangkan')">💳 Bayar</button>
+                <button class="btn btn-outline" onclick="sendWhatsApp()">📱 WA</button>
+            </div>
+        </div>
+
+        <!-- ===== GAMBAR PROMOSI ===== -->
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="https://ibb.co.com/MkmvF1MR" target="_blank">
+                <img src="https://i.ibb.co.com/KxJPTsF9/file-00000000347081fd98db8e30bda7fcc9.png" 
+                     alt="Gambar Promosi" 
+                     style="max-width: 100%; border-radius: 12px; border: 1px solid rgba(180, 40, 40, 0.2);">
+            </a>
+        </div>
+
+        <!-- ===== VIDEO PROMOSI ===== -->
+        <h2 class="section-title" style="margin-top: 40px;">🎬 Video Promo</h2>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <video width="100%" style="max-width: 400px; border-radius: 12px; border: 1px solid rgba(180, 40, 40, 0.2);" controls>
+                <source src="https://cdn.pixabay.com/video/2022/11/09/138306-769163773_large.mp4">
+                Maaf, browser Anda tidak mendukung tag video.
+            </video>
+        </div>
+
+        <!-- ===== RANGE SLIDER DEMO (DARI GAMBAR TERBARU) ===== -->
+        <div class="range-demo">
+            <h3>🎚️ Demo Range Slider</h3>
+            
+            <label>Step 5 (0 - 100):</label>
+            <input type="range" min="0" max="100" step="5">
+            <br><br>
+            
+            <label>Step 0.5 (0 - 100):</label>
+            <input type="range" min="0" max="100" step="0.5">
+        </div>
+
+        <!-- ===== FORM BOOKING HOTEL ===== -->
+        <h2 class="section-title" style="margin-top: 40px;">🏨 Booking Hotel</h2>
+        <div style="background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 12px; border: 1px solid rgba(180, 40, 40, 0.1); max-width: 500px; margin: 0 auto;">
+            <form action="#" method="POST" style="color: #e0e0e0;">
+                <div style="margin-bottom: 15px;">
+                    <label style="color: #aaa; display: block;">Guest Name</label>
+                    <input type="text" placeholder="Nama tamu" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #a02020; border-radius: 5px; color: white; margin-top: 5px;">
+                </div>
+                <div style="margin-bottom: 15px; display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label style="color: #aaa; display: block;">Check-in</label>
+                        <input type="date" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #a02020; border-radius: 5px; color: white; margin-top: 5px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="color: #aaa; display: block;">Check-out</label>
+                        <input type="date" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #a02020; border-radius: 5px; color: white; margin-top: 5px;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #aaa; display: block;">Guests</label>
+                    <input type="number" min="1" value="1" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #a02020; border-radius: 5px; color: white; margin-top: 5px;">
+                </div>
+                <button type="submit" class="mn-goo" style="background: #a02020; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s;">
+                    <span class="bead">Book Now</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- ===== FORM CONTACT US ===== -->
+        <h2 class="section-title" style="margin-top: 40px;">📞 Contact Us</h2>
+        <div style="background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 12px; border: 1px solid rgba(180, 40, 40, 0.1); max-width: 500px; margin: 0 auto;">
+            <form action="#" method="POST" style="color: #e0e0e0;">
+                <div style="margin-bottom: 15px;">
+                    <label style="color: #aaa; display: block;">Name</label>
+                    <input type="text" placeholder="Nama Anda" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #a02020; border-radius: 5px; color: white; margin-top: 5px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="color: #aaa; display: block;">Email</label>
+                    <input type="email" placeholder="email@example.com" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #a02020; border-radius: 5px; color: white; margin-top: 5px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #aaa; display: block;">Message</label>
+                    <textarea rows="5" placeholder="Tulis pesan Anda di sini..." style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #a02020; border-radius: 5px; color: white; margin-top: 5px; font-family: inherit;"></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+        <div class="footer" style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(180,40,40,0.15); text-align: center; color: #666; font-size: 12px;">
+            <span>⚡</span> FAHRIL PROJECT — built with metal &amp; code <span>⚡</span>
+        </div>
+    </div>
+
+    <!-- ===== WHATSAPP FLOAT ===== -->
+    <a href="https://wa.me/62882020654074" class="whatsapp-float" target="_blank">💬</a>
+
+    <!-- ============================================ -->
+    <!-- === KONEKSI KE SCRIPT.JS === -->
+    <!-- ============================================ -->
+    <script src="js/script.js"></script> 
+
+    <!-- ============================================ -->
+    <!-- === LOGIKA PRODUK & KERANJANG === -->
+    <!-- ============================================ -->
+    <script>
+        // ===== DATA PRODUK (LENGKAP) =====
+        const products = {
+            'mlbb': [
+                { name: '5 DM', price: 4000 }, { name: '12 DM', price: 6000 }, { name: '14 DM', price: 7000 },
+                { name: '19 DM', price: 8000 }, { name: '28 DM', price: 10000 }, { name: '36 DM', price: 12000 },
+                { name: '44 DM', price: 14000 }, { name: '56 DM', price: 17000 }, { name: '59 DM', price: 18000 },
+                { name: '70 DM', price: 21000 }, { name: '74 DM', price: 22000 }, { name: '86 DM', price: 24000 },
+                { name: '100 DM', price: 28000 }, { name: '112 DM', price: 31000 }, { name: '140 DM', price: 38000 },
+                { name: '144 DM', price: 39000 }, { name: '172 DM', price: 47000 }, { name: '185 DM', price: 49000 },
+                { name: '222 DM', price: 58000 }, { name: '240 DM', price: 64000 }, { name: '258 DM', price: 68000 },
+                { name: '278 DM', price: 75000 }, { name: '296 DM', price: 78000 }, { name: '300 DM', price: 79000 },
+                { name: '344 DM', price: 91000 }, { name: '345 DM', price: 92000 }, { name: '355 DM', price: 94000 },
+                { name: '370 DM', price: 98000 }, { name: '374 DM', price: 100000 }, { name: '381 DM', price: 101000 },
+                { name: '384 DM', price: 103000 }, { name: '408 DM', price: 107000 }, { name: '429 DM', price: 111000 },
+                { name: '448 DM', price: 119000 }, { name: '460 DM', price: 122000 }, { name: '514 DM', price: 132000 },
+                { name: '518 DM', price: 136000 }, { name: '522 DM', price: 138000 }, { name: '568 DM', price: 144000 },
+                { name: '600 DM', price: 151000 }, { name: '601 DM', price: 154000 }, { name: '642 DM', price: 165000 },
+                { name: '706 DM', price: 178000 }, { name: '712 DM', price: 183000 }, { name: '716 DM', price: 184000 },
+                { name: '717 DM', price: 185000 }, { name: '875 DM', price: 216000 }, { name: '963 DM', price: 240000 },
+                { name: '977 DM', price: 244000 }, { name: '1050 DM', price: 159000 }
+            ],
+            'ff': [
+                { name: '10 DM', price: 4000 }, { name: '15 DM', price: 5000 }, { name: '20 DM', price: 6000 },
+                { name: '25 DM', price: 7000 }, { name: '30 DM', price: 8000 }, { name: '50 DM', price: 9000 },
+                { name: '55 DM', price: 10000 }, { name: '70 DM', price: 11000 }, { name: '80 DM', price: 12000 },
+                { name: '90 DM', price: 14000 }, { name: '100 DM', price: 15000 }, { name: '120 DM', price: 17000 },
+                { name: '140 DM', price: 19000 }, { name: '150 DM', price: 20000 }, { name: '160 DM', price: 22000 },
+                { name: '170 DM', price: 24000 }, { name: '190 DM', price: 25000 }, { name: '200 DM', price: 26000 },
+                { name: '210 DM', price: 27000 }, { name: '250 DM', price: 34000 }, { name: '260 DM', price: 35000 },
+                { name: '280 DM', price: 36000 }, { name: '300 DM', price: 40000 }, { name: '355 DM', price: 45000 },
+                { name: '360 DM', price: 46000 }, { name: '375 DM', price: 48000 }, { name: '405 DM', price: 52000 },
+                { name: '425 DM', price: 53000 }, { name: '475 DM', price: 60000 }, { name: '500 DM', price: 63000 },
+                { name: '510 DM', price: 65000 }, { name: '545 DM', price: 68000 }, { name: '565 DM', price: 70000 },
+                { name: '600 DM', price: 77000 }, { name: '635 DM', price: 79000 }, { name: '720 DM', price: 87000 },
+                { name: '770 DM', price: 93000 }, { name: '800 DM', price: 98000 }, { name: '860 DM', price: 104000 },
+                { name: '930 DM', price: 112000 }, { name: '1000 DM', price: 121000 }, { name: '1050 DM', price: 129000 },
+                { name: '1080 DM', price: 132000 }, { name: '1450 DM', price: 172000 }, { name: '2000 DM', price: 239000 },
+                { name: '2180 DM', price: 257000 }
+            ],
+            'edit': [{ name: '1 video', price: 8000 }],
+            'axis-bronet': [
+                { name: '2 GB 24 jam 60 hari', price: 31000 }, { name: '3 GB 24 jam 60 hari', price: 38000 },
+                { name: '5 GB 24 jam 60 hari', price: 55000 }, { name: '8 GB 24 jam 60 hari', price: 76000 },
+                { name: '10 GB 24 jam 60 hari', price: 87000 }, { name: '12 GB 24 jam 60 hari', price: 97000 },
+                { name: '16 GB 24 jam 60 hari', price: 109000 }, { name: '50 GB 24 jam 60 hari', price: 112000 },
+                { name: '90 GB 25 jam 60 hari', price: 172000 }
+            ],
+            'axis-warnet': [
+                { name: 'Unlimited 24 jam', price: 10000 }, { name: 'Unlimited 48 jam', price: 22000 },
+                { name: 'Unlimited 72 jam', price: 38000 }
+            ],
+            'axis-aktif': [{ name: 'Masa aktif 30 hari', price: 8000 }],
+            'axis-pure': [
+                { name: '1 GB 30 hari', price: 10000 }, { name: '2 GB 30 hari', price: 19000 },
+                { name: '3 GB 30 hari', price: 24000 }, { name: '4 GB 30 hari', price: 31000 },
+                { name: '5 GB 30 hari', price: 33000 }, { name: '6 GB 30 hari', price: 46000 },
+                { name: '8 GB 30 hari', price: 53000 }, { name: '12 GB 30 hari', price: 56000 },
+                { name: '16 GB 30 hari', price: 62000 }
+            ],
+            'axis-max': [
+                { name: '2 GB + 500 MB 30 hari', price: 17000 }, { name: '3 GB + 500 MB 30 hari', price: 24000 },
+                { name: '4 GB + 1 GB 30 hari', price: 31000 }, { name: '5 GB + 1 GB 30 hari', price: 38000 }
+            ],
+            'smart': [
+                { name: '10 GB 7 hari', price: 22000 }, { name: '3 GB 14 hari', price: 22000 },
+                { name: '20 GB 3 hari', price: 23000 }
+            ],
+            'token': [
+                { name: '15000', price: 20000 }, { name: '20000', price: 25000 }, { name: '25000', price: 30000 }
+            ],
+            'pulsa-smartfren': [
+                { name: '15 ribu', price: 18000 }, { name: '20 ribu', price: 23000 }, { name: '25 ribu', price: 28000 }
+            ],
+            'pulsa-xl': [
+                { name: '15 ribu', price: 18000 }, { name: '20 ribu', price: 23000 }, { name: '25 ribu', price: 28000 }
+            ]
+        };
+
+        const menuLabels = {
+            'mlbb': 'MLBB', 'ff': 'Free Fire', 'edit': 'Jasa Edit',
+            'axis-bronet': 'Axis Bronet', 'axis-warnet': 'Axis Warnet', 'axis-aktif': 'Axis Aktif',
+            'axis-pure': 'Axis Pure', 'axis-max': 'Axis Max', 'smart': 'Smart Nonstop',
+            'token': 'Token Listrik', 'pulsa-smartfren': 'Pulsa Smartfren', 'pulsa-xl': 'Pulsa XL'
+        };
+
+        let cart = [];
+        let currentMenu = 'mlbb';
+        const WHATSAPP_NUMBER = '62882020654074';
+
+        // ===== NOTIFICATION =====
+        function showNotification(msg, type = 'info') {
+            const old = document.querySelector('.notification');
+            if (old) old.remove();
+            const el = document.createElement('div');
+            el.className = `notification ${type}`;
+            el.textContent = msg;
+            document.body.appendChild(el);
+            setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
+        }
+
+        // ===== RENDER PRODUK =====
+        function renderProducts(menu) {
+            const container = document.getElementById('menuContents');
+            const list = products[menu] || [];
+            let html = '<div class="product-grid">';
+            list.forEach((p, i) => {
+                const sel = cart.some(item => item.name === p.name && item.menu === menu);
+                html += `<div class="product-item ${sel ? 'selected' : ''}" onclick="addToCart('${menu}', ${i})">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-price">Rp ${p.price.toLocaleString()}</div>
+                        </div>`;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // ===== KERANJANG =====
+        function addToCart(menu, idx) {
+            const p = products[menu][idx];
+            const exist = cart.find(item => item.name === p.name && item.menu === menu);
+            if (exist) exist.quantity += 1; else cart.push({ ...p, menu, quantity: 1 });
+            updateCart();
+            renderProducts(currentMenu);
+            showNotification(`✅ ${p.name} ditambahkan`, 'success');
+        }
+
+        function removeFromCart(i) {
+            cart.splice(i, 1);
+            updateCart();
+            renderProducts(currentMenu);
+            showNotification('🗑️ Produk dihapus', 'info');
+        }
+
+        function clearCart() {
+            if (cart.length === 0) return showNotification('Keranjang kosong', 'info');
+            if (confirm('Yakin ingin mengosongkan keranjang?')) {
+                cart = []; updateCart(); renderProducts(currentMenu);
+                showNotification('Keranjang dikosongkan', 'info');
+            }
+        }
+
+        function updateCart() {
+            const items = document.getElementById('cartItems');
+            const total = document.getElementById('cartTotal');
+            const count = document.getElementById('cartCount');
+
+            if (cart.length === 0) {
+                items.innerHTML = '<div class="empty-cart">Keranjang kosong</div>';
+                total.textContent = 'Rp 0'; count.textContent = '0';
+                return;
+            }
+
+            let t = 0, c = 0, html = '';
+            cart.forEach((item, i) => {
+                const sub = item.price * item.quantity;
+                t += sub; c += item.quantity;
+                html += `<div class="cart-item">
+                            <div><strong style="color:#d0d0d0;">${item.name}</strong> <span style="color:#888;font-size:13px;">${menuLabels[item.menu]} x${item.quantity}</span></div>
+                            <div><span style="font-weight:600;color:#a02020;">Rp ${sub.toLocaleString()}</span> <button class="cart-item-remove" onclick="removeFromCart(${i})">✕</button></div>
+                        </div>`;
+            });
+            items.innerHTML = html;
+            total.textContent = `Rp ${t.toLocaleString()}`;
+            count.textContent = c;
+        }
+
+        // ===== WHATSAPP =====
+        function sendWhatsApp() {
+            if (cart.length === 0) return showNotification('Keranjang kosong!', 'error');
+            let t = 0, msg = 'Pesanan Baru\n\n';
+            cart.forEach(i => {
+                const sub = i.price * i.quantity; t += sub;
+                msg += `${i.name} (${menuLabels[i.menu]}) x${i.quantity} = Rp ${sub.toLocaleString()}\n`;
+            });
+            msg += `\nTotal: Rp ${t.toLocaleString()}`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // ===== EVENT =====
+        document.getElementById('menuTabs').addEventListener('click', function(e) {
+            if (e.target.classList.contains('menu-tab')) {
+                document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                currentMenu = e.target.dataset.menu;
+                renderProducts(currentMenu);
+            }
+        });
+
+        // ===== INIT =====
+        renderProducts('mlbb');
+        updateCart();
+    </script>
+</body>
+</html>
