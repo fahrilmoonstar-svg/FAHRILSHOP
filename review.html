@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Card - FAHRIL PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, rgba(180, 40, 40, 0.08) 0%, transparent 60%);
+        }
+
+        /* ===== KARTU ULASAN ===== */
+        .review-card {
+            background: rgba(16, 16, 16, 0.92);
+            border: 1px solid rgba(180, 40, 40, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: #a02020;
+        }
+
+        .stars {
+            font-size: 32px;
+            color: #fbbf24;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+
+        .rating-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+
+        .reviewer {
+            font-size: 16px;
+            font-weight: 700;
+            color: #a02020;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .comment {
+            font-size: 15px;
+            color: #aaa;
+            line-height: 1.6;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== REVIEW CARD DARI GAMBAR ===== -->
+    <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <div class="rating-text">5.0 out of 5</div>
+        <div class="reviewer">Josh M.</div>
+        <div class="comment">"Absolutely loved it! Exceeded all my expectations."</div>
+    </div>
+
+</body>
+</html>
