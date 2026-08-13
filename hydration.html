@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydration Tracker - FAHRIL PROJECT</title>
+    <style>
+        /* ===== CSS ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #03050f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(16, 16, 16, 0.92);
+            border: 1px solid rgba(180, 40, 40, 0.2);
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+        }
+
+        .bottle-wrapper {
+            margin: 0 auto 30px;
+            width: 160px;
+            position: relative;
+        }
+
+        .cap {
+            width: 60px;
+            height: 20px;
+            background: #a02020;
+            border-radius: 6px 6px 0 0;
+            margin: 0 auto;
+        }
+
+        .bottle-body {
+            width: 160px;
+            height: 220px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0 0 30px 30px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+
+        .water {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(to top, #00e5ff, #0288d1);
+            transition: height 0.5s ease;
+            border-radius: 0 0 27px 27px;
+        }
+
+        .highlight {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 20%;
+            height: 80%;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .current-amount {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #e0e0e0;
+        }
+
+        .current-amount span {
+            color: #00e5ff;
+        }
+
+        .goal-text {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            font-size: 16px;
+            font-weight: 600;
+            min-height: 24px;
+            margin-bottom: 20px;
+            color: #4ade80;
+        }
+
+        button {
+            background: #a02020;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            width: 100%;
+        }
+        button:hover {
+            background: #c03030;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="bottle-wrapper">
+            <div class="cap"></div>
+            <div class="bottle-body">
+                <div class="water" id="water-fill"></div>
+                <div class="highlight"></div>
+            </div>
+        </div>
+
+        <div class="current-amount">
+            <span id="current-ml">0</span> ML
+        </div>
+        <div class="goal-text">Goal: 2000 ML</div>
+        <div class="message" id="msg"></div>
+
+        <button onclick="addWater()">+ Drink 250ml</button>
+    </div>
+
+    <!-- ===== JAVASCRIPT DARI GAMBAR ===== -->
+    <script>
+        let currentmL = 0;
+        const goalML = 2000;
+        const increment = 250;
+
+        function addWater() {
+            // Kode dari gambar: Cek apakah sudah mencapai target
+            if (currentmL >= goalML) return;
+
+            // Kode dari gambar: Tambah air, tapi jangan melebihi target
+            currentmL = Math.min(currentmL + increment, goalML);
+
+            updateUI();
+        }
+
+        function updateUI() {
+            // Kode dari gambar: Update angka ML
+            document.getElementById('current-ml').innerText = currentmL;
+
+            // Kode dari gambar: Update tinggi air di botol
+            const percentage = (currentmL / goalML) * 100;
+            document.getElementById('water-fill').style.height = percentage + '%';
+
+            // Kode dari gambar: Update pesan
+            const msgEL = document.getElementById('msg');
+            msgEL.innerText = currentmL === goalML ? 'Goal Reached! 🎉' : 'Keep drinking! 💧';
+        }
+    </script>
+
+</body>
+</html>
