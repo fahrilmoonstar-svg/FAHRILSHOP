@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Demo - FAHRIL PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .slider-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(16, 16, 16, 0.92);
+            border: 1px solid rgba(180, 40, 40, 0.25);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slides-wrapper {
+            display: flex;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .slides-track {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .slide h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #a02020;
+        }
+
+        .slide p {
+            color: #aaa;
+            font-size: 16px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-arrow {
+            background: #a02020;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .btn-arrow:hover {
+            background: #c03030;
+            transform: scale(1.05);
+        }
+
+        .btn-arrow:active {
+            transform: scale(0.95);
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: #a02020;
+            box-shadow: 0 0 10px rgba(180, 40, 40, 0.3);
+        }
+
+        /* Tombol Get Started */
+        .btn-start {
+            margin-top: 20px;
+            width: 100%;
+            padding: 14px;
+            background: #a02020;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-start:active {
+            transform: scale(0.96);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slider-container">
+
+        <!-- Slider Area -->
+        <div class="slides-wrapper" id="slidesEl">
+            <div class="slides-track" id="slidesTrack">
+                <div class="slide">
+                    <h2>🚀 Slide 1</h2>
+                    <p>Selamat datang di slider interaktif! Gunakan tombol panah atau geser layar.</p>
+                </div>
+                <div class="slide">
+                    <h2>💡 Slide 2</h2>
+                    <p>Kamu bisa navigasi pakai keyboard (Arrow Right/Left) atau swipe di HP.</p>
+                </div>
+                <div class="slide">
+                    <h2>🎯 Slide 3</h2>
+                    <p>Klik tombol Start di bawah untuk memulai aksi dengan efek animasi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kontrol Navigasi -->
+        <div class="controls">
+            <button class="btn-arrow" onclick="prev()">◀ Prev</button>
+            <div class="dots" id="dotsContainer"></div>
+            <button class="btn-arrow" onclick="next()">Next ▶</button>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <button class="btn-start" id="getStartedBtn" onclick="getStarted()">🚀 Get Started</button>
+
+    </div>
+
+    <script>
+        // ===== KODE JAVASCRIPT DARI GAMBAR =====
+        let currentIndex = 0;
+        const track = document.getElementById('slidesTrack');
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('dotsContainer');
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const slidesEl = document.getElementById('slidesEl');
+
+        // Fungsi untuk membuat titik navigasi (dots)
+        function createDots() {
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        // Fungsi untuk memperbarui posisi slide dan dot
+        function updateUI() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
+            });
+        }
+
+        function next() {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateUI();
+        }
+
+        function prev() {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateUI();
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateUI();
+        }
+
+        // ===== KODE DARI GAMBAR (INTERAKSI) =====
+        function getStarted() {
+            // Efek visual tombol saat diklik
+            getStartedBtn.style.transform = 'scale(0.96)';
+            setTimeout(() => {
+                getStartedBtn.style.transform = '';
+            }, 150);
+            
+            alert("🚀 Get Started clicked! Slide saat ini: " + (currentIndex + 1));
+        }
+
+        // Keyboard navigation (Arrow Keys)
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') next();
+            if (e.key === 'ArrowLeft') prev();
+        });
+
+        // Touch / Swipe support untuk HP
+        let touchStartX = 0;
+        slidesEl.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        slidesEl.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (dx < -40) next();
+            if (dx > 40) prev();
+        });
+
+        // Inisialisasi
+        createDots();
+        updateUI();
+    </script>
+
+</body>
+</html>
