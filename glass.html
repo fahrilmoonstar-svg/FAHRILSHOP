@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass UI Spin - FAHRIL PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== GLOBAL ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ===== WRAPPER UNTUK BOX ===== */
+        .card-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            border-radius: 20px;
+            padding: 4px; /* Ruang untuk garis glow */
+            background: #1a1a2e;
+            overflow: hidden;
+        }
+
+        /* ===== EFEK SPINNING DARI GAMBAR ===== */
+        .card-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(from 0deg,
+                transparent 0%,
+                #00e5ff 15%,
+                transparent 30%
+            );
+            animation: spin 3s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== KARTU KACA (GLASS) DI ATAS EFEK ===== */
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(16, 16, 16, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #e0e0e0 30%, #00e5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .glass-card p {
+            color: #aaa;
+            font-size: 16px;
+        }
+
+        .glass-card .btn-spin {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #00e5ff;
+            color: #03050f;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .glass-card .btn-spin:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-wrapper">
+        <div class="glass-card">
+            <h2>SPINNING GLOW</h2>
+            <p>Efek cahaya berputar menggunakan conic-gradient</p>
+            <button class="btn-spin">Klik Saya</button>
+        </div>
+    </div>
+
+</body>
+</html>
