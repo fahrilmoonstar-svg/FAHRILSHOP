@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoFi Player - FAHRIL PROJECT</title>
+    <style>
+        /* ===== CSS ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #111;
+            color: #eee;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at center, #2a1a3a 0%, #0a0a0a 100%);
+            overflow: hidden;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .wrap { text-align: center; position: relative; z-index: 2; }
+        h1 { font-size: 32px; letter-spacing: 4px; text-transform: uppercase; color: #ff6b8a; text-shadow: 0 0 20px rgba(255, 107, 138, 0.3); margin-bottom: 30px; }
+
+        .cas {
+            width: 240px; height: 160px;
+            background: linear-gradient(135deg, #1a1a2e, #2a2a3a);
+            border-radius: 12px; border: 2px solid #333;
+            padding: 15px; margin: 0 auto 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+
+        .lab {
+            background: #fff; padding: 10px; border-radius: 4px;
+            height: 100%; display: flex;
+            flex-direction: column; align-items: center; justify-content: space-between;
+        }
+        .lab h2 { font-size: 14px; color: #1a1a2e; letter-spacing: 2px; margin-top: 5px; }
+
+        .reel {
+            width: 60px; height: 60px; border-radius: 50%; border: 3px solid #333;
+            background: #e0e0e0; position: relative; display: inline-block; margin: 0 10px;
+            transition: transform 0.1s linear;
+        }
+        .reel .teeth {
+            width: 100%; height: 100%; border-radius: 50%;
+            background: repeating-conic-gradient(#333 0deg 10deg, transparent 10deg 20deg); opacity: 0.3;
+        }
+
+        .is-playing .reel { animation: spin 3s linear infinite; }
+        .is-playing .reel:last-child { animation-direction: reverse; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        button {
+            background: #a02020; color: white; border: none;
+            padding: 12px 30px; border-radius: 30px; font-size: 16px;
+            font-weight: bold; cursor: pointer; transition: 0.3s; font-family: inherit;
+        }
+        button:hover { background: #c03030; transform: scale(1.05); box-shadow: 0 0 30px rgba(160, 32, 32, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+    <div class="wrap">
+        <h1>LOFI MUSIC</h1>
+        <div class="cas" id="tape">
+            <div class="lab">
+                <h2>MUSIC MIX VOL. 2</h2>
+                <div>
+                    <div class="reel"><div class="teeth"></div></div>
+                    <div class="reel"><div class="teeth"></div></div>
+                </div>
+            </div>
+        </div>
+        <button id="btn">Play Tape</button>
+    </div>
+
+    <!-- ===== JAVASCRIPT DARI GAMBAR + WEB AUDIO API ===== -->
+    <script>
+        // Inisialisasi Web Audio Context
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Variabel state
+        let play = false;
+        let raf = null;
+        let nextTime = ctx.currentTime + 0.1;
+        let beat = 0;
+
+        // ===== LOGIKA MUSIK (Synthesizer) =====
+        
+        // Fungsi untuk memainkan "drum" (suara perkusi sederhana)
+        function drum(time) {
+            // Suara kick drum sederhana
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(150, time);
+            osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.1);
+            
+            gain.gain.setValueAtTime(0.3, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start(time);
+            osc.stop(time + 0.1);
+        }
+
+        // Melodi LoFi (urutan frekuensi dan durasi)
+        const mel = [
+            { f: 261.63, d: 0.25 }, // C4
+            { f: 293.66, d: 0.25 }, // D4
+            { f: 329.63, d: 0.25 }, // E4
+            { f: 392.00, d: 0.25 }, // G4
+        ];
+
+        // Fungsi untuk memainkan nada/nada melodi
+        function voice(freq, time, dur) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = 'sine'; // Suara LoFi biasanya sine wave
+            osc.frequency.value = freq;
+            
+            gain.gain.setValueAtTime(0.2, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + dur);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start(time);
+            osc.stop(time + dur);
+        }
+
+        // Inisialisasi audio context (perlu dipanggil setelah interaksi user)
+        function init() {
+            if (ctx.state === 'suspended') {
+                ctx.resume();
+            }
+        }
+
+        // ===== LOGIKA LOOP DARI GAMBAR =====
+        function loop() {
+            while (nextTime < ctx.currentTime + 0.1) {
+                drum(nextTime);
+                if (beat % 2 === 0) {
+                    let note = mel[Math.floor(beat / 2) % mel.length];
+                    voice(note.f, nextTime, note.d);
+                }
+                nextTime += 0.5;
+                beat++;
+            }
+            if (play) raf = requestAnimationFrame(loop);
+        }
+
+        // ===== INTERAKSI TOMBOL DARI GAMBAR =====
+        const btn = document.getElementById('btn');
+        const tape = document.getElementById('tape');
+
+        btn.onclick = () => {
+            init();
+            play = !play;
+            if (play) {
+                btn.innerText = "Pause";
+                tape.classList.add('is-playing'); // CSS class untuk animasi reel
+                nextTime = ctx.currentTime + 0.1;
+                beat = 0;
+                loop();
+            } else {
+                btn.innerText = "Play Tape";
+                tape.classList.remove('is-playing');
+                cancelAnimationFrame(raf);
+            }
+        };
+    </script>
+
+</body>
+</html>
