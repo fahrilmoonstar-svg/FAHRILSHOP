@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass UI & Card 3D - FAHRIL PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            letter-spacing: 3px;
+            color: #a02020;
+            text-align: center;
+        }
+
+        /* ===== CSS KARTU KREDIT 3D (DARI GAMBAR) ===== */
+        .card-wrapper {
+            perspective: 1000px;
+            width: 380px;
+            height: 220px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            color: white;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #263b2a, #8295a9);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            transform: rotateX(8deg) rotateY(-12deg);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: rotateX(0) rotateY(0) translateY(-10px);
+        }
+
+        .top, .bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .top {
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .top b {
+            font-size: 16px;
+        }
+
+        .chip {
+            width: 52px;
+            height: 38px;
+            background: linear-gradient(135deg, #ffd5a8, #ffad16);
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .number {
+            font-size: 22px;
+            letter-spacing: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .bottom {
+            margin-top: 25px;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .bottom small {
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .bottom strong {
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* ===== CSS GLASS UI (DARI SEBELUMNYA) ===== */
+        .card-wrapper-glass {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 20px;
+            padding: 4px;
+            background: #1a1a2e;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-wrapper-glass::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(from 0deg,
+                transparent 0%,
+                #00e5ff 15%,
+                transparent 30%
+            );
+            animation: spin 3s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(16, 16, 16, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #e0e0e0 30%, #00e5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .glass-card p {
+            color: #aaa;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="section-title">✦ UI Components ✦</h1>
+
+    <!-- ===== KARTU KREDIT 3D (DARI GAMBAR) ===== -->
+    <div class="card-wrapper">
+        <div class="card">
+            <div class="top">
+                <b>CHARLES KELECHI</b>
+                <span>SIGNATURE</span>
+            </div>
+            <div class="chip"></div>
+            <div class="number">5421 7832 9012 4587</div>
+            <div class="bottom">
+                <small>
+                    CARD HOLDER<br>
+                    <b>CHARLES KELECHI</b>
+                </small>
+                <small>
+                    EXPIRES<br>
+                    <b>09/29</b>
+                </small>
+                <strong>VISA</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GLASS UI SPINNING (DARI SEBELUMNYA) ===== -->
+    <div class="card-wrapper-glass">
+        <div class="glass-card">
+            <h2>SPINNING GLOW</h2>
+            <p>Efek cahaya berputar menggunakan conic-gradient</p>
+        </div>
+    </div>
+
+</body>
+</html>
