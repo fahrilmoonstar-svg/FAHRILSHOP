@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klik Kotak Game - FAHRIL PROJECT</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 28px;
+            letter-spacing: 3px;
+            color: #a02020;
+            margin-bottom: 20px;
+        }
+
+        #score {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #game-area {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            background: rgba(16, 16, 16, 0.8);
+            border: 2px solid rgba(180, 40, 40, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+        }
+
+        .kotak {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #a02020;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 0 20px rgba(180, 40, 40, 0.3);
+        }
+
+        .kotak:hover {
+            transform: scale(1.1);
+        }
+
+        #reset-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: transparent;
+            border: 2px solid #a02020;
+            color: #e0e0e0;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        #reset-btn:hover {
+            background: #a02020;
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎯 Klik Kotak</h1>
+    <div id="score">Skor: 0</div>
+
+    <div id="game-area"></div>
+
+    <button id="reset-btn" onclick="mulaiGame()">🔄 Reset Game</button>
+
+    <script>
+        // ===== KODE DARI GAMBAR =====
+        let score = 0;
+        let timer = null;
+
+        function mulaiGame() {
+            score = 0;
+            document.getElementById("score").innerText = "Skor: 0";
+            
+            // Hapus kotak lama jika ada
+            const area = document.getElementById("game-area");
+            area.innerHTML = '';
+            
+            pindahKotak();
+        }
+
+        // ===== LOGIKA TAMBAHAN UNTUK GAME =====
+        function pindahKotak() {
+            const area = document.getElementById("game-area");
+            
+            // Hapus kotak sebelumnya
+            const oldBox = document.querySelector('.kotak');
+            if (oldBox) oldBox.remove();
+
+            // Buat kotak baru
+            const box = document.createElement('div');
+            box.className = 'kotak';
+            
+            // Posisi acak
+            const maxX = area.clientWidth - 50;
+            const maxY = area.clientHeight - 50;
+            box.style.left = Math.floor(Math.random() * maxX) + 'px';
+            box.style.top = Math.floor(Math.random() * maxY) + 'px';
+
+            // Event klik
+            box.addEventListener('click', function() {
+                score++;
+                document.getElementById("score").innerText = "Skor: " + score;
+                pindahKotak();
+            });
+
+            area.appendChild(box);
+
+            // Jika kotak tidak diklik dalam 2 detik, game over
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                alert("Game Over! Skor akhir kamu: " + score);
+                document.getElementById("game-area").innerHTML = '';
+            }, 2000);
+        }
+
+        // Mulai game saat halaman dimuat (sesuai gambar)
+        mulaiGame();
+    </script>
+
+</body>
+</html>
