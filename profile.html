@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juragan FAHRIL — Profil Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, rgba(180, 40, 40, 0.08) 0%, transparent 60%);
+        }
+
+        /* ===== KARTU PROFIL ===== */
+        .profile-card {
+            background: rgba(16, 16, 16, 0.95);
+            border: 1px solid rgba(180, 40, 40, 0.25);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* Garis cahaya animasi di atas kartu */
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #a02020, #ff4d6d, transparent);
+            animation: slideGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes slideGlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .profile-card:hover {
+            transform: translateY(-6px);
+            border-color: #a02020;
+            box-shadow: 0 30px 80px rgba(180, 40, 40, 0.1);
+        }
+
+        /* ===== AVATAR ===== */
+        .avatar-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            border: 3px solid #a02020;
+            padding: 3px;
+            background: #03050f;
+        }
+
+        .avatar-wrapper .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a1a2e, #a02020);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+
+        /* ===== BADGE ===== */
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .badge {
+            background: #a02020;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(180, 40, 40, 0.2);
+        }
+
+        .badge-outline {
+            background: transparent;
+            border: 2px solid #a02020;
+            color: #a02020;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* ===== INFO ===== */
+        .profile-info {
+            text-align: left;
+            margin: 25px 0;
+        }
+
+        .profile-info h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .profile-info .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-info .info-item .label {
+            color: #aaa;
+        }
+
+        .profile-info .info-item .value {
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        .profile-info .info-item .value span {
+            color: #a02020;
+        }
+
+        /* ===== STATS ===== */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin: 20px 0;
+        }
+
+        .stats .stat {
+            text-align: center;
+        }
+
+        .stats .stat .number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #a02020;
+            display: block;
+        }
+
+        .stats .stat .label {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* ===== TOMBOL ===== */
+        .btn {
+            background: transparent;
+            color: #e0e0e0;
+            border: 2px solid #a02020;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            margin: 5px;
+            width: 45%;
+        }
+
+        .btn-primary {
+            background: #a02020;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #c03030;
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(180, 40, 40, 0.3);
+        }
+
+        .btn-outline:hover {
+            background: #a02020;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-card">
+        <!-- Avatar -->
+        <div class="avatar-wrapper">
+            <div class="avatar">👑</div>
+        </div>
+
+        <h2 style="font-family: 'Orbitron', monospace; font-size: 22px; letter-spacing: 2px; margin-bottom: 5px;">Juragan FAHRIL</h2>
+        <p style="color: #888; font-size: 14px;">@fahrilmoonstar</p>
+
+        <!-- Badge -->
+        <div class="badge-container">
+            <span class="badge">⭐ Verified</span>
+            <span class="badge-outline">🚀 Top Creator</span>
+        </div>
+
+        <!-- Info -->
+        <div class="profile-info">
+            <h3>📌 Profil</h3>
+            <div class="info-item">
+                <span class="label">📍 Lokasi</span>
+                <span class="value">Tangerang</span>
+            </div>
+            <div class="info-item">
+                <span class="label">💼 Pekerjaan</span>
+                <span class="value">Developer &amp; IoT</span>
+            </div>
+            <div class="info-item">
+                <span class="label">🚀 Project</span>
+                <span class="value"><span>4</span> Aktif</span>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat">
+                <span class="number">20+</span>
+                <span class="label">HTML UI</span>
+            </div>
+            <div class="stat">
+                <span class="number">3</span>
+                <span class="label">Live Web</span>
+            </div>
+            <div class="stat">
+                <span class="number">IoT</span>
+                <span class="label">Expert</span>
+            </div>
+        </div>
+
+        <!-- Tombol -->
+        <button class="btn btn-primary" onclick="alert('🚀 Menuju Portofolio...')">Lihat Portofolio</button>
+        <button class="btn btn-outline" onclick="alert('📩 Hubungi Juragan...')">Hubungi</button>
+
+        <div class="footer-text">✦ FAHRIL PROJECT — Built with Metal &amp; Code ✦</div>
+    </div>
+
+</body>
+</html>
