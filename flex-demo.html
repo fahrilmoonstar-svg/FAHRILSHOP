@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox Demo - FAHRIL PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* ===== CSS DARI GAMBAR ===== */
+        .card-old {
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .container-flex {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            flex-wrap: wrap;
+        }
+
+        .card-flex {
+            flex: 1;
+            background-color: #1a2a3a;
+            padding: 15px;
+            box-sizing: border-box;
+            border-radius: 12px;
+            border: 1px solid #a02020;
+            text-align: center;
+            min-width: 120px;
+            transition: transform 0.3s;
+        }
+
+        .card-flex:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(160, 32, 32, 0.2);
+        }
+
+        /* Tambahan styling */
+        h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: #a02020;
+        }
+
+        .section-title {
+            color: #888;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Flexbox Demo</h2>
+
+    <!-- Container Flex -->
+    <div>
+        <div class="section-title">📦 Container Flex</div>
+        <div class="container-flex">
+            <div class="card-flex">Kartu 1</div>
+            <div class="card-flex">Kartu 2</div>
+            <div class="card-flex">Kartu 3</div>
+        </div>
+    </div>
+
+    <!-- Kartu Lama -->
+    <div>
+        <div class="section-title">📜 Card Old</div>
+        <div class="card-old">
+            Ini adalah kartu dengan gaya lama (tidak menggunakan flexbox).
+        </div>
+    </div>
+
+</body>
+</html>
