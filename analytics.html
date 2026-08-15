@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Panel - FAHRIL PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, rgba(180, 40, 40, 0.08) 0%, transparent 60%);
+        }
+
+        /* ===== PANEL ANALITIK ===== */
+        .analytics-panel {
+            background: rgba(16, 16, 16, 0.95);
+            border: 1px solid rgba(180, 40, 40, 0.25);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+        }
+
+        .panel-body {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* ===== RINGKASAN ===== */
+        .summary-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .summary-item {
+            flex: 1;
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(180, 40, 40, 0.1);
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .summary-value.blue {
+            color: #4fc3f7;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .trend-indicator {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        .trend-indicator.up {
+            color: #4ade80;
+        }
+
+        /* ===== RINCIAN KATEGORI ===== */
+        .category-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cat-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cat-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .cat-name {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .cat-bar-track {
+            flex: 2;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .cat-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .cat-amount {
+            font-size: 16px;
+            font-weight: 600;
+            color: #a0a0a0;
+            min-width: 60px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== PANEL ANALITIK DARI GAMBAR ===== -->
+    <div class="analytics-panel">
+        <div class="panel-body">
+            
+            <!-- Ringkasan -->
+            <div class="summary-row">
+                <div class="summary-item">
+                    <div class="summary-value blue">$5,240</div>
+                    <div class="summary-label">Net Savings</div>
+                    <div class="trend-indicator up">▲ +22%</div>
+                </div>
+            </div>
+
+            <!-- Rincian Kategori -->
+            <div class="category-breakdown">
+                <div class="cat-row">
+                    <div class="cat-dot" style="background: #ff6b6b;"></div>
+                    <div class="cat-name">Housing</div>
+                    <div class="cat-bar-track">
+                        <div class="cat-bar-fill" style="width: 75%; background: #ff6b6b;"></div>
+                    </div>
+                    <div class="cat-amount">$1,850</div>
+                </div>
+
+                <div class="cat-row">
+                    <div class="cat-dot" style="background: #feca57;"></div>
+                    <div class="cat-name">Food & Dining</div>
+                    <div class="cat-bar-track">
+                        <div class="cat-bar-fill" style="width: 40%; background: #feca57;"></div>
+                    </div>
+                    <div class="cat-amount">$680</div>
+                </div>
+
+                <div class="cat-row">
+                    <div class="cat-dot" style="background: #54a0ff;"></div>
+                    <div class="cat-name">Transportation</div>
+                    <div class="cat-bar-track">
+                        <div class="cat-bar-fill" style="width: 25%; background: #54a0ff;"></div>
+                    </div>
+                    <div class="cat-amount">$340</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
