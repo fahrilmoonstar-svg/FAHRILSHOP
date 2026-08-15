@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox & Grid Demo - FAHRIL PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 40px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            letter-spacing: 2px;
+            color: #a02020;
+            text-align: center;
+        }
+
+        /* ===== FLEXBOX DEMO (YANG SUDAH ADA) ===== */
+        .container-flex {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            flex-wrap: wrap;
+        }
+
+        .card-flex {
+            flex: 1;
+            background-color: #1a2a3a;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #a02020;
+            text-align: center;
+            min-width: 120px;
+            transition: transform 0.3s;
+        }
+
+        .card-flex:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(160, 32, 32, 0.2);
+        }
+
+        /* ===== CSS GRID DEMO (DARI GAMBAR) ===== */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr; /* Sidebar - Konten - Sidebar */
+            grid-template-rows: auto 1fr auto;
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+            min-height: 300px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(180, 40, 40, 0.1);
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #f5576c;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .item:hover {
+            transform: scale(1.02);
+        }
+
+        .header {
+            grid-column: 1 / -1; /* Full width */
+        }
+
+        .footer {
+            grid-column: 1 / -1; /* Full width */
+        }
+
+        .sub-label {
+            color: #888;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="section-title">📐 Layout Demo</h1>
+
+    <!-- ===== FLEXBOX DEMO ===== -->
+    <div style="width: 100%; max-width: 500px;">
+        <div class="sub-label">🟦 Flexbox</div>
+        <div class="container-flex">
+            <div class="card-flex">Kartu 1</div>
+            <div class="card-flex">Kartu 2</div>
+            <div class="card-flex">Kartu 3</div>
+        </div>
+    </div>
+
+    <!-- ===== CSS GRID DEMO (DARI GAMBAR) ===== -->
+    <div style="width: 100%; max-width: 600px;">
+        <div class="sub-label">🟪 CSS Grid</div>
+        <div class="grid-container">
+            <div class="item header">Header</div>
+            <div class="item">Sidebar Left</div>
+            <div class="item">Main Content</div>
+            <div class="item">Sidebar Right</div>
+            <div class="item footer">Footer</div>
+        </div>
+    </div>
+
+</body>
+</html>
