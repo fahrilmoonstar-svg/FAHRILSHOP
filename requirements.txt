@@ -1,0 +1,2 @@
+# Tidak ada library khusus untuk saat ini
+# File ini dibuat agar Docker tidak error saat mencari requirements
