@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Box - FAHRIL PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #03050f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            letter-spacing: 2px;
+            color: #a02020;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* ===== SOCIAL LINK CSS DARI GAMBAR ===== */
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem 1rem;
+            background-color: #F8FAF8;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-width: 120px;
+            color: #1a1a2e;
+            cursor: pointer;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-color: #D8F3DC;
+            background-color: #FFFFFF;
+        }
+
+        .social-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* ===== BOX BACKGROUND ===== */
+        .repeat-background {
+            background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop');
+            background-repeat: no-repeat;
+            border-radius: 12px;
+        }
+
+        .size-background {
+            background-image: url('https://images.unsplash.com/photo-1522075469751-3a369b6c15ba?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            border-radius: 12px;
+        }
+
+        .box {
+            width: 500px;
+            height: 150px;
+            border: 2px solid rgba(180, 40, 40, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ===== KARTU COKLAT ===== */
+        .card {
+            position: relative;
+            height: 100%;
+            width: 150px;
+            text-align: center;
+            background-color: rgb(235, 235, 234);
+            border-radius: 1rem;
+            box-shadow: 0 1px 1px rgb(133, 48, 9);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            scale: 1.03;
+            transition: ease-in-out 1s;
+        }
+
+        .card h3 {
+            color: #1a1a2e;
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .card button {
+            border: none;
+            background-color: brown;
+            margin: 1rem;
+            padding: 0.5rem;
+            border-radius: 2rem;
+            color: aliceblue;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .card button:hover {
+            background-color: rgb(123, 28, 28);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="section-title">📦 UI Components</h1>
+
+    <!-- ===== SOCIAL LINKS DARI GAMBAR ===== -->
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+        <a href="#" class="social-link">
+            <span class="social-emoji">📷</span>
+            <span class="social-name">Instagram</span>
+        </a>
+        <a href="#" class="social-link">
+            <span class="social-emoji">🐦</span>
+            <span class="social-name">Twitter</span>
+        </a>
+        <a href="#" class="social-link">
+            <span class="social-emoji">💻</span>
+            <span class="social-name">GitHub</span>
+        </a>
+    </div>
+
+    <!-- ===== BOX BACKGROUND ===== -->
+    <div class="box repeat-background">
+        <span>Background Repeat: No-Repeat</span>
+    </div>
+    <div class="box size-background">
+        <span>Background Size: Cover</span>
+    </div>
+
+    <!-- ===== KARTU COKLAT ===== -->
+    <div class="card">
+        <h3>Kartu Coklat</h3>
+        <button>Klik</button>
+    </div>
+
+</body>
+</html>
